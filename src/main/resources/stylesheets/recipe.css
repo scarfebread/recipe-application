@@ -83,3 +83,23 @@ input:checked + .slider .off
     padding-top: 15px;
     /*float: left;*/
 }
+
+.searchBar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 150px;
+
+    margin: auto;
+    width: 50%;
+    height: 35px;
+}
+
+.changePassword {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 210px;
+    width: 30%;
+    margin: auto;
+}

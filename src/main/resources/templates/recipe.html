@@ -30,7 +30,15 @@
         </div>
         <a href="#news">Ingredients</a>
         <a href="#news">Shopping</a>
-        <a>Account</a>
+        <div class="dropdown">
+            <button class="dropbtn">Account
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="password.html">Change password</a>
+                <a href="admin.html">Admin</a>
+            </div>
+        </div>
     </div>
 
     <div>
@@ -43,7 +51,9 @@
                 <button>Share</button>
             </div>
             <div class="ingredients">
-                <label>Labels: curry chicken</label>
+                <label>Labels:</label>
+                <label style="border-style: inset; ">curry</label>
+                <label style="border-style: inset;">chicken</label>
             </div>
             <div class="ingredients">
                 <label>Rating:</label>
@@ -67,14 +77,26 @@
                 </select>
             </div>
             <div class="ingredients">
+                <label>Serves:</label>
+                <select>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                </select>
+            </div>
+            <div class="ingredients">
                 <label>Notes:</label>
             </div>
             <div>
-                <textarea style="width: 98%; height: 200px">Here are some notes</textarea>
+                <textarea style="width: 98%; height: 170px">Here are some notes</textarea>
             </div>
             <div style="position: absolute; top: 600px; right: 160px;">
                 <button>Print</button>
                 <button>Hide</button>
+                <button>Delete</button>
             </div>
         </div>
     </div>
@@ -128,7 +150,7 @@
         </table>
     </div>
 
-    <div style="float: right; width: 50%">
+    <div style="float: right; width: 50%; padding-bottom: 50px">
         <h2>Method</h2>
         <table>
             <tr>
