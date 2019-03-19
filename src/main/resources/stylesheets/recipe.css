@@ -45,7 +45,6 @@ input:checked + .slider:before {
     transform: translateX(85px);
 }
 
-/*------ ADDED CSS ---------*/
 .on
 {
     display: none;
@@ -68,7 +67,6 @@ input:checked+ .slider .on
 input:checked + .slider .off
 {display: none;}
 
-/*--------- END --------*/
 
 /* Rounded sliders */
 .slider.round {
@@ -85,12 +83,10 @@ input:checked + .slider .off
 }
 
 .searchBar {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 150px;
-
-    margin: auto;
+    float: left;
+    margin-top: 25px;
+    margin-left: 220px;
+    margin-right: 220px;
     width: 50%;
     height: 35px;
 }

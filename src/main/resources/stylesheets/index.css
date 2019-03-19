@@ -129,3 +129,15 @@
 .recipeLabel {
     border-style: inset;
 }
+
+.recipeListItem {
+    float: left;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.recipeThumbnail {
+    height: 50px;
+    float: left;
+    padding-right: 5px;
+}
