@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../stylesheets/index.css" media="screen" type="text/css" />
 </head>
 <body>
-    <div style="padding-left: 150px; padding-right: 150px">
+    <div style="padding-left: 150px; padding-right: 150px;">
         <div>
             <h1 style="width: 50%; margin-right: 0;">The Cooking Pot</h1>
             <div style="position: absolute; top: 35px; right: 200px">
@@ -29,14 +29,27 @@
             </div>
             <a href="#news">Ingredients</a>
             <a href="#news">Shopping</a>
-            <a>Account</a>
+            <div class="dropdown">
+                <button class="dropbtn">Account
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="password.html">Change password</a>
+                    <a href="admin.html">Admin</a>
+                </div>
+            </div>
         </div>
 
         <div>
             <div style="float: left; width: 50%">
-                <h2 style="padding-left: 50px">Slow cooker chicken curry</h2>
-                <label>curry chicken</label>
-                <img class="image" src="../slow-cooker-chicken-curry.jpg">
+                <h2 style="padding-left: 50px; margin-bottom: 10px">Slow cooker chicken curry</h2>
+                <div style="padding-left: 50px; padding-bottom: 10px">
+                    <label style="border-style: inset; ">curry</label>
+                    <label style="border-style: inset;">chicken</label>
+                </div>
+                <a href="recipe.html">
+                    <img class="image" src="../slow-cooker-chicken-curry.jpg">
+                </a>
                 <div>
                     <button style="margin-left: 40px" class="homeButton"><--</button>
                     <button class="homeButton">--></button>
@@ -44,7 +57,7 @@
             </div>
 
             <div  style="float: right; width: 50%">
-                <h3>Shopping List</h3>
+                <h2>Shopping List</h2>
                 <table>
                     <thead style="text-align: left">
                         <th>Item</th>
