@@ -141,3 +141,12 @@
     float: left;
     padding-right: 5px;
 }
+
+.createRecipeButton {
+    float: left;
+    margin-top: 25px;
+    margin-left: 220px;
+    margin-right: 220px;
+    width: 50%;
+    height: 35px;
+}
