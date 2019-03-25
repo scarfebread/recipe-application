@@ -1,0 +1,66 @@
+.loginInput {
+    width: 75%;
+    height: 25px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.loginButton {
+    width: 76%;
+    height: 35px;
+    margin-bottom: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.loginButton span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.loginButton span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.loginButton:hover span {
+    padding-right: 25px;
+}
+
+.loginButton:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.loginForm {
+    position: absolute;
+    width: 500px;
+    height: 270px;
+    top: 25%;
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    background: rgba(221, 221, 221, 0.8);
+    border-radius: 40px;
+}
+
+.paddedInput {
+    padding-top: 5px;
+    padding-left: 100px;
+}
+
+body {
+    font-family: 'Didact Gothic';
+    background-image: url("../images/carrots.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}

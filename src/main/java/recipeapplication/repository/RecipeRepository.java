@@ -5,5 +5,5 @@ import recipeapplication.model.Recipe;
 
 public interface RecipeRepository extends CrudRepository<Recipe, Long>
 {
-//    Recipe fin(String name);
+
 }
