@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import recipeapplication.repository.RecipeRepository;
 
 @RestController
-@RequestMapping(path = "/recipe")
+@RequestMapping(path = "/api/recipe")
 public class RecipeController
 {
     private RecipeRepository recipeRepository;

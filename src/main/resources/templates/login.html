@@ -1,20 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>The Cooking Pot - Login</title>
-    <link rel="stylesheet" href="../stylesheets/index.css" media="screen" type="text/css" />
+    <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
+    <!--<link rel="stylesheet" href="/css/index.css" media="screen" type="text/css" />-->
+    <link rel="stylesheet" href="../static/css/index.css" media="screen" type="text/css" />
+    <link rel="stylesheet" href="../static/css/login.css" media="screen" type="text/css" />
+    <!--<script type="application/javascript" src="/js/login.js"></script>-->
 </head>
 <body>
-    <div class="loginDiv">
-        <h1>The Cooking Pot</h1>
-        <form action="home.html">
-            <input class="loginInput" placeholder="Username"/>
-            <input class="loginInput" placeholder="Password"/>
-            <button class="loginButton">LOGIN</button>
-            <a href="forgotten_password.html">Forgotten password?</a><br>
-            <a href="signup.html">Don't have an account?</a>
-        </form>
+    <div class="background">
+        <div class="loginForm">
+            <div class="paddedInput">
+                <h1>The Cooking Pot</h1>
+                <form action="/">
+                    <input class="loginInput" placeholder="Username"/>
+                    <input class="loginInput" placeholder="Password" type="password"/>
+                    <button class="loginButton" onclick="login()"><span>LOGIN</span></button>
+                    <div>
+                        <a href="forgotten_password.html">Forgotten password?</a><br>
+                        <a href="signup.html">Don't have an account?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 </html>
