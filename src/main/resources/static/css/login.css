@@ -1,11 +1,11 @@
-.loginInput {
+input {
     width: 75%;
     height: 25px;
     margin-bottom: 5px;
-    text-align: center;
+    text-align: left;
 }
 
-.loginButton {
+.button {
     width: 76%;
     height: 35px;
     margin-bottom: 5px;
@@ -15,14 +15,14 @@
     cursor: pointer;
 }
 
-.loginButton span {
+.button span {
     cursor: pointer;
     display: inline-block;
     position: relative;
     transition: 0.5s;
 }
 
-.loginButton span:after {
+.button span:after {
     content: '\00bb';
     position: absolute;
     opacity: 0;
@@ -31,20 +31,20 @@
     transition: 0.5s;
 }
 
-.loginButton:hover span {
-    padding-right: 25px;
+.button:hover span {
+    padding-right: 13px;
 }
 
-.loginButton:hover span:after {
+.button:hover span:after {
     opacity: 1;
     right: 0;
 }
 
-.loginForm {
+.form {
     position: absolute;
     width: 500px;
-    height: 270px;
-    top: 25%;
+    height: auto;
+    top: 20%;
     left: 0;
     right: 0;
     margin-right: auto;
@@ -53,14 +53,20 @@
     border-radius: 40px;
 }
 
-.paddedInput {
+.formPadding {
     padding-top: 5px;
     padding-left: 100px;
 }
 
 body {
     font-family: 'Didact Gothic';
-    background-image: url("../images/carrots.jpg");
+    background: url("../images/carrots.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     background-size: cover;
-    background-repeat: no-repeat;
+}
+
+form {
+    padding-bottom: 30px;
 }

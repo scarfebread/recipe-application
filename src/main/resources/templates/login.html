@@ -4,20 +4,22 @@
     <meta charset="UTF-8">
     <title>The Cooking Pot - Login</title>
     <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
-    <!--<link rel="stylesheet" href="/css/index.css" media="screen" type="text/css" />-->
-    <link rel="stylesheet" href="../static/css/index.css" media="screen" type="text/css" />
     <link rel="stylesheet" href="../static/css/login.css" media="screen" type="text/css" />
     <!--<script type="application/javascript" src="/js/login.js"></script>-->
 </head>
 <body>
     <div class="background">
-        <div class="loginForm">
-            <div class="paddedInput">
+        <div class="form">
+            <div class="formPadding">
                 <h1>The Cooking Pot</h1>
-                <form action="/">
-                    <input class="loginInput" placeholder="Username"/>
-                    <input class="loginInput" placeholder="Password" type="password"/>
-                    <button class="loginButton" onclick="login()"><span>LOGIN</span></button>
+                <form action="home.html">
+                    <label for="username">Username</label><br>
+                    <input id="username" class="input"/><br>
+                    <label for="password">Password</label><br>
+                    <input id="password" class="input" type="password"/>
+                    <button class="button">
+                        <span>LOGIN</span>
+                    </button>
                     <div>
                         <a href="forgotten_password.html">Forgotten password?</a><br>
                         <a href="signup.html">Don't have an account?</a>
