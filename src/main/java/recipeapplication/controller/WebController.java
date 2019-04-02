@@ -13,20 +13,26 @@ public class WebController
     }
 
     @GetMapping("/")
-    public String getIndex()
+    public String index()
     {
         return "home.html";
     }
 
     @GetMapping("/signup")
-    public String getSignup()
+    public String signup()
     {
         return "signup.html";
     }
 
     @GetMapping("/recipe")
-    public String getRecipe()
+    public String recipe()
     {
         return "recipe.html";
+    }
+
+    @GetMapping("/resetPassword")
+    public String resetPassword()
+    {
+        return "reset_password.html";
     }
 }
