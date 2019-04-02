@@ -70,3 +70,19 @@ body {
 form {
     padding-bottom: 30px;
 }
+
+/* Mobile specific styles */
+@media (max-width: 1100px) {
+    .form {
+        width: 100%;
+    }
+
+    .formPadding {
+        padding-left: 75px;
+    }
+
+    body {
+        background: url("../images/carrots.jpg") no-repeat;
+        background-size: 1100px auto;
+    }
+}
