@@ -1,7 +1,10 @@
 package recipeapplication.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.context.request.WebRequest;
+import recipeapplication.security.UserDto;
 
 @Controller
 public class WebController
@@ -19,8 +22,10 @@ public class WebController
     }
 
     @GetMapping("/signup")
-    public String signup()
+    public String signup(WebRequest request, Model model)
     {
+        model.addAttribute("user", new UserDto());
+
         return "signup.html";
     }
 

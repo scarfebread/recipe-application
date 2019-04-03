@@ -1,9 +1,9 @@
 package recipeapplication.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import recipeapplication.model.Recipe;
 
-public interface RecipeRepository extends CrudRepository<Recipe, Long>
+public interface RecipeRepository extends JpaRepository<Recipe, Long>
 {
 
 }
