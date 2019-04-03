@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,15 +12,15 @@
     <div class="form">
         <div class="formPadding">
             <h1>The Cooking Pot</h1>
-            <form action="home.html">
+            <form th:action="@{/api/signup}" th:object="${user}" method="POST">
                 <label for="username">Username</label><br>
-                <input id="username"/><br>
+                <input id="username" th:field="*{username}"/><br>
                 <label for="email">Email address</label><br>
-                <input id="email"/><br>
+                <input id="email" th:field="*{email}"/><br>
                 <label for="password">Password</label><br>
-                <input id="password"/><br>
+                <input id="password" type="password" th:field="*{password}"/><br>
                 <label for="retypepassword">Retype password</label><br>
-                <input id="retypepassword"/>
+                <input id="retypepassword" type="password"/>
                 <button class="button">
                     <span>SIGNUP</span>
                 </button>
