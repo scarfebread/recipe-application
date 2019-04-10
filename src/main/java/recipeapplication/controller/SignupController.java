@@ -2,18 +2,14 @@ package recipeapplication.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import recipeapplication.exception.UsernameExistsException;
-import recipeapplication.security.SignupService;
-import recipeapplication.security.UserDto;
+import recipeapplication.service.SignupService;
+import recipeapplication.dto.UserDto;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/api/signup")
@@ -30,8 +26,13 @@ public class SignupController
     }
 
     @PostMapping
-    public ResponseEntity signup(@RequestBody UserDto userDto, HttpServletRequest request, HttpServletResponse response)
+    public ResponseEntity signup(@Valid @RequestBody UserDto userDto, Errors errors)
     {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.status(400).body("Invalid user information supplied");
+        }
+
         try
         {
             signupService.registerNewUser(userDto);
@@ -42,12 +43,12 @@ public class SignupController
         }
 
         // TODO automatic login needs fixing
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword());
-        authToken.setDetails(new WebAuthenticationDetails(request));
-
-        Authentication authentication = authenticationManger.authenticate(authToken);
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword());
+//        authToken.setDetails(new WebAuthenticationDetails(request));
+//
+//        Authentication authentication = authenticationManger.authenticate(authToken);
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return ResponseEntity.status(201).body("Created");
     }

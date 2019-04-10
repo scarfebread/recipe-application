@@ -10,7 +10,7 @@ public class RecipeUserDetails implements UserDetails
 {
     private User user;
 
-    RecipeUserDetails(User user)
+    public RecipeUserDetails(User user)
     {
         this.user = user;
     }

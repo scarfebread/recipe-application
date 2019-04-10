@@ -1,20 +1,25 @@
-package recipeapplication.security;
+package recipeapplication.dto;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class UserDto
 {
     @NotNull
     @NotEmpty
+    @Size(min = 3)
     private String username;
 
     @NotNull
     @NotEmpty
+    @Size(min = 5)
     private String password;
 
     @NotNull
     @NotEmpty
+    @Email
     private String email;
 
     public String getUsername()
