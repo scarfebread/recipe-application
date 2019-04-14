@@ -2,7 +2,6 @@ package recipeapplication.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import recipeapplication.exception.UsernameExistsException;
@@ -16,13 +15,11 @@ import javax.validation.Valid;
 public class SignupController
 {
     private SignupService signupService;
-    private DaoAuthenticationProvider authenticationManger;
 
     @Autowired
-    public SignupController(SignupService signupService, DaoAuthenticationProvider authenticationManger)
+    public SignupController(SignupService signupService)
     {
         this.signupService = signupService;
-        this.authenticationManger = authenticationManger;
     }
 
     @PostMapping
@@ -41,14 +38,6 @@ public class SignupController
         {
             return ResponseEntity.status(400).body("Username already exists");
         }
-
-        // TODO automatic login needs fixing
-//        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword());
-//        authToken.setDetails(new WebAuthenticationDetails(request));
-//
-//        Authentication authentication = authenticationManger.authenticate(authToken);
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return ResponseEntity.status(201).body("Created");
     }
