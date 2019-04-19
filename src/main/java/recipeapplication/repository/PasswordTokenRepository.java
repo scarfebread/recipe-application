@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 public interface PasswordTokenRepository extends JpaRepository<PasswordResetToken, Long>
 {
     PasswordResetToken findByToken(String token);
-    
+
     @Transactional
     void deleteByUser(User user);
 }

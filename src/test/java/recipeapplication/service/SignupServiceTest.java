@@ -3,6 +3,7 @@ package recipeapplication.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import recipeapplication.dto.UserDto;
 import recipeapplication.exception.UsernameExistsException;
 import recipeapplication.model.User;
@@ -37,7 +38,7 @@ public class SignupServiceTest
 
         userDto.setUsername(USER1);
 
-        new SignupService(userRepository).registerNewUser(userDto);
+        new SignupService(userRepository, new BCryptPasswordEncoder(11)).registerNewUser(userDto);
     }
 
     @Test
@@ -51,7 +52,7 @@ public class SignupServiceTest
 
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
 
-        new SignupService(userRepository).registerNewUser(userDto);
+        new SignupService(userRepository, new BCryptPasswordEncoder(11)).registerNewUser(userDto);
 
         verify(userRepository).save(argumentCaptor.capture());
 
