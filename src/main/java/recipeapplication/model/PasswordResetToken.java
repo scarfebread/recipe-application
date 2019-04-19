@@ -1,6 +1,7 @@
 package recipeapplication.model;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 
