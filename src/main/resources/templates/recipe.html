@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title>The Cooking Pot - Recipes</title>
-    <link rel="stylesheet" href="../static/css/index.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="../static/css/recipe.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/index.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/recipe.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -13,7 +14,7 @@
         <h1 style="width: 50%; margin-right: 0;">The Cooking Pot</h1>
         <div style="position: absolute; top: 35px; right: 200px">
             <label>jscarfe</label>
-            <a href="login.html">Logout</a>
+            <a href="/logout">Logout</a>
         </div>
     </div>
 
