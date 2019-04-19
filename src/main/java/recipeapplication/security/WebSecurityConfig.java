@@ -28,14 +28,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
+        // TODO redirect to login page on authorisation failure
+
         // TODO enable the CSRF token
         http.csrf().disable()
             .authorizeRequests()
                 .antMatchers("/signup", "/resetPassword", "/changePassword", "/api/signup", "/css/**", "/images/**", "/js/**")
                 .permitAll()
-                // TODO this needs to be updated we're allowing all authenticated requests to access any page
-                .anyRequest().authenticated()
-                //
                 .antMatchers("/").hasAuthority(Role.USER.toString())
                 .antMatchers("/api/change_password").hasAuthority(Role.CHANGE_PASSWORD.toString())
                 .and()
@@ -54,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception
+    protected void configure(AuthenticationManagerBuilder auth)
     {
         auth.authenticationProvider(authenticationProvider());
     }

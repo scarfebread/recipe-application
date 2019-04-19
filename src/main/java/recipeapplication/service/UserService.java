@@ -15,6 +15,7 @@ import recipeapplication.model.User;
 import recipeapplication.repository.PasswordTokenRepository;
 import recipeapplication.repository.UserRepository;
 import recipeapplication.security.RecipeUserDetails;
+import recipeapplication.security.Role;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -79,7 +80,7 @@ public class UserService
         Authentication auth = new UsernamePasswordAuthenticationToken(
                 new RecipeUserDetails(user),
                 null,
-                Collections.singletonList(new SimpleGrantedAuthority("PASSWORD_RESET"))
+                Collections.singletonList(new SimpleGrantedAuthority(Role.CHANGE_PASSWORD.toString()))
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
