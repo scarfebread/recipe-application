@@ -1,11 +1,11 @@
-function signup()
+function changePassword()
 {
     resetErrors();
 
-    let username = getValueById('username');
+    console.log(document.getElementById('preChangePasswordDisplay'));
+
     let password = getValueById('password');
     let repeatPassword = getValueById('retypepassword');
-    let email = getValueById('email');
 
     let isValid = true;
 
@@ -15,21 +15,9 @@ function signup()
         isValid = false;
     }
 
-    if (!validateStringLength(username, 3))
-    {
-        showElement('usernameTooShortError');
-        isValid = false;
-    }
-
     if (!validateStringLength(password, 5))
     {
         showElement('passwordTooShortError');
-        isValid = false;
-    }
-
-    if (!validateEmail(email))
-    {
-        showElement('emailNotValid');
         isValid = false;
     }
 
@@ -38,39 +26,37 @@ function signup()
         return false;
     }
 
-    let user = {
-        username: username,
-        password: password,
-        email: email
+    let passwordDto = {
+        password: password
     };
 
-    fetch ("http://localhost:8080/api/signup", {
+    fetch ("http://localhost:8080/api/change_password", {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
         credentials: "same-origin",
-        body: JSON.stringify(user)
+        body: JSON.stringify(passwordDto)
     }).then(
         function (response) {
             if (response.status !== 201)
             {
                 response.text().then(function(data) {
-                    document.getElementById("signupError").innerText = data;
-                    showElement('signupError');
+                    document.getElementById("passwordChangeError").innerText = data;
+                    showElement('passwordChangeError');
                 });
 
                 return false;
             }
 
-            hideElement('preSignupDisplay');
-            showElement('postSignupDisplay');
+            hideElement('preChangePasswordDisplay');
+            showElement('postChangePasswordDisplay');
             return true;
         }
     ).catch(
         function (error) {
-            document.getElementById("signupError").value = error;
-            showElement('signupError');
+            document.getElementById("passwordChangeError").value = error;
+            showElement('passwordChangeError');
         }
     );
 
@@ -80,8 +66,6 @@ function signup()
 function resetErrors()
 {
     hideElement("passwordsDoNotMatchError");
-    hideElement("emailNotValid");
-    hideElement("signupError");
-    hideElement('usernameTooShortError');
+    hideElement("passwordChangeError");
     hideElement('passwordTooShortError');
 }

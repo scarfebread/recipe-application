@@ -28,26 +28,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
-        http
+        // TODO enable the CSRF token
+        http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/signup", "/api/signup", "/css/**", "/images/**", "/js/**")
+                .antMatchers("/signup", "/resetPassword", "/changePassword", "/api/signup", "/css/**", "/images/**", "/js/**")
                 .permitAll()
+                // TODO this needs to be updated we're allowing all authenticated requests to access any page
                 .anyRequest()
                 .authenticated()
-                .antMatchers("/").hasRole("USER")
+                //
+                .antMatchers("/").hasAuthority(Role.USER.toString())
+                .antMatchers("/api/change_password").hasAuthority(Role.CHANGE_PASSWORD.toString())
                 .and()
             .formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .and()
-            .logout();
+            .logout().logoutSuccessUrl("/login").deleteCookies("JSESSIONID").invalidateHttpSession(true);
     }
 
     @Override
     public void configure(WebSecurity web)
     {
-        // TODO this shouldn't be required
-        web.ignoring().antMatchers("/api/signup");
+        // TODO there might be a better way to do this
+        web.ignoring().antMatchers("/api/signup", "/api/password_reset");
     }
 
     @Override

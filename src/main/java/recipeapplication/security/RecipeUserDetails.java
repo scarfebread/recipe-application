@@ -30,6 +30,11 @@ public class RecipeUserDetails implements UserDetails
         return user.getPassword();
     }
 
+    public User getUser()
+    {
+        return user;
+    }
+
     public boolean isAccountNonExpired()
     {
         return true;
