@@ -4,10 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import recipeapplication.model.PasswordResetToken;
 import recipeapplication.model.User;
 
+import javax.transaction.Transactional;
+
 public interface PasswordTokenRepository extends JpaRepository<PasswordResetToken, Long>
 {
     PasswordResetToken findByToken(String token);
-
-    // TODO this isn't working
+    
+    @Transactional
     void deleteByUser(User user);
 }

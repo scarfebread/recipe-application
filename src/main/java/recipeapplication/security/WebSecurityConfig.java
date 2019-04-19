@@ -34,8 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/signup", "/resetPassword", "/changePassword", "/api/signup", "/css/**", "/images/**", "/js/**")
                 .permitAll()
                 // TODO this needs to be updated we're allowing all authenticated requests to access any page
-                .anyRequest()
-                .authenticated()
+                .anyRequest().authenticated()
                 //
                 .antMatchers("/").hasAuthority(Role.USER.toString())
                 .antMatchers("/api/change_password").hasAuthority(Role.CHANGE_PASSWORD.toString())
