@@ -17,10 +17,10 @@ public class PasswordResetToken
     private String token;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "user_id")
+    @JoinColumn(nullable = false, name = "userId")
     private User user;
 
-    private Date expirydate;
+    private Date expiryDate;
 
     public PasswordResetToken() {};
 
@@ -28,7 +28,7 @@ public class PasswordResetToken
     {
         this.token = token;
         this.user = user;
-        this.expirydate = getDateAfter24Hours();
+        this.expiryDate = getDateAfter24Hours();
     }
 
     private Date getDateAfter24Hours()
@@ -44,11 +44,26 @@ public class PasswordResetToken
 
     public boolean isExpired()
     {
-        return new Date().compareTo(expirydate) >= 0;
+        return new Date().compareTo(expiryDate) >= 0;
     }
 
     public User getUser()
     {
         return user;
+    }
+
+    public String getToken()
+    {
+        return token;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
+    }
+
+    public void setExpiryDate(Date expiryDate)
+    {
+        this.expiryDate = expiryDate;
     }
 }

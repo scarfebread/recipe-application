@@ -18,6 +18,7 @@ import recipeapplication.security.RecipeUserDetails;
 import recipeapplication.security.Role;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -43,40 +44,45 @@ public class UserService
 
     public void createPasswordResetToken(String serverName, UserDto userDto) throws UserNotFoundException
     {
-        User user;
+        Optional<User> result;
 
         if (userDto.getUsername() != null)
         {
-            user = userRepository.findByUsername(userDto.getUsername());
+            result = userRepository.findByUsername(userDto.getUsername());
         }
         else if (userDto.getEmail() != null)
         {
-            user = userRepository.findByEmail(userDto.getEmail());
+            result = userRepository.findByEmail(userDto.getEmail());
         }
         else
         {
             throw new UserNotFoundException();
         }
 
+        if (!result.isPresent())
+        {
+            throw new UserNotFoundException();
+        }
+
         String token = UUID.randomUUID().toString();
 
-        PasswordResetToken passwordResetToken = new PasswordResetToken(token, user);
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, result.get());
 
         passwordTokenRepository.save(passwordResetToken);
 
-        emailService.sendPasswordReset(user, token, serverName);
+        emailService.sendPasswordReset(result.get(), token, serverName);
     }
 
     public void processPasswordResetToken(String token) throws InvalidPasswordTokenException
     {
-        PasswordResetToken passwordResetToken = passwordTokenRepository.findByToken(token);
+        Optional<PasswordResetToken> passwordResetToken = passwordTokenRepository.findByToken(token);
 
-        if (passwordResetToken == null || passwordResetToken.isExpired())
+        if (!passwordResetToken.isPresent() || passwordResetToken.get().isExpired())
         {
             throw new InvalidPasswordTokenException();
         }
 
-        User user = passwordResetToken.getUser();
+        User user = passwordResetToken.get().getUser();
         Authentication auth = new UsernamePasswordAuthenticationToken(
                 new RecipeUserDetails(user),
                 null,

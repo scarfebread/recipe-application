@@ -49,7 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     public void configure(WebSecurity web)
     {
         // TODO there might be a better way to do this
-        web.ignoring().antMatchers("/api/signup", "/api/password_reset");
+        // TODO remove /api/recipe from here
+        web.ignoring().antMatchers("/api/signup", "/api/password_reset, /api/recipe");
     }
 
     @Override

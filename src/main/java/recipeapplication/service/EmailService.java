@@ -23,9 +23,11 @@ public class EmailService
     {
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setSubject("The Cooking Pot - Password reminder");
+        message.setSubject("The Cooking Pot - Password reset");
         message.setFrom(FROM_EMAIL);
         message.setTo(user.getEmail());
+
+        // TODO create an email template
         message.setText(String.format("http://%s/changePassword?token=%s", serverName, token));
 
         mailSender.send(message);
