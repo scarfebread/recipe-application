@@ -13,7 +13,7 @@ CREATE TABLE recipe.password_reset_tokens (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES recipe.users(id),
   token VARCHAR,
-  expiryDate DATE
+  expiry_date DATE
 );
 
 CREATE TABLE recipe.recipes (

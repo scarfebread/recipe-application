@@ -39,6 +39,7 @@ public class UserServiceTest
     private UserRepository userRepository;
     private PasswordTokenRepository passwordTokenRepository;
     private PasswordEncoder passwordEncoder;
+    private AuthService authService;
 
     @Before
     public void setup()
@@ -75,12 +76,15 @@ public class UserServiceTest
         passwordEncoder = mock(PasswordEncoder.class);
 
         when(passwordEncoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
+
+        // TODO this should be mocked out
+        authService = new AuthService();
     }
 
     @Test(expected = UserNotFoundException.class)
     public void shouldThrowUserNotFoundExceptionWhenNoUsernameOrEmailInRequest() throws UserNotFoundException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder);
+        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
 
         userService.createPasswordResetToken("", new UserDto());
     }
@@ -88,7 +92,7 @@ public class UserServiceTest
     @Test(expected = UserNotFoundException.class)
     public void shouldThrowUserNotFoundExceptionWhenUsernameDoesNotExist() throws UserNotFoundException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder);
+        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
 
         UserDto userDto = new UserDto();
         userDto.setUsername(INVALID_USERNAME);
@@ -99,7 +103,7 @@ public class UserServiceTest
     @Test(expected = UserNotFoundException.class)
     public void shouldThrowUserNotFoundExceptionWhenEmailDoesNotExist() throws UserNotFoundException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder);
+        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
 
         UserDto userDto = new UserDto();
         userDto.setEmail(INVALID_EMAIL);
@@ -113,7 +117,7 @@ public class UserServiceTest
         PasswordTokenRepository passwordTokenRepository = mock(PasswordTokenRepository.class);
         EmailService emailService = mock(EmailService.class);
 
-        UserService userService = new UserService(userRepository, passwordTokenRepository, emailService, passwordEncoder);
+        UserService userService = new UserService(userRepository, passwordTokenRepository, emailService, passwordEncoder, authService);
 
         UserDto userDto = new UserDto();
         userDto.setUsername(VALID_USERNAME);
@@ -135,7 +139,7 @@ public class UserServiceTest
         PasswordTokenRepository passwordTokenRepository = mock(PasswordTokenRepository.class);
         EmailService emailService = mock(EmailService.class);
 
-        UserService userService = new UserService(userRepository, passwordTokenRepository, emailService, passwordEncoder);
+        UserService userService = new UserService(userRepository, passwordTokenRepository, emailService, passwordEncoder, authService);
 
         UserDto userDto = new UserDto();
         userDto.setEmail(VALID_EMAIL);
@@ -154,7 +158,7 @@ public class UserServiceTest
     @Test(expected = InvalidPasswordTokenException.class)
     public void shouldThrowInvalidPasswordTokenExceptionWhenTokenDoesNotExist() throws InvalidPasswordTokenException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder);
+        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
 
         userService.processPasswordResetToken(INVALID_TOKEN);
     }
@@ -162,7 +166,7 @@ public class UserServiceTest
     @Test(expected = InvalidPasswordTokenException.class)
     public void shouldThrowInvalidPasswordTokenExceptionWhenTokenIsExpired() throws InvalidPasswordTokenException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder);
+        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
 
         userService.processPasswordResetToken(EXPIRED_TOKEN);
     }
@@ -170,7 +174,7 @@ public class UserServiceTest
     @Test
     public void shouldEnablePasswordResetForValidToken() throws InvalidPasswordTokenException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder);
+        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
 
         userService.processPasswordResetToken(VALID_TOKEN);
 
@@ -191,7 +195,7 @@ public class UserServiceTest
     @Test
     public void shouldChangePasswordSuccessfully()
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository,  null, passwordEncoder);
+        UserService userService = new UserService(userRepository, passwordTokenRepository,  null, passwordEncoder, authService);
 
         User user = new User();
 
