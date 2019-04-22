@@ -2,13 +2,13 @@ package recipeapplication.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import recipeapplication.dto.PasswordDto;
 import recipeapplication.dto.UserDto;
 import recipeapplication.exception.UserNotFoundException;
-import recipeapplication.security.RecipeUserDetails;
+import recipeapplication.model.User;
+import recipeapplication.service.AuthService;
 import recipeapplication.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,15 +19,17 @@ import javax.validation.Valid;
 public class PasswordController
 {
     private UserService userService;
+    private AuthService authService;
 
     @Autowired
-    public PasswordController(UserService userService)
+    public PasswordController(UserService userService, AuthService authService)
     {
         this.userService = userService;
+        this.authService = authService;
     }
 
     @PostMapping("/password_reset")
-    public ResponseEntity passwordReminder(HttpServletRequest request, @RequestBody UserDto userDto)
+    public ResponseEntity createPasswordReset(HttpServletRequest request, @RequestBody UserDto userDto)
     {
         String serverName = String.format("%s:%s", request.getServerName(), request.getServerPort());
 
@@ -46,7 +48,7 @@ public class PasswordController
     @PostMapping("/change_password")
     public ResponseEntity changePassword(@Valid @RequestBody PasswordDto passwordDto, Errors errors)
     {
-        RecipeUserDetails user = (RecipeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = authService.getLoggedInUser();
 
         if (user == null)
         {
@@ -58,7 +60,7 @@ public class PasswordController
             return ResponseEntity.status(400).body("Invalid password");
         }
 
-        userService.changePassword(user.getUser(), passwordDto.getPassword());
+        userService.changePassword(user, passwordDto.getPassword());
 
         return ResponseEntity.status(201).body("Created");
     }

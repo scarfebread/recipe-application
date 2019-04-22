@@ -9,6 +9,8 @@ import recipeapplication.model.User;
 import recipeapplication.repository.UserRepository;
 import recipeapplication.security.RecipeUserDetails;
 
+import java.util.Optional;
+
 @Service
 public class RecipeUserDetailsService implements UserDetailsService
 {
@@ -22,13 +24,13 @@ public class RecipeUserDetailsService implements UserDetailsService
 
     public UserDetails loadUserByUsername(String username)
     {
-        User user = userRepository.findByUsername(username);
+        Optional<User> result = userRepository.findByUsername(username);
 
-        if (user == null)
+        if (!result.isPresent())
         {
             throw new UsernameNotFoundException(username);
         }
 
-        return new RecipeUserDetails(user);
+        return new RecipeUserDetails(result.get());
     }
 }

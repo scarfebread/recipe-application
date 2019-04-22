@@ -9,6 +9,8 @@ import recipeapplication.exception.UsernameExistsException;
 import recipeapplication.model.User;
 import recipeapplication.repository.UserRepository;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,7 +29,7 @@ public class SignupServiceTest
     {
         userRepository = mock(UserRepository.class);
 
-        when(userRepository.findByUsername(USER1)).thenReturn(new User());
+        when(userRepository.findByUsername(USER1)).thenReturn(Optional.of(new User()));
         when(userRepository.findByUsername(USER2)).thenReturn(null);
     }
 
