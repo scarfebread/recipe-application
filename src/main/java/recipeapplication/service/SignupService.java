@@ -41,6 +41,6 @@ public class SignupService
 
     private boolean usernameAlreadyRegistered(String username)
     {
-        return (userRepository.findByUsername(username) != null);
+        return (userRepository.findByUsername(username).isPresent());
     }
 }

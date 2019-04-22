@@ -1,22 +1,31 @@
 package recipeapplication.security;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import recipeapplication.model.User;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class RecipeUserDetails implements UserDetails
 {
     private User user;
+    private boolean changePasswordAccess;
 
     public RecipeUserDetails(User user)
     {
         this.user = user;
+        changePasswordAccess = false;
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
+        if (!changePasswordAccess)
+        {
+            return Collections.singletonList(new SimpleGrantedAuthority(Role.USER.toString()));
+        }
+
         return null;
     }
 
@@ -53,5 +62,10 @@ public class RecipeUserDetails implements UserDetails
     public boolean isEnabled()
     {
         return true;
+    }
+
+    public void setChangePasswordAccess(boolean changePasswordAccess)
+    {
+        this.changePasswordAccess = changePasswordAccess;
     }
 }

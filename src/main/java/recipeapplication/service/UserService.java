@@ -1,10 +1,6 @@
 package recipeapplication.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import recipeapplication.dto.UserDto;
@@ -17,7 +13,6 @@ import recipeapplication.repository.UserRepository;
 import recipeapplication.security.RecipeUserDetails;
 import recipeapplication.security.Role;
 
-import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,18 +23,21 @@ public class UserService
     private PasswordTokenRepository passwordTokenRepository;
     private EmailService emailService;
     private PasswordEncoder passwordEncoder;
+    private AuthService authService;
 
     @Autowired
     public UserService(
             UserRepository userRepository,
             PasswordTokenRepository passwordTokenRepository,
             EmailService emailService,
-            PasswordEncoder passwordEncoder)
+            PasswordEncoder passwordEncoder,
+            AuthService authService)
     {
         this.userRepository = userRepository;
         this.passwordTokenRepository = passwordTokenRepository;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
+        this.authService = authService;
     }
 
     public void createPasswordResetToken(String serverName, UserDto userDto) throws UserNotFoundException
@@ -83,12 +81,10 @@ public class UserService
         }
 
         User user = passwordResetToken.get().getUser();
-        Authentication auth = new UsernamePasswordAuthenticationToken(
-                new RecipeUserDetails(user),
-                null,
-                Collections.singletonList(new SimpleGrantedAuthority(Role.CHANGE_PASSWORD.toString()))
-        );
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        RecipeUserDetails recipeUserDetails = new RecipeUserDetails(user);
+        recipeUserDetails.setChangePasswordAccess(true);
+
+        authService.authenticateUser(recipeUserDetails, Role.CHANGE_PASSWORD);
     }
 
     public void changePassword(User user, String password)
@@ -99,5 +95,7 @@ public class UserService
 
         userRepository.save(user);
         passwordTokenRepository.deleteByUser(user);
+
+        authService.disablePasswordReset();
     }
 }

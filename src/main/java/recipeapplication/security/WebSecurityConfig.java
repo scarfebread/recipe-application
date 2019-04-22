@@ -30,6 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     {
         // TODO redirect to login page on authorisation failure
 
+        // TODO auto login failing after change password
+
         // TODO enable the CSRF token
         http.csrf().disable()
             .authorizeRequests()
