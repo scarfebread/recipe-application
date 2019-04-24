@@ -28,8 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
-        // TODO redirect to login page on authorisation failure
-
         // TODO auto login failing after change password
 
         // TODO enable the CSRF token
@@ -44,6 +42,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .loginPage("/login")
                 .permitAll()
                 .and()
+            .exceptionHandling()
+                .accessDeniedPage("/login")
+                .and()
             .logout().logoutSuccessUrl("/login").deleteCookies("JSESSIONID").invalidateHttpSession(true);
     }
 
@@ -51,8 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     public void configure(WebSecurity web)
     {
         // TODO there might be a better way to do this
-        // TODO remove /api/recipe from here
-        web.ignoring().antMatchers("/api/signup", "/api/password_reset, /api/recipe");
+        web.ignoring().antMatchers("/api/signup", "/api/password_reset");
     }
 
     @Override

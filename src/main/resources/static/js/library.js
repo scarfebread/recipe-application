@@ -24,7 +24,12 @@ function validatePasswordMatches(password, repeatPassword)
     return password === repeatPassword;
 }
 
+function getElementById(id)
+{
+    return document.getElementById(id);
+}
+
 function getValueById(id)
 {
-    return document.getElementById(id).value;
+    return getElementById(id).value;
 }

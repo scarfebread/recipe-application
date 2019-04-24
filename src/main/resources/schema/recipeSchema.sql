@@ -20,7 +20,10 @@ CREATE TABLE recipe.recipes (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES recipe.users(id),
   title VARCHAR NOT NULL,
-  shared_by VARCHAR
+  shared_by VARCHAR,
+  rating INT,
+  prep_time VARCHAR,
+  cook_time VARCHAR
 );
 
 CREATE TABLE recipe.ingredients (

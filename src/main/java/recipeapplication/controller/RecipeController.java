@@ -2,12 +2,15 @@ package recipeapplication.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import recipeapplication.dto.CreateRecipeDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.Recipe;
 import recipeapplication.service.RecipeService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,6 +23,19 @@ public class RecipeController
     public RecipeController(RecipeService recipeService)
     {
         this.recipeService = recipeService;
+    }
+
+    @PostMapping
+    public ResponseEntity createRecipe(@Valid @RequestBody CreateRecipeDto recipeDto, Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.status(400).body("Invalid recipe");
+        }
+
+        recipeService.createRecipe(recipeDto);
+
+        return ResponseEntity.status(201).body("Created");
     }
 
     @GetMapping
