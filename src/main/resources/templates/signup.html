@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Cooking Pot - Signup</title>
     <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="/css/login.css" media="screen" type="text/css"/>
     <script type="application/javascript" src="/js/library.js"></script>
     <script type="application/javascript" src="/js/signup.js"></script>
@@ -13,6 +14,7 @@
     <div class="form">
         <div class="formPadding">
             <h1>The Cooking Pot</h1>
+            <!--TODO create event listener instead of onsubmit-->
             <form id="preSignupDisplay" onsubmit="event.preventDefault(); signup();" action="/" method="POST">
                 <label for="username">Username</label><br>
                 <input id="username"/><br>
@@ -27,6 +29,7 @@
                 <label id="passwordTooShortError" class="hidden error">Password must be more than 5 characters!</label>
                 <label id="passwordsDoNotMatchError" class="hidden error">Passwords do not match!</label>
                 <label id="signupError" class="hidden error"></label>
+                <!--TODO add user feedback and stop multiple submits-->
                 <button class="button">
                     <span>SIGNUP</span>
                 </button>

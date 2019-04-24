@@ -25,4 +25,34 @@ public class Recipe
     {
         return userId;
     }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
+    public void setSharedBy(String sharedBy)
+    {
+        this.sharedBy = sharedBy;
+    }
+
+    public void setUserId(Long userId)
+    {
+        this.userId = userId;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients)
+    {
+        this.ingredients = ingredients;
+    }
+
+    public void setSteps(List<Step> steps)
+    {
+        this.steps = steps;
+    }
 }
