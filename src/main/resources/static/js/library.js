@@ -33,3 +33,8 @@ function getValueById(id)
 {
     return getElementById(id).value;
 }
+
+function createElement(tag)
+{
+    return document.createElement(tag);
+}

@@ -194,6 +194,31 @@ body {
     margin-bottom: 10px;
 }
 
-.allRecipesContainer {
+#allRecipesContainer {
     float: left;
+}
+
+.recipeTitle {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.checked {
+    color: orange;
+}
+
+.recipeListItem {
+    float: left;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.recipeThumbnail {
+    height: 50px;
+    float: left;
+    padding-right: 5px;
+}
+
+.star {
+    margin-right: 2px;
 }
