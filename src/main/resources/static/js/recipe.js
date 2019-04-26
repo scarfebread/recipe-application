@@ -1,5 +1,3 @@
-let globalRecipes;
-
 document.addEventListener("DOMContentLoaded", function(event)
 {
     let modal = document.getElementById('myModal');
@@ -45,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
         if (!validateStringLength(recipe.title, 1))
         {
+            confirmRecipeButton.disabled = false;
             showElement('invalidRecipeNameError');
             return;
         }
@@ -77,9 +76,10 @@ function getRecipes()
             }
 
             response.json().then(function(recipes) {
-                globalRecipes = recipes;
                 updateNavBar(recipes);
                 displayRecipes(recipes);
+
+                enableAutocomplete(recipes);
             });
 
             return false;
@@ -108,28 +108,28 @@ function displayRecipes(recipes)
 
 function displayRecipe(recipe)
 {
-    let listItem = document.createElement('div');
+    let listItem = createElement('div');
     listItem.className = 'recipeListItem';
 
-    let title = document.createElement('h3');
+    let title = createElement('h3');
     title.innerText = recipe.title;
     title.className = 'recipeTitle';
 
-    let link = document.createElement('a');
+    let link = createElement('a');
     link.href = `/recipe?id=${recipe.id}`;
     link.appendChild(title);
     listItem.appendChild(link);
 
     if (recipe.image != null)
     {
-        let image = document.createElement('img');
+        let image = createElement('img');
         image.className = 'recipeThumbnail';
         image.src = recipe.image;
         listItem.appendChild(image);
     }
 
     // TODO properly set the cook time
-    let cookTime = document.createElement('label');
+    let cookTime = createElement('label');
     if (recipe.totalCookTime != null)
     {
         cookTime.innerText = `Total time: ${recipe.totalCookTime}`;
@@ -140,18 +140,18 @@ function displayRecipe(recipe)
     }
     listItem.appendChild(cookTime);
 
-    listItem.appendChild(document.createElement('br'));
+    listItem.appendChild(createElement('br'));
 
     for (let i = 0; i < recipe.rating; i++)
     {
-        let star = document.createElement('span');
+        let star = createElement('span');
         star.className = 'fa fa-star star checked';
         listItem.appendChild(star);
     }
 
     for (let i = 0; i < (5 - recipe.rating); i++)
     {
-        let star = document.createElement('span');
+        let star = createElement('span');
         star.className = 'fa fa-star star';
         listItem.appendChild(star);
     }
@@ -210,7 +210,8 @@ function createRecipe(recipe)
         credentials: "same-origin",
         body: JSON.stringify(recipe)
     }).then(
-        function (response) {
+        function (response)
+        {
             if (response.status !== 201)
             {
                 response.text().then(function(data) {
@@ -230,9 +231,30 @@ function createRecipe(recipe)
             getRecipes();
         }
     ).catch(
-        function (error) {
+        function (error)
+        {
             getElementById("createRecipeError").value = error;
             showElement('createRecipeError');
         }
     );
+}
+
+function enableAutocomplete(recipes)
+{
+    let searchBar = getElementById('searchForRecipe');
+
+    searchBar.addEventListener("input", function(e)
+    {
+        let matchedRecipes = [];
+
+        for (let i = 0; i < recipes.length; i++)
+        {
+            if (recipes[i].title.substr(0, this.value.length).toUpperCase() === this.value.toUpperCase())
+            {
+                matchedRecipes.push(recipes[i]);
+            }
+        }
+
+        displayRecipes(matchedRecipes);
+    });
 }
