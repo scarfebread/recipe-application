@@ -7,15 +7,15 @@ public class CreateRecipeDto
 {
     @NotNull
     @NotEmpty
-    private String name;
+    private String title;
 
     public String getTitle()
     {
-        return name;
+        return title;
     }
 
     public void setName(String name)
     {
-        this.name = name;
+        this.title = name;
     }
 }

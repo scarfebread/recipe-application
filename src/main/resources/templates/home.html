@@ -4,200 +4,81 @@
 <head>
     <meta charset="UTF-8">
     <title>The Cooking Pot - Recipes</title>
+    <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
     <link rel="stylesheet" href="/css/index.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="/css/recipe.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/home.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="application/javascript" src="/js/library.js"></script>
+    <script type="application/javascript" src="/js/recipe.js"></script>
 </head>
 <body>
-<div style="padding-left: 150px; padding-right: 150px">
-    <div>
-        <h1 style="width: 50%; margin-right: 0;">The Cooking Pot</h1>
-        <div style="position: absolute; top: 35px; right: 200px">
-            <label>jscarfe</label>
-            <a href="/logout">Logout</a>
-        </div>
-    </div>
-
-    <div class="navbar">
-        <a class="active" href="home.html">Home</a>
-        <div class="dropdown">
-            <button class="dropbtn">Recipes
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="recipe.html">Slow cooker chicken curry</a>
-                <a href="recipe.html">Recipe 2</a>
-                <a href="recipe.html">Recipe 3</a>
-            </div>
-        </div>
-        <a href="#news">Ingredients</a>
-        <a href="#news">Shopping</a>
-        <div class="dropdown">
-            <button class="dropbtn">Account
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="password_change.html">Change password</a>
-                <a href="admin.html">Admin</a>
-            </div>
-        </div>
-    </div>
-
-    <div>
-        <button class="recipeButton createRecipeButton">CREATE NEW RECIPE</button>
-    </div>
-    <div>
-        <input class="searchBar" placeholder="search for a recipe"/>
-    </div>
-    <div style="float: left">
+    <div class="container">
         <div>
-            <h2>All recipes:</h2>
-        </div>
-        <div style="height: 500px; float: left">
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Slow cooker chicken curry</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 6.5 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-            </div>
-            <div class="recipeListItem">
-                <a href="recipe.html"><h3 style="margin-bottom: 5px">Another recipe</h3></a>
-                <img class="recipeThumbnail" src="../static/images/slow-cooker-chicken-curry.jpg"/>
-                <label style="float: left">Total time: 2 hours</label><br/>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
+            <h1 class="title">The Cooking Pot</h1>
+            <div class="loggedInUserContainer">
+                <div class="loggedInUser">
+                    <label>jscarfe</label>
+                    <a href="/logout">Logout</a>
+                </div>
             </div>
         </div>
 
+        <div class="navbar">
+            <a class="active" href="home.html">Home</a>
+            <div class="dropdown">
+                <button class="dropbtn">Recipes
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div id="recipeDropdown" class="dropdown-content"></div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Account
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="/logout">Logout</a>
+                    <a href="/changePassword">Change password</a>
+                    <a href="/deleteAccount">Delete account</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="createAndSearch">
+            <div>
+                <button id="createRecipeButton">CREATE NEW RECIPE</button>
+            </div>
+            <div>
+                <label for="searchForRecipe">Search for a recipe</label><br>
+                <!-- TODO https://www.w3schools.com/howto/howto_js_autocomplete.asp -->
+                <input id="searchForRecipe" class="searchBar"/>
+            </div>
+        </div>
+
+        <div id="allRecipesContainer">
+            <div>
+                <h2>All recipes:</h2>
+            </div>
+            <div id="allRecipes"></div>
+        </div>
     </div>
-</div>
-</body>
 
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="preRecipeCreated">
+                <label for="recipeName">Enter the recipe title</label><br>
+                <input id="recipeName">
+                <label id="invalidRecipeNameError" class="hidden error">Invalid recipe name!</label>
+                <label id="createRecipeError" class="hidden error"></label>
+                <button id="confirmRecipeButton">CREATE</button>
+            </div>
+            <div id="postRecipeCreated">
+                <label>Recipe successfully created!</label><br>
+                <label>Click <a id="newRecipe">here</a> to view the recipe</label>
+            </div>
+        </div>
+    </div>
+
+</body>
 </html>

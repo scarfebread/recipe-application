@@ -33,9 +33,9 @@ public class RecipeController
             return ResponseEntity.status(400).body("Invalid recipe");
         }
 
-        recipeService.createRecipe(recipeDto);
+        Recipe recipe = recipeService.createRecipe(recipeDto);
 
-        return ResponseEntity.status(201).body("Created");
+        return ResponseEntity.status(201).body(recipe);
     }
 
     @GetMapping
