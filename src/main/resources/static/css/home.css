@@ -180,7 +180,7 @@ body {
 
 #recipeName {
     height: 35px;
-    width: 99%;
+    width: 98%;
     margin-bottom: 5px;
 }
 
@@ -221,4 +221,8 @@ body {
 
 .star {
     margin-right: 2px;
+}
+
+#postRecipeCreated {
+    display: none;
 }

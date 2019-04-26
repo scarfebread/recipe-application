@@ -6,10 +6,13 @@ import recipeapplication.dto.CreateRecipeDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.Recipe;
+import recipeapplication.model.User;
 import recipeapplication.repository.RecipeRepository;
 
 import java.util.List;
 import java.util.Optional;
+
+import com.sun.org.apache.regexp.internal.RECompiler;
 
 @Service
 public class RecipeService
@@ -24,18 +27,24 @@ public class RecipeService
         this.authService = authService;
     }
 
-    public void createRecipe(CreateRecipeDto createRecipeDto)
+    public Recipe createRecipe(CreateRecipeDto createRecipeDto)
     {
+        User user = authService.getLoggedInUser();
+
         Recipe recipe = new Recipe();
 
         recipe.setTitle(createRecipeDto.getTitle());
+        recipe.setUserId(user.getId());
+        recipe.setRating(0L);
 
-        recipeRepository.save(recipe);
+        return recipeRepository.save(recipe);
     }
 
     public List<Recipe> getRecipes()
     {
-        return recipeRepository.findAll();
+        User user = authService.getLoggedInUser();
+
+        return recipeRepository.findByUserId(user.getId());
     }
 
     public void deleteRecipe(RecipeDto recipeDto) throws RecipeDoesNotExistException

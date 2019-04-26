@@ -14,6 +14,7 @@ public class Recipe
     private String title;
     private String sharedBy;
     private Long userId;
+    private Long rating;
 
     @OneToMany(mappedBy = "recipe")
     private List<Ingredient> ingredients;
@@ -54,5 +55,40 @@ public class Recipe
     public void setSteps(List<Step> steps)
     {
         this.steps = steps;
+    }
+
+    public Long getId()
+    {
+        return id;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public String getSharedBy()
+    {
+        return sharedBy;
+    }
+
+    public List<Ingredient> getIngredients()
+    {
+        return ingredients;
+    }
+
+    public List<Step> getSteps()
+    {
+        return steps;
+    }
+
+    public Long getRating()
+    {
+        return rating;
+    }
+
+    public void setRating(Long rating)
+    {
+        this.rating = rating;
     }
 }

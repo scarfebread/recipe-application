@@ -1,3 +1,5 @@
+let globalRecipes;
+
 document.addEventListener("DOMContentLoaded", function(event)
 {
     let modal = document.getElementById('myModal');
@@ -7,20 +9,19 @@ document.addEventListener("DOMContentLoaded", function(event)
 
     createRecipeButton.onclick = function()
     {
-        hideElement('invalidRecipeNameError');
         modal.style.display = "block";
     };
 
     closeModalButton.onclick = function()
     {
-        modal.style.display = "none";
+        closeModal(modal);
     };
 
     window.onclick = function(event)
     {
         if (event.target === modal)
         {
-            modal.style.display = "none";
+            closeModal(modal);
         }
     };
 
@@ -28,12 +29,14 @@ document.addEventListener("DOMContentLoaded", function(event)
     {
         if (event.key === 'Escape')
         {
-            modal.style.display = "none";
+            closeModal(modal);
         }
     };
 
     confirmRecipeButton.onclick = function ()
     {
+        confirmRecipeButton.disabled = true;
+
         hideElement('invalidRecipeNameError');
 
         let recipe = {
@@ -43,45 +46,19 @@ document.addEventListener("DOMContentLoaded", function(event)
         if (!validateStringLength(recipe.title, 1))
         {
             showElement('invalidRecipeNameError');
-            return false;
+            return;
         }
 
-        fetch ("http://localhost:8080/api/recipe", {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "same-origin",
-            body: JSON.stringify(recipe)
-        }).then(
-            function (response) {
-                if (response.status !== 201)
-                {
-                    response.text().then(function(data) {
-                        getElementById('createRecipeError').innerText = data;
-                        showElement('createRecipeError');
-                    });
+        createRecipe(recipe);
 
-                    return false;
-                }
-
-                hideElement('preRecipeCreated');
-                showElement('postRecipeCreated');
-                return true;
-            }
-        ).catch(
-            function (error) {
-                getElementById("createRecipeError").value = error;
-                showElement('createRecipeError');
-            }
-        );
+        confirmRecipeButton.disabled = false;
     };
+
+    getRecipes();
 });
 
 function getRecipes()
 {
-    let recipes;
-
     fetch ("http://localhost:8080/api/recipe", {
         method: 'GET',
         headers: {
@@ -93,23 +70,47 @@ function getRecipes()
             if (response.status !== 200)
             {
                 response.text().then(function(data) {
-                    // show error banner
+                    // TODO throw error
                 });
 
                 return false;
             }
 
-            // show recipes
+            response.json().then(function(recipes) {
+                globalRecipes = recipes;
+                updateNavBar(recipes);
+                displayRecipes(recipes);
+            });
+
+            return false;
         }
     ).catch(
         function (error) {
-            // show error banner
+            // TODO show error banner
         }
     );
 }
 
+function displayRecipes(recipes)
+{
+    let allRecipes = getElementById('allRecipes');
+
+    while (allRecipes.firstChild)
+    {
+        allRecipes.removeChild(allRecipes.firstChild);
+    }
+
+    for (let i in recipes)
+    {
+        displayRecipe(recipes[i]);
+    }
+}
+
 function displayRecipe(recipe)
 {
+    let listItem = document.createElement('div');
+    listItem.className = 'recipeListItem';
+
     let title = document.createElement('h3');
     title.innerText = recipe.title;
     title.className = 'recipeTitle';
@@ -117,19 +118,28 @@ function displayRecipe(recipe)
     let link = document.createElement('a');
     link.href = `/recipe?id=${recipe.id}`;
     link.appendChild(title);
-
-    let image = document.createElement('img');
-    image.className = 'recipeThumbnail';
-    image.src = recipe.image;
-
-    let cookTime = document.createElement('label');
-    cookTime.innerText = `Total time: ${recipe.totalCookTime}`;
-
-    let listItem = document.createElement('div');
-    listItem.className = 'recipeListItem';
     listItem.appendChild(link);
-    listItem.appendChild(image);
+
+    if (recipe.image != null)
+    {
+        let image = document.createElement('img');
+        image.className = 'recipeThumbnail';
+        image.src = recipe.image;
+        listItem.appendChild(image);
+    }
+
+    // TODO properly set the cook time
+    let cookTime = document.createElement('label');
+    if (recipe.totalCookTime != null)
+    {
+        cookTime.innerText = `Total time: ${recipe.totalCookTime}`;
+    }
+    else
+    {
+        cookTime.innerText = 'Please set the cook time'
+    }
     listItem.appendChild(cookTime);
+
     listItem.appendChild(document.createElement('br'));
 
     for (let i = 0; i < recipe.rating; i++)
@@ -146,27 +156,83 @@ function displayRecipe(recipe)
         listItem.appendChild(star);
     }
 
-    let list = getElementById('allRecipesContainer');
+    let list = getElementById('allRecipes');
     list.appendChild(listItem);
 }
 
 function updateNavBar(recipes)
 {
+    // TODO limit this to recent recipes / highest rated
+
     let recipeDropdown = getElementById('recipeDropdown');
+
+    while (recipeDropdown.firstChild)
+    {
+        recipeDropdown.removeChild(recipeDropdown.firstChild);
+    }
 
     if (recipes.length === 0)
     {
-        let noRecipesLabel = createElement('label');
-        noRecipesLabel.innerText = 'No recipes to display';
-        recipeDropdown.appendChild(noRecipesLabel);
+        let recipeLink = createElement('a');
+        recipeLink.innerText = 'No recipes to display';
+        recipeLink.id = 'noRecipeDropdown';
+        recipeDropdown.appendChild(recipeLink);
         return;
     }
 
-    for (let recipe in recipes)
+    for (let i in recipes)
     {
+        let recipe = recipes[i];
+
         let recipeLink = createElement('a');
         recipeLink.href = `/recipe?id=${recipe.id}`;
         recipeLink.innerText = recipe.title;
         recipeDropdown.appendChild(recipeLink);
     }
+}
+
+function closeModal(modal)
+{
+    hideElement('invalidRecipeNameError');
+    hideElement('postRecipeCreated');
+    showElement('preRecipeCreated');
+    modal.style.display = "none";
+    getElementById('recipeName').value = '';
+}
+
+function createRecipe(recipe)
+{
+    fetch ("http://localhost:8080/api/recipe", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(recipe)
+    }).then(
+        function (response) {
+            if (response.status !== 201)
+            {
+                response.text().then(function(data) {
+                    getElementById('createRecipeError').innerText = data;
+                    showElement('createRecipeError');
+                });
+
+                return;
+            }
+
+            response.json().then(function(recipe) {
+                getElementById('newRecipe').href = `/recipe?id=${recipe.id}`
+            });
+
+            hideElement('preRecipeCreated');
+            showElement('postRecipeCreated');
+            getRecipes();
+        }
+    ).catch(
+        function (error) {
+            getElementById("createRecipeError").value = error;
+            showElement('createRecipeError');
+        }
+    );
 }
