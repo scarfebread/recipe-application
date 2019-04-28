@@ -15,6 +15,10 @@ public class Recipe
     private String sharedBy;
     private Long userId;
     private Long rating;
+    private String notes;
+    private Long serves;
+    private String cookTime;
+    private String prepTime;
 
     @OneToMany(mappedBy = "recipe")
     private List<Ingredient> ingredients;
@@ -90,5 +94,45 @@ public class Recipe
     public void setRating(Long rating)
     {
         this.rating = rating;
+    }
+
+    public String getNotes()
+    {
+        return notes;
+    }
+
+    public void setNotes(String notes)
+    {
+        this.notes = notes;
+    }
+
+    public Long getServes()
+    {
+        return serves;
+    }
+
+    public void setServes(Long serves)
+    {
+        this.serves = serves;
+    }
+
+    public String getCookTime()
+    {
+        return cookTime;
+    }
+
+    public void setCookTime(String cookTime)
+    {
+        this.cookTime = cookTime;
+    }
+
+    public String getPrepTime()
+    {
+        return prepTime;
+    }
+
+    public void setPrepTime(String prepTime)
+    {
+        this.prepTime = prepTime;
     }
 }

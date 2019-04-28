@@ -38,3 +38,11 @@ function createElement(tag)
 {
     return document.createElement(tag);
 }
+
+function removeChildElements(element)
+{
+    while (element.firstChild)
+    {
+        element.removeChild(element.firstChild);
+    }
+}
