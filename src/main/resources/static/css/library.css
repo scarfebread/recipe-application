@@ -6,3 +6,128 @@
     color: red;
     padding-bottom: 5px;
 }
+
+.title {
+    float: left;
+    width: 75%;
+    margin-right: 0;
+}
+
+@media screen and (min-width: 0px) and (max-width: 550px) {
+    .loggedInUserContainer { display: none; }
+    .title {width: 100%}
+    .recipeTitle {white-space: normal;}
+}
+
+@media screen and (min-width: 551px) and (max-width: 2000px) {
+    .loggedInUserContainer { display: block; }
+    .title {width: 75%}
+    .recipeTitle {white-space: nowrap;}
+}
+
+.loggedInUserContainer {
+    padding-top: 32px;
+    float: right;
+    width: 25%;
+}
+
+body {
+    font-family: 'Didact Gothic';
+    background: url("../images/carrots.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.loggedInUser {
+    float: right;
+}
+
+.navbar {
+    overflow: hidden;
+    float: left;
+    width: 100%;
+}
+
+.navbar a {
+    float: left;
+    font-size: 16px;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.dropdown .dropbtn {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: black;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+    background-color: #ddd;
+    color: black !important;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.active {
+    background-color: #4CAF50;
+    color: white !important;
+}
+
+.star {
+    margin-right: 2px;
+}
+
+.checked {
+    color: orange;
+}
+
+.close {
+    color: #aaaaaa;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}

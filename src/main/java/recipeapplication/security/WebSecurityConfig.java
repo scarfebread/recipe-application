@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .authorizeRequests()
                 .antMatchers("/signup", "/resetPassword", "/changePassword", "/api/signup", "/css/**", "/images/**", "/js/**")
                 .permitAll()
-                .antMatchers("/").hasAuthority(Role.USER.toString())
+                .antMatchers("/", "/recipe").hasAuthority(Role.USER.toString())
                 .antMatchers("/api/change_password").hasAuthority(Role.CHANGE_PASSWORD.toString())
                 .and()
             .formLogin()

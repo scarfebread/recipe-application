@@ -1,72 +1,106 @@
+let rating;
+
 document.addEventListener("DOMContentLoaded", function(event)
 {
-    let modal = document.getElementById('myModal');
-    let createRecipeButton = document.getElementById("createRecipeButton");
-    let closeModalButton = document.getElementsByClassName("close")[0];
-    let confirmRecipeButton = getElementById('confirmRecipeButton');
+    rating = recipeRating;
 
-    createRecipeButton.onclick = function()
+    let cookTime = getElementById('cookTime');
+    let prepTime = getElementById('prepTime');
+    let serves = getElementById('serves');
+    let notes = getElementById('notes');
+    let rating1 = getElementById('rating1');
+    let rating2 = getElementById('rating2');
+    let rating3 = getElementById('rating3');
+    let rating4 = getElementById('rating4');
+    let rating5 = getElementById('rating5');
+
+    displayRating();
+    displayServes();
+    cookTime.innerText = recipeCookTime;
+    prepTime.innerText = recipePrepTime;
+
+    cookTime.addEventListener('keypress', preventReturn(event));
+    prepTime.addEventListener('keypress', preventReturn(event));
+
+    cookTime.addEventListener("blur", function ()
     {
-        modal.style.display = "block";
+        updateRecipe();
+    });
+
+    prepTime.addEventListener("blur", function ()
+    {
+        updateRecipe();
+    });
+
+    serves.onchange = function ()
+    {
+        updateRecipe();
     };
 
-    closeModalButton.onclick = function()
+    notes.onchange = function ()
     {
-        closeModal(modal);
+        updateRecipe();
     };
 
-    window.onclick = function(event)
+    rating1.onclick = function ()
     {
-        if (event.target === modal)
-        {
-            closeModal(modal);
-        }
+        rating = 1;
+        displayRating();
+        updateRecipe()
     };
 
-    window.onkeydown = function(event)
+    rating2.onclick = function ()
     {
-        if (event.key === 'Escape')
-        {
-            closeModal(modal);
-        }
+        rating = 2;
+        displayRating();
+        updateRecipe()
     };
 
-    confirmRecipeButton.onclick = function ()
+    rating3.onclick = function ()
     {
-        confirmRecipeButton.disabled = true;
-
-        hideElement('invalidRecipeNameError');
-
-        let recipe = {
-            title: getValueById('recipeName')
-        };
-
-        if (!validateStringLength(recipe.title, 1))
-        {
-            confirmRecipeButton.disabled = false;
-            showElement('invalidRecipeNameError');
-            return;
-        }
-
-        createRecipe(recipe);
-
-        confirmRecipeButton.disabled = false;
+        rating = 3;
+        displayRating();
+        updateRecipe()
     };
 
-    getRecipes();
+    rating4.onclick = function ()
+    {
+        rating = 4;
+        displayRating();
+        updateRecipe()
+    };
+
+    rating5.onclick = function ()
+    {
+        rating = 5;
+        displayRating();
+        updateRecipe()
+    };
 });
 
-function getRecipes()
+function updateRecipe()
 {
+    let serves = getElementById('serves');
+
+    let recipe = {
+        id: recipeId,
+        notes: getValueById('notes'),
+        rating: rating,
+        serves: serves.options[serves.selectedIndex].value,
+        cookTime:getElementById('cookTime').innerText,
+        prepTime:getElementById('prepTime').innerText
+    };
+
     fetch ("http://localhost:8080/api/recipe", {
-        method: 'GET',
+        method: 'PUT',
         headers: {
             "Content-Type": "application/json"
         },
         credentials: "same-origin",
+        body: JSON.stringify(recipe)
     }).then(
         function (response) {
-            if (response.status !== 200)
+            if (response.status !== 202)
             {
                 response.text().then(function(data) {
                     // TODO throw error
@@ -74,15 +108,6 @@ function getRecipes()
 
                 return false;
             }
-
-            response.json().then(function(recipes) {
-                updateNavBar(recipes);
-                displayRecipes(recipes);
-
-                enableAutocomplete(recipes);
-            });
-
-            return false;
         }
     ).catch(
         function (error) {
@@ -91,170 +116,34 @@ function getRecipes()
     );
 }
 
-function displayRecipes(recipes)
+function displayRating()
 {
-    let allRecipes = getElementById('allRecipes');
+    let starRating = getElementById('starRating');
 
-    while (allRecipes.firstChild)
+    let children = starRating.children;
+    for (let i = 0; i < children.length; i++)
     {
-        allRecipes.removeChild(allRecipes.firstChild);
-    }
+        let star = children[i];
 
-    for (let i in recipes)
-    {
-        displayRecipe(recipes[i]);
-    }
-}
+        star.classList.remove('checked');
 
-function displayRecipe(recipe)
-{
-    let listItem = createElement('div');
-    listItem.className = 'recipeListItem';
-
-    let title = createElement('h3');
-    title.innerText = recipe.title;
-    title.className = 'recipeTitle';
-
-    let link = createElement('a');
-    link.href = `/recipe?id=${recipe.id}`;
-    link.appendChild(title);
-    listItem.appendChild(link);
-
-    if (recipe.image != null)
-    {
-        let image = createElement('img');
-        image.className = 'recipeThumbnail';
-        image.src = recipe.image;
-        listItem.appendChild(image);
-    }
-
-    // TODO properly set the cook time
-    let cookTime = createElement('label');
-    if (recipe.totalCookTime != null)
-    {
-        cookTime.innerText = `Total time: ${recipe.totalCookTime}`;
-    }
-    else
-    {
-        cookTime.innerText = 'Please set the cook time'
-    }
-    listItem.appendChild(cookTime);
-
-    listItem.appendChild(createElement('br'));
-
-    for (let i = 0; i < recipe.rating; i++)
-    {
-        let star = createElement('span');
-        star.className = 'fa fa-star star checked';
-        listItem.appendChild(star);
-    }
-
-    for (let i = 0; i < (5 - recipe.rating); i++)
-    {
-        let star = createElement('span');
-        star.className = 'fa fa-star star';
-        listItem.appendChild(star);
-    }
-
-    let list = getElementById('allRecipes');
-    list.appendChild(listItem);
-}
-
-function updateNavBar(recipes)
-{
-    // TODO limit this to recent recipes / highest rated
-
-    let recipeDropdown = getElementById('recipeDropdown');
-
-    while (recipeDropdown.firstChild)
-    {
-        recipeDropdown.removeChild(recipeDropdown.firstChild);
-    }
-
-    if (recipes.length === 0)
-    {
-        let recipeLink = createElement('a');
-        recipeLink.innerText = 'No recipes to display';
-        recipeLink.id = 'noRecipeDropdown';
-        recipeDropdown.appendChild(recipeLink);
-        return;
-    }
-
-    for (let i in recipes)
-    {
-        let recipe = recipes[i];
-
-        let recipeLink = createElement('a');
-        recipeLink.href = `/recipe?id=${recipe.id}`;
-        recipeLink.innerText = recipe.title;
-        recipeDropdown.appendChild(recipeLink);
-    }
-}
-
-function closeModal(modal)
-{
-    hideElement('invalidRecipeNameError');
-    hideElement('postRecipeCreated');
-    showElement('preRecipeCreated');
-    modal.style.display = "none";
-    getElementById('recipeName').value = '';
-}
-
-function createRecipe(recipe)
-{
-    fetch ("http://localhost:8080/api/recipe", {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(recipe)
-    }).then(
-        function (response)
+        if (i < rating)
         {
-            if (response.status !== 201)
-            {
-                response.text().then(function(data) {
-                    getElementById('createRecipeError').innerText = data;
-                    showElement('createRecipeError');
-                });
-
-                return;
-            }
-
-            response.json().then(function(recipe) {
-                getElementById('newRecipe').href = `/recipe?id=${recipe.id}`
-            });
-
-            hideElement('preRecipeCreated');
-            showElement('postRecipeCreated');
-            getRecipes();
+            star.classList.add('checked');
         }
-    ).catch(
-        function (error)
-        {
-            getElementById("createRecipeError").value = error;
-            showElement('createRecipeError');
-        }
-    );
+    }
 }
 
-function enableAutocomplete(recipes)
+function displayServes()
 {
-    let searchBar = getElementById('searchForRecipe');
+    let serves = getElementById('serves');
 
-    searchBar.addEventListener("input", function(e)
-    {
-        let matchedRecipes = [];
+    serves.value = recipeServes;
+}
 
-        for (let i = 0; i < recipes.length; i++)
-        {
-            if (recipes[i].title.substr(0, this.value.length).toUpperCase() === this.value.toUpperCase())
-            {
-                matchedRecipes.push(recipes[i]);
-            }
-        }
-
-        displayRecipes(matchedRecipes);
-    });
+function preventReturn(event)
+{
+    if (event.which === 13) {
+        event.preventDefault();
+    }
 }

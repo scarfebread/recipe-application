@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/home.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="application/javascript" src="/js/library.js"></script>
-    <script type="application/javascript" src="/js/recipe.js"></script>
+    <script type="application/javascript" src="/js/home.js"></script>
 </head>
 <body>
     <div class="container">
@@ -24,7 +24,7 @@
         </div>
 
         <div class="navbar">
-            <a class="active" href="home.html">Home</a>
+            <a class="active" href="/">Home</a>
             <div class="dropdown">
                 <button class="dropbtn">Recipes
                     <i class="fa fa-caret-down"></i>
@@ -45,7 +45,7 @@
 
         <div class="createAndSearch">
             <div>
-                <button id="createRecipeButton">CREATE NEW RECIPE</button>
+                <button id="createRecipeButton" class="button">CREATE NEW RECIPE</button>
             </div>
             <div>
                 <label for="searchForRecipe">Search for a recipe</label><br>
@@ -63,13 +63,13 @@
 
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close modalClose">&times;</span>
             <div id="preRecipeCreated">
                 <label for="recipeName">Enter the recipe title</label><br>
                 <input id="recipeName">
                 <label id="invalidRecipeNameError" class="hidden error">Invalid recipe name!</label>
                 <label id="createRecipeError" class="hidden error"></label>
-                <button id="confirmRecipeButton">CREATE</button>
+                <button id="confirmRecipeButton" class="button">CREATE</button>
             </div>
             <div id="postRecipeCreated">
                 <label>Recipe successfully created!</label><br>

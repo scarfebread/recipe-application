@@ -44,6 +44,21 @@ public class RecipeController
         return recipeService.getRecipes();
     }
 
+    @GetMapping(params = {"id"})
+    public ResponseEntity getRecipe(Long id)
+    {
+        // TODO I don't think this endpoint is required
+
+        try
+        {
+            return ResponseEntity.status(200).body(recipeService.getRecipe(id));
+        }
+        catch (RecipeDoesNotExistException e)
+        {
+            return ResponseEntity.status(400).body("Recipe does not exist");
+        }
+    }
+
     @DeleteMapping
     public ResponseEntity deleteRecipe(@RequestBody RecipeDto recipeDto)
     {
@@ -59,9 +74,29 @@ public class RecipeController
         }
         catch (RecipeDoesNotExistException e)
         {
-            return ResponseEntity.status(400).body("Recipe does not exist");
+            return ResponseEntity.status(404).body("Recipe does not exist");
         }
 
         return ResponseEntity.status(200).body("Deleted successfully");
+    }
+
+    @PutMapping
+    public ResponseEntity updateRecipe(@RequestBody RecipeDto recipeDto)
+    {
+        if (recipeDto.getId() == null)
+        {
+            return ResponseEntity.status(400).body("No recipe supplied");
+        }
+
+        try
+        {
+            recipeService.updateRecipe(recipeDto);
+        }
+        catch (RecipeDoesNotExistException e)
+        {
+            return ResponseEntity.status(404).body("Recipe does not exist");
+        }
+
+        return ResponseEntity.status(202).body("Updated");
     }
 }

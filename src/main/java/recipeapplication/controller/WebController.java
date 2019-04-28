@@ -8,17 +8,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import recipeapplication.dto.UserDto;
 import recipeapplication.exception.InvalidPasswordTokenException;
+import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.model.Recipe;
+import recipeapplication.service.RecipeService;
 import recipeapplication.service.UserService;
 
 @Controller
 public class WebController
 {
     private UserService userService;
+    private RecipeService recipeService;
 
     @Autowired
-    public WebController(UserService userService)
+    public WebController(UserService userService, RecipeService recipeService)
     {
         this.userService = userService;
+        this.recipeService = recipeService;
     }
 
     @GetMapping("/login")
@@ -42,9 +47,20 @@ public class WebController
     }
 
     @GetMapping("/recipe")
-    public String recipe()
+    public String recipe(@RequestParam Long id, Model model)
     {
-        return "recipe.html";
+        try
+        {
+            Recipe recipe = recipeService.getRecipe(id);
+
+            model.addAttribute("recipe", recipe);
+
+            return "recipe.html";
+        }
+        catch (RecipeDoesNotExistException e)
+        {
+            return "recipeDoesNotExist.html";
+        }
     }
 
     @GetMapping("/resetPassword")

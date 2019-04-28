@@ -36,6 +36,7 @@ public class RecipeService
         recipe.setTitle(createRecipeDto.getTitle());
         recipe.setUserId(user.getId());
         recipe.setRating(0L);
+        recipe.setServes(1L);
 
         return recipeRepository.save(recipe);
     }
@@ -47,18 +48,37 @@ public class RecipeService
         return recipeRepository.findByUserId(user.getId());
     }
 
-    public void deleteRecipe(RecipeDto recipeDto) throws RecipeDoesNotExistException
+    public Recipe getRecipe(Long id) throws RecipeDoesNotExistException
     {
-        Optional<Recipe> result = recipeRepository.findByIdAndUserId(
-                recipeDto.getId(),
-                authService.getLoggedInUser().getId()
-        );
+        Optional<Recipe> result = recipeRepository.findByIdAndUserId(id, authService.getLoggedInUser().getId());
 
         if (!result.isPresent())
         {
             throw new RecipeDoesNotExistException();
         }
 
+        return result.get();
+    }
+
+    public void deleteRecipe(RecipeDto recipeDto) throws RecipeDoesNotExistException
+    {
+        // Exception will be thrown if it does not exist
+        getRecipe(recipeDto.getId());
+
         recipeRepository.deleteById(recipeDto.getId());
+    }
+
+    public void updateRecipe(RecipeDto recipeDto) throws RecipeDoesNotExistException
+    {
+        // Exception will be thrown if it does not exist
+        Recipe recipe = getRecipe(recipeDto.getId());
+
+        recipe.setNotes(recipeDto.getNotes());
+        recipe.setRating(recipeDto.getRating());
+        recipe.setServes(recipeDto.getServes());
+        recipe.setCookTime(recipeDto.getCookTime());
+        recipe.setPrepTime(recipeDto.getPrepTime());
+
+        recipeRepository.save(recipe);
     }
 }

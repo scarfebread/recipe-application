@@ -23,7 +23,9 @@ CREATE TABLE recipe.recipes (
   shared_by VARCHAR,
   rating INT,
   prep_time VARCHAR,
-  cook_time VARCHAR
+  cook_time VARCHAR,
+  notes VARCHAR,
+  serves INT
 );
 
 CREATE TABLE recipe.ingredients (

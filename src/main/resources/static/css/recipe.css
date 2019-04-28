@@ -1,11 +1,36 @@
+.container {
+    float: left;
+    background: rgba(221, 221, 221, 0.8);
+    border-radius: 40px;
+
+    height: 94%;
+    padding-bottom: 3%;
+    margin-bottom: 3%;
+    margin-top: 15px;
+
+    width: 86%;
+    margin-left: 7%;
+    margin-right: 7%;
+}
+
+.header {
+    padding-left: 7%;
+    padding-right: 7%;
+}
+
 .switch {
     position: relative;
     display: inline-block;
     width: 120px;
     height: 34px;
+    margin-right: 50px;
+    float: left;
+    margin-left: 20px;
 }
 
-.switch input {display:none;}
+.switch input {
+    display:none;
+}
 
 .slider {
     position: absolute;
@@ -14,7 +39,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ca2222;
+    background-color: #4CAF50;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -31,6 +56,17 @@
     transition: .4s;
 }
 
+.ingredientFormatContainer {
+    padding-left: 3px;
+    margin-top: 10px;
+    float: left;
+}
+
+.ingredientFormatLabel {
+    float: left;
+    padding-top: 5px;
+}
+
 input:checked + .slider {
     box-shadow: 0 0 1px #000000;
 }
@@ -45,13 +81,11 @@ input:checked + .slider:before {
     transform: translateX(85px);
 }
 
-.on
-{
+.on  {
     display: none;
 }
 
-.on, .off
-{
+.on, .off {
     color: white;
     position: absolute;
     transform: translate(-50%,-50%);
@@ -61,14 +95,14 @@ input:checked + .slider:before {
     font-family: Verdana, sans-serif;
 }
 
-input:checked+ .slider .on
-{display: block;}
+input:checked+ .slider .on {
+    display: block;
+}
 
-input:checked + .slider .off
-{display: none;}
+input:checked + .slider .off {
+    display: none;
+}
 
-
-/* Rounded sliders */
 .slider.round {
     border-radius: 34px;
 }
@@ -79,14 +113,140 @@ input:checked + .slider .off
 .recipeImage {
     border-radius: 25px;
     padding-top: 15px;
-    /*float: left;*/
 }
 
-.changePassword {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 210px;
-    width: 30%;
-    margin: auto;
+.recipeDetailsContainer {
+    width: 180px;
+    min-width: 180px;
+    margin-top: 25px;
+    /*height: 95px;*/
+    float: left;
+}
+
+.recipeContainer {
+    width: 90%;
+    float: left;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.subRecipeContainer {
+    display: flex;  /* TODO this is causing a problem! */
+    justify-content: center;
+    align-items: center;
+}
+
+.notesContainer {
+    width: 200px;
+    margin-top: 25px;
+    height: 95px;
+    /*display: inline-block;*/
+    float: left;
+}
+
+#notes {
+    width: 100%;
+    height: 65px;
+    resize: none;
+}
+
+.label {
+    float: left;
+    padding-bottom: 10px;
+}
+
+.recipeTitle {
+    margin-top: 0;
+    font-size: 32px;
+    padding-left: 5%;
+}
+
+.button {
+    float: left;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 25px;
+    width: 100px;
+    margin-bottom: 10px;
+    margin-right: 7px;
+}
+
+.buttonContainer {
+    margin-top: 25px;
+    width: 130px;
+    height: 95px;
+    float: left;
+}
+
+.ingredientAndStepContainer {
+    float: left;
+    padding-top: 15px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.ingredientContainer {
+    float: left;
+    width: 50%
+}
+
+.stepContainer {
+    float: right;
+    width: 50%;
+}
+
+.input {
+    width: 100%;
+    height: 25px;
+    text-align: left;
+}
+
+.ingredientAndStepButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 30px;
+    width: 100%;
+    margin-left: 3px;
+}
+
+.ingredientActionColumn {
+    width: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredientDelete {
+    display: inline-block;
+}
+
+.ingredientTable {
+    width: 100%;
+}
+
+.recipeTableRow {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.cookAndPrepTimeLabel {
+    float: left;
+}
+
+.cookAndPrepTimeValue {
+    width: 90px;
+    display: block;
+    float: left;
+    cursor: pointer;
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
 }
