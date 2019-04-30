@@ -25,7 +25,8 @@ CREATE TABLE recipe.recipes (
   prep_time VARCHAR,
   cook_time VARCHAR,
   notes VARCHAR,
-  serves INT
+  serves INT,
+  difficulty VARCHAR
 );
 
 CREATE TABLE recipe.ingredients (

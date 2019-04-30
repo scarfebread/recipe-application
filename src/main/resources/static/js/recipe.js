@@ -4,6 +4,36 @@ document.addEventListener("DOMContentLoaded", function(event)
 {
     rating = recipeRating;
 
+    let modal = document.getElementById('shareRecipeModal');
+    let closeModalButton = document.getElementById('closeShareRecipeModal');
+
+    createRecipeButton.onclick = function()
+    {
+        modal.style.display = "block";
+    };
+
+    closeModalButton.onclick = function()
+    {
+        closeModal(modal);
+    };
+
+    window.onclick = function(event)
+    {
+        if (event.target === modal)
+        {
+            closeModal(modal);
+        }
+    };
+
+    window.onkeydown = function(event)
+    {
+        if (event.key === 'Escape')
+        {
+            closeModal(modal);
+        }
+    };
+
+    let difficulty = getElementById('difficulty');
     let cookTime = getElementById('cookTime');
     let prepTime = getElementById('prepTime');
     let serves = getElementById('serves');
@@ -15,9 +45,15 @@ document.addEventListener("DOMContentLoaded", function(event)
     let rating5 = getElementById('rating5');
 
     displayRating();
-    displayServes();
+    serves.value = recipeServes;
+    difficulty.value = recipeDifficulty;
     cookTime.innerText = recipeCookTime;
     prepTime.innerText = recipePrepTime;
+
+    difficulty.onchange = function ()
+    {
+        updateRecipe();
+    };
 
     cookTime.addEventListener('keypress', preventReturn(event));
     prepTime.addEventListener('keypress', preventReturn(event));
@@ -81,14 +117,16 @@ document.addEventListener("DOMContentLoaded", function(event)
 function updateRecipe()
 {
     let serves = getElementById('serves');
+    let difficulty = getElementById('difficulty');
 
     let recipe = {
         id: recipeId,
         notes: getValueById('notes'),
         rating: rating,
         serves: serves.options[serves.selectedIndex].value,
-        cookTime:getElementById('cookTime').innerText,
-        prepTime:getElementById('prepTime').innerText
+        cookTime: getElementById('cookTime').innerText,
+        prepTime: getElementById('prepTime').innerText,
+        difficulty: difficulty.options[difficulty.selectedIndex].value
     };
 
     fetch ("http://localhost:8080/api/recipe", {
@@ -132,13 +170,6 @@ function displayRating()
             star.classList.add('checked');
         }
     }
-}
-
-function displayServes()
-{
-    let serves = getElementById('serves');
-
-    serves.value = recipeServes;
 }
 
 function preventReturn(event)
