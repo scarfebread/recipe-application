@@ -8,6 +8,7 @@ public class RecipeDto
     private Long serves;
     private String cookTime;
     private String prepTime;
+    private String difficulty;
 
     public Long getId()
     {
@@ -37,5 +38,10 @@ public class RecipeDto
     public String getPrepTime()
     {
         return prepTime;
+    }
+
+    public String getDifficulty()
+    {
+        return difficulty;
     }
 }

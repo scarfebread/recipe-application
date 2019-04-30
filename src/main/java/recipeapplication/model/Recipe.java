@@ -19,6 +19,7 @@ public class Recipe
     private Long serves;
     private String cookTime;
     private String prepTime;
+    private String difficulty;
 
     @OneToMany(mappedBy = "recipe")
     private List<Ingredient> ingredients;
@@ -134,5 +135,15 @@ public class Recipe
     public void setPrepTime(String prepTime)
     {
         this.prepTime = prepTime;
+    }
+
+    public String getDifficulty()
+    {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty)
+    {
+        this.difficulty = difficulty;
     }
 }

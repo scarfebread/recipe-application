@@ -37,6 +37,7 @@ public class RecipeService
         recipe.setUserId(user.getId());
         recipe.setRating(0L);
         recipe.setServes(1L);
+        recipe.setDifficulty("Medium");
 
         return recipeRepository.save(recipe);
     }
@@ -78,6 +79,7 @@ public class RecipeService
         recipe.setServes(recipeDto.getServes());
         recipe.setCookTime(recipeDto.getCookTime());
         recipe.setPrepTime(recipeDto.getPrepTime());
+        recipe.setDifficulty(recipeDto.getDifficulty());
 
         recipeRepository.save(recipe);
     }

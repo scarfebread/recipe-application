@@ -15,6 +15,7 @@
         let recipePrepTime = "[[${recipe.prepTime}]]";
         let recipeCookTime = "[[${recipe.cookTime}]]";
         let recipeNotes = "[[${recipe.notes}]]";
+        let recipeDifficulty = "[[${recipe.difficulty}]]";
     </script>
     <script type="application/javascript" src="/js/library.js"></script>
     <script type="application/javascript" src="/js/recipe.js"></script>
@@ -94,8 +95,8 @@
                         </div>
                     </div>
                     <div class="label">
-                        <label>Difficulty:</label>
-                        <select>
+                        <label for="difficulty">Difficulty:</label>
+                        <select id="difficulty">
                             <option>Easy</option>
                             <option>Medium</option>
                             <option>Hard</option>
@@ -169,6 +170,22 @@
             </div>
         </div>
 
+    </div>
+
+    <div id="shareRecipeModal" class="modal">
+        <div class="modal-content">
+            <span id="closeShareRecipeModal" class="close modalClose">&times;</span>
+            <div id="preShare">
+                <label for="username">Enter username</label><br>
+                <input id="username">
+                <label id="invalidUsernameError" class="hidden error">Invalid username!</label>
+                <label id="shareRecipeError" class="hidden error"></label>
+                <button id="confirmShareButton" class="button">SHARE</button>
+            </div>
+            <div id="postShare">
+                <label>Recipe successfully shared!</label><br>
+            </div>
+        </div>
     </div>
 </body>
 

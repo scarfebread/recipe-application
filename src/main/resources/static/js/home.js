@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(event)
 {
-    let modal = document.getElementById('myModal');
+    let modal = document.getElementById('createRecipeModal');
     let createRecipeButton = document.getElementById("createRecipeButton");
     let closeModalButton = document.getElementsByClassName("close")[0];
     let confirmRecipeButton = getElementById('confirmRecipeButton');
