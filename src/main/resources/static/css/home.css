@@ -23,26 +23,10 @@
     padding-right: 25%;
 }
 
-.button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    height: 35px;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
 .searchBar {
     margin-top: 7px;
     height: 35px;
     width: 100%;
-}
-
-#recipeName {
-    height: 35px;
-    width: 98%;
-    margin-bottom: 5px;
 }
 
 #allRecipesContainer {
@@ -70,6 +54,12 @@
     display: none;
 }
 
-.modalClose {
-    float: right;
+.button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 35px;
+    width: 100%;
+    margin-bottom: 10px;
 }

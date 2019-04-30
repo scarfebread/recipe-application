@@ -9,6 +9,7 @@ import recipeapplication.model.Recipe;
 import recipeapplication.model.User;
 import recipeapplication.repository.RecipeRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,5 +83,29 @@ public class RecipeService
         recipe.setDifficulty(recipeDto.getDifficulty());
 
         recipeRepository.save(recipe);
+    }
+
+    public void shareRecipe(RecipeDto recipeDto, User user) throws RecipeDoesNotExistException
+    {
+        Recipe recipe = getRecipe(recipeDto.getId());
+
+        User loggedInUser = authService.getLoggedInUser();
+
+        Recipe sharedRecipe = new Recipe();
+
+        // TODO there should be a better way of cloning a recipe
+        sharedRecipe.setTitle(recipe.getTitle());
+        sharedRecipe.setDifficulty(recipe.getDifficulty());
+        sharedRecipe.setPrepTime(recipe.getPrepTime());
+        sharedRecipe.setCookTime(recipe.getCookTime());
+        sharedRecipe.setServes(recipe.getServes());
+        sharedRecipe.setNotes(recipe.getNotes());
+        sharedRecipe.setSharedBy(loggedInUser.getUsername());
+        sharedRecipe.setUserId(user.getId());
+        sharedRecipe.setRating(recipe.getRating());
+        sharedRecipe.setIngredients(new ArrayList<>());
+        sharedRecipe.setSteps(new ArrayList<>());
+
+        recipeRepository.save(sharedRecipe);
     }
 }

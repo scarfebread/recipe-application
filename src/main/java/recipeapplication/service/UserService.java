@@ -98,4 +98,16 @@ public class UserService
 
         authService.disablePasswordReset();
     }
+
+    public User getUser(String username) throws UserNotFoundException
+    {
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (!user.isPresent())
+        {
+            throw new UserNotFoundException();
+        }
+
+        return user.get();
+    }
 }

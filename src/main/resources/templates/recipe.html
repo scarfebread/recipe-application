@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script>
         let recipeId = [[${recipe.id}]];
+        let recipeTitle = "[[${recipe.title}]]";
         let recipeRating = [[${recipe.rating}]];
         let recipeServes = [[${recipe.serves}]];
         let recipePrepTime = "[[${recipe.prepTime}]]";
@@ -58,9 +59,9 @@
         <div class="recipeContainer">
             <div class="subRecipeContainer">
                 <div class="buttonContainer">
-                    <button class="button">SHARE</button>
+                    <button id="shareRecipeButton" class="button">SHARE</button>
                     <button class="button">EDIT</button>
-                    <button class="button">DELETE</button>
+                    <button id="deleteRecipeButton" class="button">DELETE</button>
                 </div>
                 <div class="recipeDetailsContainer">
                     <div class="label">
@@ -176,14 +177,28 @@
         <div class="modal-content">
             <span id="closeShareRecipeModal" class="close modalClose">&times;</span>
             <div id="preShare">
-                <label for="username">Enter username</label><br>
-                <input id="username">
+                <label for="username">Enter a username to share the recipe with</label><br>
+                <input id="username" class="modalInput">
                 <label id="invalidUsernameError" class="hidden error">Invalid username!</label>
                 <label id="shareRecipeError" class="hidden error"></label>
-                <button id="confirmShareButton" class="button">SHARE</button>
+                <button id="confirmShareButton" class="modalButton">SHARE</button>
             </div>
-            <div id="postShare">
+            <div id="postShare" class="hidden">
                 <label>Recipe successfully shared!</label><br>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteRecipeModal" class="modal">
+        <div class="modal-content">
+            <span id="closeDeleteRecipeModal" class="close modalClose">&times;</span>
+            <div id="preDelete">
+                <label id="deleteLabel"></label><br>
+                <label id="deleteRecipeError" class="hidden error"></label>
+                <button id="confirmDeleteButton" class="modalButton">DELETE</button>
+            </div>
+            <div id="postDelete" class="hidden">
+                <label>Recipe successfully deleted!</label><br>
             </div>
         </div>
     </div>

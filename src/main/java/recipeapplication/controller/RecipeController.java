@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import recipeapplication.dto.CreateRecipeDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.Recipe;
+import recipeapplication.model.User;
 import recipeapplication.service.RecipeService;
+import recipeapplication.service.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -18,11 +21,13 @@ import java.util.List;
 public class RecipeController
 {
     private RecipeService recipeService;
+    private UserService userService;
 
     @Autowired
-    public RecipeController(RecipeService recipeService)
+    public RecipeController(RecipeService recipeService, UserService userService)
     {
         this.recipeService = recipeService;
+        this.userService = userService;
     }
 
     @PostMapping
@@ -98,5 +103,36 @@ public class RecipeController
         }
 
         return ResponseEntity.status(202).body("Updated");
+    }
+
+    @PostMapping(path = "/share")
+    public ResponseEntity shareRecipe(@RequestBody RecipeDto recipeDto)
+    {
+        if (recipeDto.getId() == null)
+        {
+            return ResponseEntity.status(400).body("No recipe supplied");
+        }
+
+        if (recipeDto.getNewUser() == null)
+        {
+            return ResponseEntity.status(400).body("No user supplied");
+        }
+
+        try
+        {
+            User user = userService.getUser(recipeDto.getNewUser());
+
+            recipeService.shareRecipe(recipeDto, user);
+        }
+        catch (RecipeDoesNotExistException e)
+        {
+            return ResponseEntity.status(404).body("Recipe does not exist");
+        }
+        catch (UserNotFoundException e)
+        {
+            return ResponseEntity.status(404).body("User does not exist");
+        }
+
+        return ResponseEntity.status(201).body("Created");
     }
 }
