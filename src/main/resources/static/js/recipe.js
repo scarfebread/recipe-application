@@ -4,24 +4,46 @@ document.addEventListener("DOMContentLoaded", function(event)
 {
     rating = recipeRating;
 
-    let modal = document.getElementById('shareRecipeModal');
-    let closeModalButton = document.getElementById('closeShareRecipeModal');
+    let shareRecipeButton = getElementById('shareRecipeButton');
+    let shareRecipeModal = getElementById('shareRecipeModal');
+    let closeShareRecipeModalButton = getElementById('closeShareRecipeModal');
 
-    createRecipeButton.onclick = function()
+    let deleteRecipeButton = getElementById('deleteRecipeButton');
+    let deleteRecipeModal = getElementById('deleteRecipeModal');
+    let closeDeleteRecipeModalButton = getElementById('closeDeleteRecipeModal');
+    let deleteRecipeLabel = getElementById('deleteLabel');
+
+    shareRecipeButton.onclick = function()
     {
-        modal.style.display = "block";
+        shareRecipeModal.style.display = "block";
     };
 
-    closeModalButton.onclick = function()
+    closeShareRecipeModalButton.onclick = function()
     {
-        closeModal(modal);
+        closeModal(shareRecipeModal);
+    };
+
+    deleteRecipeButton.onclick = function()
+    {
+        deleteRecipeLabel.innerText = `Are you sure you want to delete ${recipeTitle}?`;
+        deleteRecipeModal.style.display = "block";
+    };
+
+    closeDeleteRecipeModalButton.onclick = function()
+    {
+        closeModal(deleteRecipeModal);
     };
 
     window.onclick = function(event)
     {
-        if (event.target === modal)
+        if (event.target === shareRecipeModal)
         {
-            closeModal(modal);
+            closeModal(shareRecipeModal);
+        }
+
+        if (event.target === deleteRecipeModal)
+        {
+            closeModal(deleteRecipeModal);
         }
     };
 
@@ -29,10 +51,13 @@ document.addEventListener("DOMContentLoaded", function(event)
     {
         if (event.key === 'Escape')
         {
-            closeModal(modal);
+            closeModal(shareRecipeModal);
+            closeModal(deleteRecipeModal);
         }
     };
 
+    let confirmShareRecipe = getElementById('confirmShareButton');
+    let confirmDeleteRecipe = getElementById('confirmDeleteButton');
     let difficulty = getElementById('difficulty');
     let cookTime = getElementById('cookTime');
     let prepTime = getElementById('prepTime');
@@ -112,6 +137,36 @@ document.addEventListener("DOMContentLoaded", function(event)
         displayRating();
         updateRecipe()
     };
+
+    confirmShareRecipe.onclick = function ()
+    {
+        confirmShareRecipe.disabled = true;
+
+        hideElement('invalidUsernameError');
+        hideElement('shareRecipeError');
+
+        let username = getValueById('username');
+
+        if (!validateStringLength(username, 1))
+        {
+            showElement('invalidUsernameError');
+        }
+
+        shareRecipe(username);
+
+        confirmShareRecipe.disabled = true;
+    };
+
+    confirmDeleteRecipe.onclick = function ()
+    {
+        confirmDeleteRecipe.disabled = true;
+
+        hideElement('deleteRecipeError');
+
+        deleteRecipe();
+
+        confirmDeleteRecipe.disabled = true;
+    };
 });
 
 function updateRecipe()
@@ -154,6 +209,48 @@ function updateRecipe()
     );
 }
 
+function shareRecipe(newUser)
+{
+    let recipe = {
+        id: recipeId,
+        newUser: newUser
+    };
+
+    fetch ("http://localhost:8080/api/recipe/share", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(recipe)
+    }).then(
+        function (response) {
+            if (response.status !== 201)
+            {
+                response.text().then(function(data) {
+                    getElementById('shareRecipeError').innerText = data;
+                    showElement('shareRecipeError');
+                });
+
+                return;
+            }
+
+            hideElement('preShare');
+            showElement('postShare');
+        }
+    ).catch(
+        function (error) {
+            getElementById('shareRecipeError').innerText = error;
+            showElement('shareRecipeError');
+        }
+    );
+}
+
+function deleteRecipe()
+{
+
+}
+
 function displayRating()
 {
     let starRating = getElementById('starRating');
@@ -177,4 +274,14 @@ function preventReturn(event)
     if (event.which === 13) {
         event.preventDefault();
     }
+}
+
+function closeModal(modal)
+{
+    hideElement('invalidUsernameError');
+    hideElement('shareRecipeError');
+    hideElement('postShare');
+    showElement('preShare');
+    modal.style.display = "none";
+    getElementById('username').value = '';
 }

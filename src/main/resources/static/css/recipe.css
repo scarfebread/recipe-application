@@ -250,3 +250,13 @@ input:checked + .slider .off {
     white-space: nowrap;
     overflow: hidden;
 }
+
+.modalButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 35px;
+    width: 100%;
+    margin-bottom: 10px;
+}

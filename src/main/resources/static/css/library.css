@@ -154,3 +154,13 @@ body {
     border-radius: 10px;
     width: 300px;
 }
+
+.modalInput {
+    height: 35px;
+    width: 98%;
+    margin-bottom: 5px;
+}
+
+.modalClose {
+    float: right;
+}
