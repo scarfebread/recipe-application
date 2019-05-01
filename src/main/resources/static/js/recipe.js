@@ -1,4 +1,6 @@
 let rating;
+let recipeDeleted = false;
+let editRecipe = false;
 
 document.addEventListener("DOMContentLoaded", function(event)
 {
@@ -68,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function(event)
     let rating3 = getElementById('rating3');
     let rating4 = getElementById('rating4');
     let rating5 = getElementById('rating5');
+    let editRecipeButton = getElementById('editRecipeButton');
 
     displayRating();
     serves.value = recipeServes;
@@ -147,14 +150,16 @@ document.addEventListener("DOMContentLoaded", function(event)
 
         let username = getValueById('username');
 
-        if (!validateStringLength(username, 1))
+        if (validateStringLength(username, 1))
+        {
+            shareRecipe(username);
+        }
+        else
         {
             showElement('invalidUsernameError');
         }
 
-        shareRecipe(username);
-
-        confirmShareRecipe.disabled = true;
+        confirmShareRecipe.disabled = false;
     };
 
     confirmDeleteRecipe.onclick = function ()
@@ -165,7 +170,38 @@ document.addEventListener("DOMContentLoaded", function(event)
 
         deleteRecipe();
 
-        confirmDeleteRecipe.disabled = true;
+        if (!recipeDeleted)
+        {
+            confirmDeleteRecipe.disabled = false;
+        }
+    };
+
+    editRecipeButton.onclick = function ()
+    {
+        editRecipeButton.disabled = true;
+
+        editRecipe = !editRecipe;
+
+        if (editRecipe)
+        {
+            editRecipeButton.innerText = 'LOCK';
+            difficulty.disabled = false;
+            cookTime.contentEditable = true;
+            prepTime.contentEditable = true;
+            serves.disabled = false;
+            notes.disabled = false;
+        }
+        else
+        {
+            editRecipeButton.innerText = 'EDIT';
+            difficulty.disabled = true;
+            cookTime.contentEditable = false;
+            prepTime.contentEditable = false;
+            serves.disabled = true;
+            notes.disabled = true;
+        }
+
+        editRecipeButton.disabled = false;
     };
 });
 
@@ -246,9 +282,44 @@ function shareRecipe(newUser)
     );
 }
 
+// TODO there's a lot of duplicate code with the fetch api. This should be refactored.
 function deleteRecipe()
 {
+    let recipe = {
+        id: recipeId
+    };
 
+    fetch ("http://localhost:8080/api/recipe", {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(recipe)
+    }).then(
+        function (response) {
+            // TODO specifically checking status codes will break if the controller was changed
+            if (response.status !== 202)
+            {
+                response.text().then(function(data) {
+                    getElementById('deleteRecipeError').innerText = data;
+                    showElement('deleteRecipeError');
+                });
+
+                return;
+            }
+
+            hideElement('preDelete');
+            showElement('postDelete');
+
+            recipeDeleted = true;
+        }
+    ).catch(
+        function (error) {
+            getElementById('deleteRecipeError').innerText = error;
+            showElement('deleteRecipeError');
+        }
+    );
 }
 
 function displayRating()
@@ -271,13 +342,19 @@ function displayRating()
 
 function preventReturn(event)
 {
-    if (event.which === 13) {
+    if (event.which === 13)
+    {
         event.preventDefault();
     }
 }
 
 function closeModal(modal)
 {
+    if (recipeDeleted)
+    {
+        return;
+    }
+
     hideElement('invalidUsernameError');
     hideElement('shareRecipeError');
     hideElement('postShare');

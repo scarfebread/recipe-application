@@ -82,7 +82,7 @@ public class RecipeController
             return ResponseEntity.status(404).body("Recipe does not exist");
         }
 
-        return ResponseEntity.status(200).body("Deleted successfully");
+        return ResponseEntity.status(202).body("Deleted successfully");
     }
 
     @PutMapping
