@@ -191,6 +191,7 @@ document.addEventListener("DOMContentLoaded", function(event)
             prepTime.contentEditable = true;
             serves.disabled = false;
             notes.disabled = false;
+            getElementById('addIngredientRow').hidden = false;
         }
         else
         {
@@ -200,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function(event)
             prepTime.contentEditable = false;
             serves.disabled = true;
             notes.disabled = true;
+            getElementById('addIngredientRow').hidden = true;
         }
 
         editRecipeButton.disabled = false;
@@ -209,12 +211,33 @@ document.addEventListener("DOMContentLoaded", function(event)
     {
         let newIngredient = getElementById('newIngredient');
 
+        if (!validateStringLength(newIngredient.value, 1))
+        {
+            return;
+        }
+
         addIngredient(newIngredient.value);
         updateRecipe();
 
         newIngredient.value = '';
-    }
+    };
+
+    addIngredientDeleteListeners();
 });
+
+function addIngredientDeleteListeners()
+{
+    Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
+        element.addEventListener('click', function () {
+            let row = element.parentNode.parentNode;
+            let table = row.parentNode;
+
+            table.removeChild(row);
+
+            updateRecipe();
+        });
+    });
+}
 
 function updateRecipe()
 {
@@ -406,7 +429,8 @@ function addIngredient(ingredient)
     actionColumn.className = 'ingredientActionColumn';
 
     let deleteButton = createElement('span');
-    deleteButton.className = 'close';
+    deleteButton.classList.add('close');
+    deleteButton.classList.add('ingredientDelete');
     deleteButton.innerText = '×';
 
     actionColumn.appendChild(deleteButton);
@@ -414,4 +438,6 @@ function addIngredient(ingredient)
     row.appendChild(actionColumn);
 
     ingredientTable.insertBefore(row, ingredientTable.children[ingredientTable.children.length -1]);
+
+    addIngredientDeleteListeners();
 }

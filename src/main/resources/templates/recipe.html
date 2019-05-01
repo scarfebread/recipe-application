@@ -67,15 +67,15 @@
                 <div class="recipeDetailsContainer">
                     <div class="label">
                         <label class="cookAndPrepTimeLabel" for="cookTime">Cook time:</label>
-                        <label id="cookTime" class="cookAndPrepTimeValue" contenteditable="true"></label>
+                        <label id="cookTime" class="cookAndPrepTimeValue"></label>
                     </div>
                     <div class="label">
                         <label class="cookAndPrepTimeLabel" for="prepTime">Prep time:</label>
-                        <label id="prepTime" class="cookAndPrepTimeValue" contenteditable="true"></label>
+                        <label id="prepTime" class="cookAndPrepTimeValue"></label>
                     </div>
                     <div class="label">
                         <label for="serves">Serves:</label>
-                        <select id="serves">
+                        <select disabled id="serves">
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -98,7 +98,7 @@
                     </div>
                     <div class="label">
                         <label for="difficulty">Difficulty:</label>
-                        <select id="difficulty">
+                        <select disabled id="difficulty">
                             <option>Easy</option>
                             <option>Medium</option>
                             <option>Hard</option>
@@ -111,7 +111,7 @@
                         <label for="notes">Notes:</label>
                     </div>
                     <div>
-                        <textarea id="notes" th:text="${recipe.notes}"></textarea>
+                        <textarea disabled id="notes" th:text="${recipe.notes}"></textarea>
                     </div>
                 </div>
             </div>
@@ -121,11 +121,12 @@
             <div class="ingredientContainer">
                 <h2>Ingredients</h2>
                 <table id="ingredientTable">
+                    <!-- TODO the styles are broken here -->
                     <tr th:each="ingredient : ${ingredients}">
                         <td contenteditable="true" class="ingredients" th:text="${ingredient}"></td>
                         <td class="ingredientActionColumn"><span class="close ingredientDelete">&times;</span></td>
                     </tr>
-                    <tr>
+                    <tr hidden id="addIngredientRow">
                         <td><input id="newIngredient" class="input"></td>
                         <td class="ingredientActionColumn">
                             <button id="addIngredientButton" class="ingredientAndStepButton">ADD</button>
