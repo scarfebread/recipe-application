@@ -21,10 +21,10 @@ public class Recipe
     private String prepTime;
     private String difficulty;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Step> steps;
 
     public Long getUserId()

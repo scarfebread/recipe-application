@@ -120,19 +120,15 @@
         <div class="ingredientAndStepContainer">
             <div class="ingredientContainer">
                 <h2>Ingredients</h2>
-                <table class="ingredientTable">
-                    <tr>
-                        <td contenteditable="true" class="ingredients">1 large onion, roughly chopped</td>
+                <table id="ingredientTable">
+                    <tr th:each="ingredient : ${ingredients}">
+                        <td contenteditable="true" class="ingredients" th:text="${ingredient}"></td>
                         <td class="ingredientActionColumn"><span class="close ingredientDelete">&times;</span></td>
                     </tr>
                     <tr>
-                        <td>3 tbsp mild curry paste</td>
-                        <td class="ingredientActionColumn"><span class="close">&times;</span></td>
-                    </tr>
-                    <tr>
-                        <td><input class="input"></td>
+                        <td><input id="newIngredient" class="input"></td>
                         <td class="ingredientActionColumn">
-                            <button class="ingredientAndStepButton">ADD</button>
+                            <button id="addIngredientButton" class="ingredientAndStepButton">ADD</button>
                         </td>
                     </tr>
                 </table>

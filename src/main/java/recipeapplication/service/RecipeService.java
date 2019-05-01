@@ -5,26 +5,33 @@ import org.springframework.stereotype.Service;
 import recipeapplication.dto.CreateRecipeDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
 import recipeapplication.model.User;
+import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecipeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.sun.org.apache.regexp.internal.RECompiler;
 
 @Service
+@Transactional
 public class RecipeService
 {
     private RecipeRepository recipeRepository;
+    private IngredientRepository ingredientRepository;
     private AuthService authService;
 
     @Autowired
-    public RecipeService(RecipeRepository recipeRepository, AuthService authService)
+    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, AuthService authService)
     {
         this.recipeRepository = recipeRepository;
+        this.ingredientRepository = ingredientRepository;
         this.authService = authService;
     }
 
@@ -82,6 +89,16 @@ public class RecipeService
         recipe.setPrepTime(recipeDto.getPrepTime());
         recipe.setDifficulty(recipeDto.getDifficulty());
 
+        // TODO this seems a bad way of managing the one to many relationship
+        ingredientRepository.deleteByRecipe(recipe);
+        List<Ingredient> ingredients = new ArrayList<>();
+        for (String ingredient : recipeDto.getIngredients())
+        {
+            ingredients.add(new Ingredient(recipe, ingredient));
+        }
+
+        recipe.setIngredients(ingredients);
+
         recipeRepository.save(recipe);
     }
 
@@ -103,7 +120,7 @@ public class RecipeService
         sharedRecipe.setSharedBy(loggedInUser.getUsername());
         sharedRecipe.setUserId(user.getId());
         sharedRecipe.setRating(recipe.getRating());
-        sharedRecipe.setIngredients(new ArrayList<>());
+        sharedRecipe.setIngredients(new ArrayList<>(recipe.getIngredients()));
         sharedRecipe.setSteps(new ArrayList<>());
 
         recipeRepository.save(sharedRecipe);
