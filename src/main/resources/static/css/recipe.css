@@ -221,7 +221,7 @@ input:checked + .slider .off {
 }
 
 .ingredientDelete {
-    display: inline-block;
+    display: none;
 }
 
 #ingredientTable {
@@ -259,4 +259,13 @@ input:checked + .slider .off {
     height: 35px;
     width: 100%;
     margin-bottom: 10px;
+}
+
+.ingredients {
+    cursor: pointer;
+    height: 36px;
+}
+
+.steps {
+    cursor: pointer;
 }

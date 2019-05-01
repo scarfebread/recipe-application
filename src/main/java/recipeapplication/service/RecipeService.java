@@ -7,9 +7,11 @@ import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
+import recipeapplication.model.Step;
 import recipeapplication.model.User;
 import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecipeRepository;
+import recipeapplication.repository.StepRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +27,15 @@ public class RecipeService
 {
     private RecipeRepository recipeRepository;
     private IngredientRepository ingredientRepository;
+    private StepRepository stepRepository;
     private AuthService authService;
 
     @Autowired
-    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, AuthService authService)
+    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, StepRepository stepRepository, AuthService authService)
     {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
+        this.stepRepository = stepRepository;
         this.authService = authService;
     }
 
@@ -91,13 +95,20 @@ public class RecipeService
 
         // TODO this seems a bad way of managing the one to many relationship
         ingredientRepository.deleteByRecipe(recipe);
+        stepRepository.deleteByRecipe(recipe);
         List<Ingredient> ingredients = new ArrayList<>();
         for (String ingredient : recipeDto.getIngredients())
         {
             ingredients.add(new Ingredient(recipe, ingredient));
         }
-
         recipe.setIngredients(ingredients);
+
+        List<Step> steps = new ArrayList<>();
+        for (String step : recipeDto.getSteps())
+        {
+            steps.add(new Step(recipe, step));
+        }
+        recipe.setSteps(steps);
 
         recipeRepository.save(recipe);
     }

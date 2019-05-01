@@ -16,4 +16,17 @@ public class Step
 
     private String name;
     private int step;
+
+    public Step() {}
+
+    public Step(Recipe recipe, String name)
+    {
+        this.recipe = recipe;
+        this.name = name;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
 }

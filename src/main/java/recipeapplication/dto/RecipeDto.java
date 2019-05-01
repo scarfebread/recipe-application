@@ -13,6 +13,7 @@ public class RecipeDto
     private String difficulty;
     private String newUser;
     private List<String> ingredients;
+    private List<String> steps;
 
     public Long getId()
     {
@@ -57,5 +58,10 @@ public class RecipeDto
     public List<String> getIngredients()
     {
         return ingredients;
+    }
+
+    public List<String> getSteps()
+    {
+        return steps;
     }
 }

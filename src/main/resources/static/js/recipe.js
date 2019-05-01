@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function(event)
     let rating5 = getElementById('rating5');
     let editRecipeButton = getElementById('editRecipeButton');
     let addIngredientButton = getElementById('addIngredientButton');
+    let addStepButton = getElementById('addStepButton');
 
     displayRating();
     serves.value = recipeServes;
@@ -192,6 +193,20 @@ document.addEventListener("DOMContentLoaded", function(event)
             serves.disabled = false;
             notes.disabled = false;
             getElementById('addIngredientRow').hidden = false;
+            getElementById('addStepRow').hidden = false;
+
+            Array.from(document.getElementsByClassName('ingredients')).forEach(function(element) {
+                element.contentEditable = true;
+            });
+
+            Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
+                element.contentEditable = true;
+            });
+
+            Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
+                element.hidden = false;
+                element.style.display = 'inline-block';
+            });
         }
         else
         {
@@ -202,6 +217,20 @@ document.addEventListener("DOMContentLoaded", function(event)
             serves.disabled = true;
             notes.disabled = true;
             getElementById('addIngredientRow').hidden = true;
+            getElementById('addStepRow').hidden = true;
+
+            Array.from(document.getElementsByClassName('ingredients')).forEach(function(element) {
+                element.contentEditable = false;
+            });
+
+            Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
+                element.contentEditable = false;
+            });
+
+            Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
+                element.hidden = true;
+                element.style.display = 'none';
+            });
         }
 
         editRecipeButton.disabled = false;
@@ -222,8 +251,42 @@ document.addEventListener("DOMContentLoaded", function(event)
         newIngredient.value = '';
     };
 
+    addStepButton.onclick = function ()
+    {
+        let newStep = getElementById('newStep');
+
+        if (!validateStringLength(newStep.value, 1))
+        {
+            return;
+        }
+
+        addStep(newStep.value);
+        updateRecipe();
+
+        newStep.value = '';
+    };
+
+    // TODO these event listeners are not detaching
     addIngredientDeleteListeners();
+    addIngredientEditListeners();
 });
+
+function addIngredientEditListeners()
+{
+    Array.from(document.getElementsByClassName('ingredients')).forEach(function(element) {
+        element.addEventListener('blur', function () {
+            if (!validateStringLength(element.innerHTML, 1))
+            {
+                let row = element.parentNode;
+                let table = row.parentNode;
+
+                table.removeChild(row);
+            }
+
+            updateRecipe();
+        });
+    });
+}
 
 function addIngredientDeleteListeners()
 {
@@ -252,7 +315,8 @@ function updateRecipe()
         cookTime: getElementById('cookTime').innerText,
         prepTime: getElementById('prepTime').innerText,
         difficulty: difficulty.options[difficulty.selectedIndex].value,
-        ingredients: getIngredients()
+        ingredients: getIngredients(),
+        steps: getSteps()
     };
 
     fetch ("http://localhost:8080/api/recipe", {
@@ -296,6 +360,26 @@ function getIngredients()
     }
 
     return ingredients;
+}
+
+function getSteps()
+{
+    let steps = [];
+
+    let stepTable = getElementById('stepTable');
+
+    for (let i = 0, row; row = stepTable.rows[i]; i++) {
+        if (i === stepTable.rows.length -1)
+        {
+            break;
+        }
+
+        row.children[0].children[0].innerHTML = (i + 1) + '.';
+
+        steps.push(row.children[1].innerHTML)
+    }
+
+    return steps;
 }
 
 function shareRecipe(newUser)
@@ -424,6 +508,8 @@ function addIngredient(ingredient)
 
     let ingredientColumn = createElement('td');
     ingredientColumn.innerText = ingredient;
+    ingredientColumn.contentEditable = editRecipe;
+    ingredientColumn.className = 'ingredients';
 
     let actionColumn = createElement('td');
     actionColumn.className = 'ingredientActionColumn';
@@ -432,6 +518,13 @@ function addIngredient(ingredient)
     deleteButton.classList.add('close');
     deleteButton.classList.add('ingredientDelete');
     deleteButton.innerText = '×';
+    deleteButton.hidden = !editRecipe;
+
+    if (editRecipe) {
+        deleteButton.style.display = 'inline-block';
+    } else {
+        deleteButton.style.display = 'hidden'
+    }
 
     actionColumn.appendChild(deleteButton);
     row.appendChild(ingredientColumn);
@@ -440,4 +533,49 @@ function addIngredient(ingredient)
     ingredientTable.insertBefore(row, ingredientTable.children[ingredientTable.children.length -1]);
 
     addIngredientDeleteListeners();
+    addIngredientEditListeners();
+}
+
+function addStep(step)
+{
+    let stepTable = getElementById('stepTable').children[0];
+
+    let row = createElement('tr');
+
+    let stepHeading = createElement('h3');
+    stepHeading.innerText = (getSteps().length + 1) + '.';
+
+    let stepNumberColumn = createElement('td');
+    stepNumberColumn.appendChild(stepHeading);
+
+    let stepColumn = createElement('td');
+    stepColumn.innerText = step;
+    stepColumn.contentEditable = editRecipe;
+    stepColumn.classList.add('steps');
+    stepColumn.classList.add('recipeTableRow');
+
+    let actionColumn = createElement('td');
+    actionColumn.className = 'ingredientActionColumn';
+
+    let deleteButton = createElement('span');
+    deleteButton.classList.add('close');
+    deleteButton.classList.add('ingredientDelete');
+    deleteButton.innerText = '×';
+    deleteButton.hidden = !editRecipe;
+
+    if (editRecipe) {
+        deleteButton.style.display = 'inline-block';
+    } else {
+        deleteButton.style.display = 'hidden'
+    }
+
+    actionColumn.appendChild(deleteButton);
+    row.appendChild(stepNumberColumn);
+    row.appendChild(stepColumn);
+    row.appendChild(actionColumn);
+
+    stepTable.insertBefore(row, stepTable.children[stepTable.children.length -1]);
+
+    addIngredientDeleteListeners();
+    addIngredientEditListeners();
 }

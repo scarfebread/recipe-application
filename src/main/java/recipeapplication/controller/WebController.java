@@ -14,6 +14,7 @@ import recipeapplication.exception.InvalidPasswordTokenException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
+import recipeapplication.model.Step;
 import recipeapplication.service.RecipeService;
 import recipeapplication.service.UserService;
 
@@ -58,14 +59,20 @@ public class WebController
             Recipe recipe = recipeService.getRecipe(id);
 
             List<String> ingredients = new ArrayList<>();
-
             for (Ingredient ingredient : recipe.getIngredients())
             {
                 ingredients.add(ingredient.getName());
             }
 
+            List<String> steps = new ArrayList<>();
+            for (Step step : recipe.getSteps())
+            {
+                steps.add(step.getName());
+            }
+
             model.addAttribute("recipe", recipe);
             model.addAttribute("ingredients", ingredients);
+            model.addAttribute("steps", steps);
 
             return "recipe.html";
         }
