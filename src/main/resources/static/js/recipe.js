@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function(event)
     let rating4 = getElementById('rating4');
     let rating5 = getElementById('rating5');
     let editRecipeButton = getElementById('editRecipeButton');
+    let addIngredientButton = getElementById('addIngredientButton');
 
     displayRating();
     serves.value = recipeServes;
@@ -203,6 +204,16 @@ document.addEventListener("DOMContentLoaded", function(event)
 
         editRecipeButton.disabled = false;
     };
+
+    addIngredientButton.onclick = function ()
+    {
+        let newIngredient = getElementById('newIngredient');
+
+        addIngredient(newIngredient.value);
+        updateRecipe();
+
+        newIngredient.value = '';
+    }
 });
 
 function updateRecipe()
@@ -217,7 +228,8 @@ function updateRecipe()
         serves: serves.options[serves.selectedIndex].value,
         cookTime: getElementById('cookTime').innerText,
         prepTime: getElementById('prepTime').innerText,
-        difficulty: difficulty.options[difficulty.selectedIndex].value
+        difficulty: difficulty.options[difficulty.selectedIndex].value,
+        ingredients: getIngredients()
     };
 
     fetch ("http://localhost:8080/api/recipe", {
@@ -243,6 +255,24 @@ function updateRecipe()
             // TODO show error banner
         }
     );
+}
+
+function getIngredients()
+{
+    let ingredients = [];
+
+    let ingredientTable = getElementById('ingredientTable');
+
+    for (let i = 0, row; row = ingredientTable.rows[i]; i++) {
+        if (i === ingredientTable.rows.length -1)
+        {
+            break;
+        }
+
+        ingredients.push(row.children[0].innerHTML)
+    }
+
+    return ingredients;
 }
 
 function shareRecipe(newUser)
@@ -361,4 +391,27 @@ function closeModal(modal)
     showElement('preShare');
     modal.style.display = "none";
     getElementById('username').value = '';
+}
+
+function addIngredient(ingredient)
+{
+    let ingredientTable = getElementById('ingredientTable').children[0];
+
+    let row = createElement('tr');
+
+    let ingredientColumn = createElement('td');
+    ingredientColumn.innerText = ingredient;
+
+    let actionColumn = createElement('td');
+    actionColumn.className = 'ingredientActionColumn';
+
+    let deleteButton = createElement('span');
+    deleteButton.className = 'close';
+    deleteButton.innerText = '×';
+
+    actionColumn.appendChild(deleteButton);
+    row.appendChild(ingredientColumn);
+    row.appendChild(actionColumn);
+
+    ingredientTable.insertBefore(row, ingredientTable.children[ingredientTable.children.length -1]);
 }

@@ -15,4 +15,17 @@ public class Ingredient
     private Recipe recipe;
 
     private String name;
+
+    public Ingredient(Recipe recipe, String name)
+    {
+        this.recipe = recipe;
+        this.name = name;
+    }
+
+    public Ingredient() {}
+
+    public String getName()
+    {
+        return name;
+    }
 }

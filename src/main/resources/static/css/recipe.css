@@ -224,7 +224,7 @@ input:checked + .slider .off {
     display: inline-block;
 }
 
-.ingredientTable {
+#ingredientTable {
     width: 100%;
 }
 

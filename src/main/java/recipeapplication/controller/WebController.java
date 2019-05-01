@@ -1,5 +1,8 @@
 package recipeapplication.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +12,7 @@ import org.springframework.web.context.request.WebRequest;
 import recipeapplication.dto.UserDto;
 import recipeapplication.exception.InvalidPasswordTokenException;
 import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
 import recipeapplication.service.RecipeService;
 import recipeapplication.service.UserService;
@@ -53,7 +57,15 @@ public class WebController
         {
             Recipe recipe = recipeService.getRecipe(id);
 
+            List<String> ingredients = new ArrayList<>();
+
+            for (Ingredient ingredient : recipe.getIngredients())
+            {
+                ingredients.add(ingredient.getName());
+            }
+
             model.addAttribute("recipe", recipe);
+            model.addAttribute("ingredients", ingredients);
 
             return "recipe.html";
         }

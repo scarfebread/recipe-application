@@ -1,5 +1,7 @@
 package recipeapplication.dto;
 
+import java.util.List;
+
 public class RecipeDto
 {
     private Long id;
@@ -10,6 +12,7 @@ public class RecipeDto
     private String prepTime;
     private String difficulty;
     private String newUser;
+    private List<String> ingredients;
 
     public Long getId()
     {
@@ -49,5 +52,10 @@ public class RecipeDto
     public String getNewUser()
     {
         return newUser;
+    }
+
+    public List<String> getIngredients()
+    {
+        return ingredients;
     }
 }
