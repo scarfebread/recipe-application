@@ -85,18 +85,15 @@ document.addEventListener("DOMContentLoaded", function(event)
         updateRecipe();
     };
 
-    cookTime.addEventListener('keypress', preventReturn(event));
-    prepTime.addEventListener('keypress', preventReturn(event));
-
-    cookTime.addEventListener("blur", function ()
+    cookTime.onchange = function ()
     {
         updateRecipe();
-    });
+    };
 
-    prepTime.addEventListener("blur", function ()
+    prepTime.onchange = function ()
     {
         updateRecipe();
-    });
+    };
 
     serves.onchange = function ()
     {
@@ -188,8 +185,8 @@ document.addEventListener("DOMContentLoaded", function(event)
         {
             editRecipeButton.innerText = 'LOCK';
             difficulty.disabled = false;
-            cookTime.contentEditable = true;
-            prepTime.contentEditable = true;
+            cookTime.disabled = false;
+            prepTime.disabled = false;
             serves.disabled = false;
             notes.disabled = false;
             getElementById('addIngredientRow').hidden = false;
@@ -197,6 +194,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
             Array.from(document.getElementsByClassName('ingredients')).forEach(function(element) {
                 element.contentEditable = true;
+                element.style.width = '82%';
             });
 
             Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
@@ -213,8 +211,8 @@ document.addEventListener("DOMContentLoaded", function(event)
         {
             editRecipeButton.innerText = 'EDIT';
             difficulty.disabled = true;
-            cookTime.contentEditable = false;
-            prepTime.contentEditable = false;
+            cookTime.disabled = true;
+            prepTime.disabled = true;
             serves.disabled = true;
             notes.disabled = true;
             getElementById('addIngredientRow').hidden = true;
@@ -222,6 +220,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
             Array.from(document.getElementsByClassName('ingredients')).forEach(function(element) {
                 element.contentEditable = false;
+                element.style.width = '100%';
             });
 
             Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
@@ -326,8 +325,8 @@ function updateRecipe()
         notes: getValueById('notes'),
         rating: rating,
         serves: serves.options[serves.selectedIndex].value,
-        cookTime: getElementById('cookTime').innerText,
-        prepTime: getElementById('prepTime').innerText,
+        cookTime: getElementById('cookTime').value,
+        prepTime: getElementById('prepTime').value,
         difficulty: difficulty.options[difficulty.selectedIndex].value,
         ingredients: getIngredients(),
         steps: getSteps()
@@ -488,14 +487,6 @@ function displayRating()
         {
             star.classList.add('checked');
         }
-    }
-}
-
-function preventReturn(event)
-{
-    if (event.which === 13)
-    {
-        event.preventDefault();
     }
 }
 

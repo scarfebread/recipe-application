@@ -67,11 +67,11 @@
                 <div class="recipeDetailsContainer">
                     <div class="label">
                         <label class="cookAndPrepTimeLabel" for="cookTime">Cook time:</label>
-                        <label id="cookTime" class="cookAndPrepTimeValue"></label>
+                        <input id="cookTime" class="timeInput" type="time" th:value="${recipe.cookTime}"/>
                     </div>
                     <div class="label">
                         <label class="cookAndPrepTimeLabel" for="prepTime">Prep time:</label>
-                        <label id="prepTime" class="cookAndPrepTimeValue"></label>
+                        <input id="prepTime" class="timeInput" type="time" th:value="${recipe.prepTime}"/>
                     </div>
                     <div class="label">
                         <label for="serves">Serves:</label>
