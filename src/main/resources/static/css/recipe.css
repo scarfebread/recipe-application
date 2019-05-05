@@ -34,9 +34,8 @@
 }
 
 .subRecipeContainer {
-    display: flex;  /* TODO this is causing a problem! */
-    justify-content: center;
-    align-items: center;
+    width: 700px;
+    margin: auto;
 }
 
 .notesContainer {
@@ -284,5 +283,38 @@ input:checked + .slider .off {
         width: 100%;
         margin-bottom: 15px;
         padding-left: 0;
+    }
+}
+
+@media screen and (max-width: 925px) {
+    .subRecipeContainer {
+        width: 380px;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    .notesContainer {
+        /*width: 285px;*/
+        width: 75%;
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        margin: 0;
+        width: 100%;
+    }
+
+    .form {
+        width: 100%;
+    }
+
+    .formPadding {
+        padding-left: 75px;
+    }
+
+    body {
+        background: url("../images/carrots.jpg") no-repeat;
+        background-size: 1100px auto;
     }
 }

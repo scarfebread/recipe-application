@@ -63,3 +63,23 @@
     width: 100%;
     margin-bottom: 10px;
 }
+
+@media (max-width: 500px) {
+    .container {
+        margin: 0;
+        width: 86%;
+    }
+
+    .form {
+        width: 100%;
+    }
+
+    .formPadding {
+        padding-left: 75px;
+    }
+
+    body {
+        background: url("../images/carrots.jpg") no-repeat;
+        background-size: 1100px auto;
+    }
+}
