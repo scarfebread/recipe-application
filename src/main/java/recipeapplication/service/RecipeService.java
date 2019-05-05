@@ -19,8 +19,6 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.sun.org.apache.regexp.internal.RECompiler;
-
 @Service
 @Transactional
 public class RecipeService

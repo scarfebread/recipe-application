@@ -266,25 +266,37 @@ document.addEventListener("DOMContentLoaded", function(event)
         newStep.value = '';
     };
 
-    // TODO these event listeners are not detaching
     addIngredientDeleteListeners();
     addIngredientEditListeners();
+    addStepEditListeners();
 });
 
 function addIngredientEditListeners()
 {
     Array.from(document.getElementsByClassName('ingredients')).forEach(function(element) {
-        element.addEventListener('blur', function () {
-            if (!validateStringLength(element.innerHTML, 1))
-            {
-                let row = element.parentNode;
-                let table = row.parentNode;
+        addEditListener(element);
+    });
+}
 
-                table.removeChild(row);
-            }
+function addStepEditListeners()
+{
+    Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
+        addEditListener(element);
+    });
+}
 
-            updateRecipe();
-        });
+function addEditListener(element)
+{
+    element.addEventListener('blur', function () {
+        if (!validateStringLength(element.innerHTML, 1))
+        {
+            let row = element.parentNode;
+            let table = row.parentNode;
+
+            table.removeChild(row);
+        }
+
+        updateRecipe();
     });
 }
 
@@ -532,8 +544,8 @@ function addIngredient(ingredient)
 
     ingredientTable.insertBefore(row, ingredientTable.children[ingredientTable.children.length -1]);
 
+    addEditListener(ingredientColumn);
     addIngredientDeleteListeners();
-    addIngredientEditListeners();
 }
 
 function addStep(step)
@@ -576,6 +588,6 @@ function addStep(step)
 
     stepTable.insertBefore(row, stepTable.children[stepTable.children.length -1]);
 
+    addEditListener(stepColumn);
     addIngredientDeleteListeners();
-    addIngredientEditListeners();
 }
