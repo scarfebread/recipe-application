@@ -332,7 +332,7 @@ function updateRecipe()
         steps: getSteps()
     };
 
-    fetch ("http://localhost:8080/api/recipe", {
+    fetch ("/api/recipe", {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json"
@@ -402,7 +402,7 @@ function shareRecipe(newUser)
         newUser: newUser
     };
 
-    fetch ("http://localhost:8080/api/recipe/share", {
+    fetch ("/api/recipe/share", {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -439,7 +439,7 @@ function deleteRecipe()
         id: recipeId
     };
 
-    fetch ("http://localhost:8080/api/recipe", {
+    fetch ("/api/recipe", {
         method: 'DELETE',
         headers: {
             "Content-Type": "application/json"

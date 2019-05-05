@@ -44,7 +44,7 @@ function signup()
         email: email
     };
 
-    fetch ("http://localhost:8080/api/signup", {
+    fetch ("/api/signup", {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
