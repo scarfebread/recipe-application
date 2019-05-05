@@ -201,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
             Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
                 element.contentEditable = true;
+                element.style.width = '78%';
             });
 
             Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
@@ -225,6 +226,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
             Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
                 element.contentEditable = false;
+                element.style.width = '100%';
             });
 
             Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
