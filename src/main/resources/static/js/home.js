@@ -58,18 +58,18 @@ document.addEventListener("DOMContentLoaded", function(event)
 
 function getRecipes()
 {
-    fetch ("http://localhost:8080/api/recipe", {
+    fetch ("/api/recipe", {
         method: 'GET',
         headers: {
             "Content-Type": "application/json"
-        },
-        credentials: "same-origin",
+        }
     }).then(
         function (response) {
             if (response.status !== 200)
             {
                 response.text().then(function(data) {
                     // TODO throw error
+                    alert(data);
                 });
 
                 return false;
@@ -84,6 +84,7 @@ function getRecipes()
         }
     ).catch(
         function (error) {
+            alert(error);
             // TODO show error banner
         }
     );
@@ -194,7 +195,7 @@ function closeModal(modal)
 
 function createRecipe(recipe)
 {
-    fetch ("http://localhost:8080/api/recipe", {
+    fetch ("/api/recipe", {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"

@@ -30,7 +30,7 @@ function changePassword()
         password: password
     };
 
-    fetch ("http://localhost:8080/api/change_password", {
+    fetch ("/api/change_password", {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"

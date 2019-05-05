@@ -24,7 +24,7 @@ function passwordReset()
         return false;
     }
 
-    fetch ("http://localhost:8080/api/password_reset", {
+    fetch ("/api/password_reset", {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
