@@ -23,7 +23,6 @@
     width: 180px;
     min-width: 180px;
     margin-top: 25px;
-    /*height: 95px;*/
     float: left;
 }
 
@@ -248,14 +247,8 @@ input:checked + .slider .off {
     float: left;
 }
 
-.cookAndPrepTimeValue {
-    width: 90px;
-    display: block;
-    float: left;
-    cursor: pointer;
+.timeInput {
     margin-left: 5px;
-    white-space: nowrap;
-    overflow: hidden;
 }
 
 .modalButton {
@@ -271,7 +264,7 @@ input:checked + .slider .off {
 .ingredients {
     cursor: pointer;
     height: 36px;
-    width: 78%;
+    width: 100%;
 }
 
 .steps {
