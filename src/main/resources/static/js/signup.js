@@ -1,3 +1,14 @@
+document.addEventListener("DOMContentLoaded", function(event)
+{
+    let signupButton = getElementById('signupButton');
+    let signupInProgress = false;
+
+    signupButton.onclick = function ()
+    {
+        signup();
+    }
+});
+
 function signup()
 {
     resetErrors();
@@ -60,6 +71,7 @@ function signup()
                     showElement('signupError');
                 });
 
+                // TODO throw error instead
                 return false;
             }
 

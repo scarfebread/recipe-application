@@ -49,21 +49,6 @@ public class RecipeController
         return recipeService.getRecipes();
     }
 
-    @GetMapping(params = {"id"})
-    public ResponseEntity getRecipe(Long id)
-    {
-        // TODO I don't think this endpoint is required
-
-        try
-        {
-            return ResponseEntity.status(200).body(recipeService.getRecipe(id));
-        }
-        catch (RecipeDoesNotExistException e)
-        {
-            return ResponseEntity.status(400).body("Recipe does not exist");
-        }
-    }
-
     @DeleteMapping
     public ResponseEntity deleteRecipe(@RequestBody RecipeDto recipeDto)
     {
