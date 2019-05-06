@@ -64,4 +64,14 @@ public class RecipeDto
     {
         return steps;
     }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
+
+    public void setNewUser(String newUser)
+    {
+        this.newUser = newUser;
+    }
 }

@@ -148,32 +148,6 @@ function displayRecipe(recipe)
     list.appendChild(listItem);
 }
 
-function updateNavBar(recipes)
-{
-    let recipeDropdown = getElementById('recipeDropdown');
-
-    removeChildElements(recipeDropdown);
-
-    if (recipes.length === 0)
-    {
-        let recipeLink = createElement('a');
-        recipeLink.innerText = 'No recipes to display';
-        recipeLink.id = 'noRecipeDropdown';
-        recipeDropdown.appendChild(recipeLink);
-        return;
-    }
-
-    for (let i in recipes)
-    {
-        let recipe = recipes[i];
-
-        let recipeLink = createElement('a');
-        recipeLink.href = `/recipe?id=${recipe.id}`;
-        recipeLink.innerText = recipe.title;
-        recipeDropdown.appendChild(recipeLink);
-    }
-}
-
 function closeModal(modal)
 {
     hideElement('invalidRecipeNameError');

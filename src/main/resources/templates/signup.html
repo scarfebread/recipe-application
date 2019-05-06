@@ -14,8 +14,7 @@
     <div class="form">
         <div class="formPadding">
             <h1>The Cooking Pot</h1>
-            <!--TODO create event listener instead of onsubmit-->
-            <form id="preSignupDisplay" onsubmit="event.preventDefault(); signup();" action="/" method="POST">
+            <div id="preSignupDisplay">
                 <label for="username">Username</label><br>
                 <input id="username"/><br>
                 <label id="usernameTooShortError" class="hidden error">Username must be more than 5 characters!</label>
@@ -30,13 +29,13 @@
                 <label id="passwordsDoNotMatchError" class="hidden error">Passwords do not match!</label>
                 <label id="signupError" class="hidden error"></label>
                 <!--TODO add user feedback and stop multiple submits-->
-                <button class="button">
+                <button id="signupButton" class="button">
                     <span>SIGNUP</span>
                 </button>
                 <div>
                     <a href="/login">Back to login</a>
                 </div>
-            </form>
+            </div>
             <div id="postSignupDisplay">
                 <label>Account successfully created!</label><br>
                 <label>Click <a href="/login">here</a> to login.</label>
