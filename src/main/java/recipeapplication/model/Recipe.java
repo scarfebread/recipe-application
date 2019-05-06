@@ -19,6 +19,7 @@ public class Recipe
     private Long serves;
     private String cookTime;
     private String prepTime;
+    private String totalTime;
     private String difficulty;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
@@ -145,5 +146,15 @@ public class Recipe
     public void setDifficulty(String difficulty)
     {
         this.difficulty = difficulty;
+    }
+
+    public String getTotalTime()
+    {
+        return totalTime;
+    }
+
+    public void setTotalTime(String totalTime)
+    {
+        this.totalTime = totalTime;
     }
 }

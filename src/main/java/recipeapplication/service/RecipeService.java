@@ -12,6 +12,7 @@ import recipeapplication.model.User;
 import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecipeRepository;
 import recipeapplication.repository.StepRepository;
+import recipeapplication.utility.RecipeTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,11 @@ public class RecipeService
     private AuthService authService;
 
     @Autowired
-    public RecipeService(RecipeRepository recipeRepository, IngredientRepository ingredientRepository, StepRepository stepRepository, AuthService authService)
+    public RecipeService(
+            RecipeRepository recipeRepository,
+            IngredientRepository ingredientRepository,
+            StepRepository stepRepository,
+            AuthService authService)
     {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
@@ -48,6 +53,7 @@ public class RecipeService
         recipe.setRating(0L);
         recipe.setServes(1L);
         recipe.setDifficulty("Medium");
+        recipe.setTotalTime("00:00");
 
         return recipeRepository.save(recipe);
     }
@@ -73,7 +79,6 @@ public class RecipeService
 
     public void deleteRecipe(RecipeDto recipeDto) throws RecipeDoesNotExistException
     {
-        // Exception will be thrown if it does not exist
         getRecipe(recipeDto.getId());
 
         recipeRepository.deleteById(recipeDto.getId());
@@ -81,7 +86,6 @@ public class RecipeService
 
     public void updateRecipe(RecipeDto recipeDto) throws RecipeDoesNotExistException
     {
-        // Exception will be thrown if it does not exist
         Recipe recipe = getRecipe(recipeDto.getId());
 
         recipe.setNotes(recipeDto.getNotes());
@@ -89,6 +93,7 @@ public class RecipeService
         recipe.setServes(recipeDto.getServes());
         recipe.setCookTime(recipeDto.getCookTime());
         recipe.setPrepTime(recipeDto.getPrepTime());
+        recipe.setTotalTime(RecipeTime.combineCookAndPrepTime(recipeDto.getCookTime(), recipeDto.getPrepTime()));
         recipe.setDifficulty(recipeDto.getDifficulty());
 
         // TODO this seems a bad way of managing the one to many relationship
@@ -124,6 +129,7 @@ public class RecipeService
         sharedRecipe.setDifficulty(recipe.getDifficulty());
         sharedRecipe.setPrepTime(recipe.getPrepTime());
         sharedRecipe.setCookTime(recipe.getCookTime());
+        sharedRecipe.setTotalTime(recipe.getTotalTime());
         sharedRecipe.setServes(recipe.getServes());
         sharedRecipe.setNotes(recipe.getNotes());
         sharedRecipe.setSharedBy(loggedInUser.getUsername());

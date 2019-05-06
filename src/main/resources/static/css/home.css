@@ -64,6 +64,7 @@
     margin-bottom: 10px;
 }
 
+/*TODO this is broken*/
 @media (max-width: 500px) {
     .container {
         margin: 0;
@@ -76,10 +77,5 @@
 
     .formPadding {
         padding-left: 75px;
-    }
-
-    body {
-        background: url("../images/carrots.jpg") no-repeat;
-        background-size: 1100px auto;
     }
 }

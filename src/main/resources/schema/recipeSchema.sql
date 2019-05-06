@@ -24,6 +24,7 @@ CREATE TABLE recipe.recipes (
   rating INT,
   prep_time VARCHAR,
   cook_time VARCHAR,
+  total_time VARCHAR,
   notes VARCHAR,
   serves INT,
   difficulty VARCHAR
@@ -42,3 +43,8 @@ CREATE TABLE recipe.steps (
   step INT NOT NULL
 );
 
+CREATE TABLE recipe.recently_viewed (
+  id SERIAL PRIMARY KEY,
+  recipe INT REFERENCES recipe.recipes(id),
+  user_id INT REFERENCES recipe.users(id)
+);

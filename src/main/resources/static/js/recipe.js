@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
     serves.onchange = function ()
     {
+        // TODO I need to decide how to change the ingredient amount. This isn't as simple as multiplying any numbers.
         updateRecipe();
     };
 
