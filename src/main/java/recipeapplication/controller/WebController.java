@@ -41,8 +41,10 @@ public class WebController
     }
 
     @GetMapping("/")
-    public String index()
+    public String index(Model model)
     {
+        model.addAttribute("user", authService.getLoggedInUser().getUsername());
+
         return "home.html";
     }
 

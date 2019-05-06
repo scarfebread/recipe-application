@@ -124,16 +124,9 @@ function displayRecipe(recipe)
         listItem.appendChild(image);
     }
 
-    // TODO properly set the cook time
     let cookTime = createElement('label');
-    if (recipe.totalCookTime != null)
-    {
-        cookTime.innerText = `Total time: ${recipe.totalCookTime}`;
-    }
-    else
-    {
-        cookTime.innerText = 'Please set the cook time'
-    }
+    cookTime.innerText = `Total time: ${recipe.totalTime}`;
+
     listItem.appendChild(cookTime);
 
     listItem.appendChild(createElement('br'));
