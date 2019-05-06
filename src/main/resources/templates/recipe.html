@@ -29,7 +29,7 @@
                 <h1 class="title">The Cooking Pot</h1>
                 <div class="loggedInUserContainer">
                     <div class="loggedInUser">
-                        <label>jscarfe</label>
+                        <label th:text="${user}"></label>
                         <a href="/logout">Logout</a>
                     </div>
                 </div>
@@ -59,20 +59,20 @@
 
         <!-- TODO display shared by -->
         <div class="recipeContainer">
+            <div class="buttonContainer">
+                <button id="shareRecipeButton" class="button">SHARE</button>
+                <button id="editRecipeButton" class="button">EDIT</button>
+                <button id="deleteRecipeButton" class="button">DELETE</button>
+            </div>
             <div class="subRecipeContainer">
-                <div class="buttonContainer">
-                    <button id="shareRecipeButton" class="button">SHARE</button>
-                    <button id="editRecipeButton" class="button">EDIT</button>
-                    <button id="deleteRecipeButton" class="button">DELETE</button>
-                </div>
                 <div class="recipeDetailsContainer">
                     <div class="label">
                         <label class="cookAndPrepTimeLabel" for="cookTime">Cook time:</label>
-                        <input id="cookTime" class="timeInput" type="time" th:value="${recipe.cookTime}"/>
+                        <input disabled id="cookTime" class="timeInput" type="time" th:value="${recipe.cookTime}"/>
                     </div>
                     <div class="label">
                         <label class="cookAndPrepTimeLabel" for="prepTime">Prep time:</label>
-                        <input id="prepTime" class="timeInput" type="time" th:value="${recipe.prepTime}"/>
+                        <input disabled id="prepTime" class="timeInput" type="time" th:value="${recipe.prepTime}"/>
                     </div>
                     <div class="label">
                         <label for="serves">Serves:</label>
@@ -87,8 +87,8 @@
                     </div>
                 </div>
                 <div class="recipeDetailsContainer">
-                    <div class="label">
-                        <label>Rating:</label>
+                    <div class="label ratingContainer">
+                        <label id="ratingLabel">Rating:</label>
                         <div id="starRating">
                             <span id="rating1" class="fa fa-star pointer"></span>
                             <span id="rating2" class="fa fa-star pointer"></span>
@@ -104,6 +104,10 @@
                             <option>Medium</option>
                             <option>Hard</option>
                         </select>
+                    </div>
+                    <div>
+                        <label>Created by:</label>
+                        <label th:text="${recipe.sharedBy} ? ${recipe.sharedBy} : ${user}"></label>
                     </div>
                 </div>
 

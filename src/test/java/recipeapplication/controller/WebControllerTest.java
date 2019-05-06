@@ -22,7 +22,7 @@ public class WebControllerTest
 
         doThrow(InvalidPasswordTokenException.class).when(userService).processPasswordResetToken(INVALID_TOKEN);
 
-        controller = new WebController(userService, null);
+        controller = new WebController(userService, null, null);
     }
 
     @Test

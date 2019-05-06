@@ -22,7 +22,6 @@
 .recipeDetailsContainer {
     width: 180px;
     min-width: 180px;
-    margin-top: 25px;
     float: left;
 }
 
@@ -36,13 +35,12 @@
 .subRecipeContainer {
     width: 700px;
     margin: auto;
+    padding-top: 50px;
 }
 
 .notesContainer {
-    width: 200px;
-    margin-top: 25px;
+    width: 340px;
     height: 95px;
-    /*display: inline-block;*/
     float: left;
 }
 
@@ -69,10 +67,9 @@
 }
 
 .buttonContainer {
-    margin-top: 25px;
-    width: 130px;
-    height: 95px;
-    float: left;
+    padding-top: 10px;
+    width: 318px;
+    margin: auto;
 }
 
 .header {
@@ -195,8 +192,8 @@ input:checked + .slider .off {
     cursor: pointer;
     height: 25px;
     width: 100px;
-    margin-bottom: 10px;
-    margin-right: 7px;
+    margin-right: 3px;
+    margin-left: 3px;
 }
 
 .input {
@@ -248,6 +245,7 @@ input:checked + .slider .off {
 
 .timeInput {
     margin-left: 5px;
+    width: 78px;
 }
 
 .modalButton {
@@ -273,6 +271,15 @@ input:checked + .slider .off {
     width: 100%;
 }
 
+#ratingLabel {
+    float: left;
+    padding-right: 5px;
+}
+
+.ratingContainer {
+    width: 150px;
+}
+
 @media screen and (max-width: 838px) {
     .ingredientContainer{
         width: 100%;
@@ -292,13 +299,6 @@ input:checked + .slider .off {
     }
 }
 
-@media screen and (max-width: 530px) {
-    .notesContainer {
-        /*width: 285px;*/
-        width: 75%;
-    }
-}
-
 @media (max-width: 500px) {
     .container {
         margin: 0;
@@ -313,8 +313,8 @@ input:checked + .slider .off {
         padding-left: 75px;
     }
 
-    body {
-        background: url("../images/carrots.jpg") no-repeat;
-        background-size: 1100px auto;
+    .recipeTitle {
+        padding-left: 0;
+        padding-top: 10px;
     }
 }

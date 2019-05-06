@@ -15,6 +15,7 @@ import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
 import recipeapplication.model.Step;
+import recipeapplication.service.AuthService;
 import recipeapplication.service.RecipeService;
 import recipeapplication.service.UserService;
 
@@ -23,12 +24,14 @@ public class WebController
 {
     private UserService userService;
     private RecipeService recipeService;
+    private AuthService authService;
 
     @Autowired
-    public WebController(UserService userService, RecipeService recipeService)
+    public WebController(UserService userService, RecipeService recipeService, AuthService authService)
     {
         this.userService = userService;
         this.recipeService = recipeService;
+        this.authService = authService;
     }
 
     @GetMapping("/login")
@@ -73,6 +76,7 @@ public class WebController
             model.addAttribute("recipe", recipe);
             model.addAttribute("ingredients", ingredients);
             model.addAttribute("steps", steps);
+            model.addAttribute("user", authService.getLoggedInUser().getUsername());
 
             return "recipe.html";
         }
