@@ -5,11 +5,9 @@ import org.springframework.stereotype.Service;
 import recipeapplication.dto.CreateRecipeDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
-import recipeapplication.model.Ingredient;
-import recipeapplication.model.Recipe;
-import recipeapplication.model.Step;
-import recipeapplication.model.User;
+import recipeapplication.model.*;
 import recipeapplication.repository.IngredientRepository;
+import recipeapplication.repository.RecentlyViewedRepository;
 import recipeapplication.repository.RecipeRepository;
 import recipeapplication.repository.StepRepository;
 import recipeapplication.utility.RecipeTime;
@@ -28,18 +26,21 @@ public class RecipeService
     private IngredientRepository ingredientRepository;
     private StepRepository stepRepository;
     private AuthService authService;
+    private RecentlyViewedRepository recentlyViewedRepository;
 
     @Autowired
     public RecipeService(
             RecipeRepository recipeRepository,
             IngredientRepository ingredientRepository,
             StepRepository stepRepository,
-            AuthService authService)
+            AuthService authService,
+            RecentlyViewedRepository recentlyViewedRepository)
     {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
         this.stepRepository = stepRepository;
         this.authService = authService;
+        this.recentlyViewedRepository = recentlyViewedRepository;
     }
 
     public Recipe createRecipe(CreateRecipeDto createRecipeDto)
@@ -139,5 +140,25 @@ public class RecipeService
         sharedRecipe.setSteps(new ArrayList<>());
 
         recipeRepository.save(sharedRecipe);
+    }
+
+    public void addRecentlyViewed(Recipe recipe)
+    {
+        Recipe mostRecentRecipe = getRecentlyViewed().get(0).getRecipe();
+
+        if (!mostRecentRecipe.getId().equals(recipe.getId()))
+        {
+            RecentlyViewed recentlyViewed = new RecentlyViewed();
+            recentlyViewed.setRecipe(recipe);
+            recentlyViewed.setUserId(recipe.getUserId());
+            recentlyViewedRepository.save(recentlyViewed);
+        }
+    }
+
+    public List<RecentlyViewed> getRecentlyViewed()
+    {
+        User user = authService.getLoggedInUser();
+
+        return recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(user.getId());
     }
 }

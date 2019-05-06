@@ -44,6 +44,7 @@ public class WebController
     public String index(Model model)
     {
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
+        model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
 
         return "home.html";
     }
@@ -75,7 +76,10 @@ public class WebController
                 steps.add(step.getName());
             }
 
+            recipeService.addRecentlyViewed(recipe);
+
             model.addAttribute("recipe", recipe);
+            model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
             model.addAttribute("ingredients", ingredients);
             model.addAttribute("steps", steps);
             model.addAttribute("user", authService.getLoggedInUser().getUsername());
