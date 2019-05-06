@@ -76,7 +76,6 @@ function getRecipes()
             }
 
             response.json().then(function(recipes) {
-                updateNavBar(recipes);
                 displayRecipes(recipes);
 
                 enableAutocomplete(recipes);
@@ -151,8 +150,6 @@ function displayRecipe(recipe)
 
 function updateNavBar(recipes)
 {
-    // TODO limit this to recent recipes / highest rated
-
     let recipeDropdown = getElementById('recipeDropdown');
 
     removeChildElements(recipeDropdown);

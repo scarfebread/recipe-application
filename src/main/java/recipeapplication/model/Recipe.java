@@ -28,6 +28,9 @@ public class Recipe
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Step> steps;
 
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    private List<RecentlyViewed> recentlyViewed;
+
     public Long getUserId()
     {
         return userId;

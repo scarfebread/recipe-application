@@ -30,7 +30,14 @@
                 <button class="dropbtn">Recipes
                     <i class="fa fa-caret-down"></i>
                 </button>
-                <div id="recipeDropdown" class="dropdown-content"></div>
+                <div id="recipeDropdown" class="dropdown-content">
+                    <label>Recent recipes:</label>
+                    <a
+                            th:each="item : ${recentlyViewed}"
+                            th:href="'/recipe?id=' + ${item.recipe.id}"
+                            th:text="${item.recipe.title}">
+                    </a>
+                </div>
             </div>
             <div class="dropdown">
                 <button class="dropbtn">Account
