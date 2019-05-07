@@ -7,6 +7,7 @@ import org.springframework.validation.Errors;
 import recipeapplication.dto.CreateRecipeDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.Recipe;
 import recipeapplication.model.User;
 import recipeapplication.service.RecipeService;
@@ -189,5 +190,43 @@ public class RecipeControllerTest
 
         assertEquals("Recipe does not exist", response.getBody());
         assertEquals(404, response.getStatusCodeValue());
+    }
+
+    @Test
+    public void shouldReturnUserDoesNotExistWhenSharingToInvalidUser() throws Exception
+    {
+        String newUser = "newUser";
+
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setId(1L);
+        recipeDto.setNewUser(newUser);
+
+        doThrow(UserNotFoundException.class).when(userService).getUser(newUser);
+
+        ResponseEntity response = recipeController.shareRecipe(recipeDto);
+
+        assertEquals("User does not exist", response.getBody());
+        assertEquals(404, response.getStatusCodeValue());
+    }
+
+    @Test
+    public void shouldShareRecipeWithValidRequest() throws Exception
+    {
+        String newUser = "newUser";
+
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setId(1L);
+        recipeDto.setNewUser(newUser);
+
+        User user = new User();
+
+        when(userService.getUser(newUser)).thenReturn(user);
+
+        ResponseEntity response = recipeController.shareRecipe(recipeDto);
+
+        verify(recipeService).shareRecipe(recipeDto, user);
+
+        assertEquals("Created", response.getBody());
+        assertEquals(201, response.getStatusCodeValue());
     }
 }
