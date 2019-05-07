@@ -41,7 +41,7 @@ public class WebController
     }
 
     @GetMapping("/")
-    public String index(Model model)
+    public String home(Model model)
     {
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
         model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
@@ -50,10 +50,8 @@ public class WebController
     }
 
     @GetMapping("/signup")
-    public String signup(WebRequest request, Model model)
+    public String signup()
     {
-        model.addAttribute("user", new UserDto());
-
         return "signup.html";
     }
 
@@ -64,6 +62,7 @@ public class WebController
         {
             Recipe recipe = recipeService.getRecipe(id);
 
+            // TODO I don't think we need to extract the ingredients + steps
             List<String> ingredients = new ArrayList<>();
             for (Ingredient ingredient : recipe.getIngredients())
             {
@@ -88,7 +87,7 @@ public class WebController
         }
         catch (RecipeDoesNotExistException e)
         {
-            return "recipeDoesNotExist.html";
+            return "invalid_recipe.html";
         }
     }
 

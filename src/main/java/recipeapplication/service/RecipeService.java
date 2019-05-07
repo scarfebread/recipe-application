@@ -99,7 +99,6 @@ public class RecipeService
 
         // TODO this seems a bad way of managing the one to many relationship
         ingredientRepository.deleteByRecipe(recipe);
-        stepRepository.deleteByRecipe(recipe);
         List<Ingredient> ingredients = new ArrayList<>();
         for (String ingredient : recipeDto.getIngredients())
         {
@@ -107,6 +106,7 @@ public class RecipeService
         }
         recipe.setIngredients(ingredients);
 
+        stepRepository.deleteByRecipe(recipe);
         List<Step> steps = new ArrayList<>();
         for (String step : recipeDto.getSteps())
         {
