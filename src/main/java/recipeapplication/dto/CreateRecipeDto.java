@@ -14,7 +14,7 @@ public class CreateRecipeDto
         return title;
     }
 
-    public void setName(String name)
+    public void setTitle(String name)
     {
         this.title = name;
     }

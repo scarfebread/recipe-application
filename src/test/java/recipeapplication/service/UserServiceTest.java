@@ -20,6 +20,8 @@ import recipeapplication.security.Role;
 import java.util.Calendar;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTest
@@ -40,6 +42,7 @@ public class UserServiceTest
     private PasswordTokenRepository passwordTokenRepository;
     private PasswordEncoder passwordEncoder;
     private AuthService authService;
+    private UserService userService;
 
     @Before
     public void setup()
@@ -79,6 +82,8 @@ public class UserServiceTest
 
         // TODO this should be mocked out
         authService = new AuthService();
+
+        userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
     }
 
     @Test(expected = UserNotFoundException.class)
@@ -129,8 +134,8 @@ public class UserServiceTest
         verify(emailService).sendPasswordReset(any(User.class), anyString(), eq(SERVER_NAME));
         verify(passwordTokenRepository).save(argumentCaptor.capture());
 
-        assert argumentCaptor.getValue().getUser() != null;
-        assert argumentCaptor.getValue().getToken() != null;
+        assertNotNull(argumentCaptor.getValue().getUser());
+        assertNotNull(argumentCaptor.getValue().getToken());
     }
 
     @Test
@@ -151,8 +156,8 @@ public class UserServiceTest
         verify(emailService).sendPasswordReset(any(User.class), anyString(), eq(SERVER_NAME));
         verify(passwordTokenRepository).save(argumentCaptor.capture());
 
-        assert argumentCaptor.getValue().getUser() != null;
-        assert argumentCaptor.getValue().getToken() != null;
+        assertNotNull(argumentCaptor.getValue().getUser());
+        assertNotNull(argumentCaptor.getValue().getToken());
     }
 
     @Test(expected = InvalidPasswordTokenException.class)
@@ -189,7 +194,7 @@ public class UserServiceTest
 
         RecipeUserDetails recipeUserDetails = (RecipeUserDetails) auth.getPrincipal();
 
-        assert recipeUserDetails.getUser().getUsername().equals(VALID_USERNAME);
+        assertEquals(VALID_USERNAME, recipeUserDetails.getUser().getUsername());
     }
 
     @Test
@@ -206,6 +211,24 @@ public class UserServiceTest
         verify(userRepository).save(argumentCaptor.capture());
         verify(passwordTokenRepository).deleteByUser(user);
 
-        assert argumentCaptor.getValue().getPassword().equals(ENCODED_PASSWORD);
+        assertEquals(ENCODED_PASSWORD, argumentCaptor.getValue().getPassword());
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void shouldThrowUserNotFoundExceptionWhenUserDoesNotExist() throws UserNotFoundException
+    {
+        when(userRepository.findByUsername(INVALID_USERNAME)).thenReturn(Optional.empty());
+
+        userService.getUser(INVALID_USERNAME);
+    }
+
+    @Test
+    public void shouldGetUserWhenValidUsernameProvided() throws UserNotFoundException
+    {
+        User user = new User();
+
+        when(userRepository.findByUsername(VALID_USERNAME)).thenReturn(Optional.of(user));
+
+        assertEquals(user, userService.getUser(VALID_USERNAME));
     }
 }
