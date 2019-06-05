@@ -43,7 +43,7 @@ public class RecipeService
         this.recentlyViewedRepository = recentlyViewedRepository;
     }
 
-    // TODO do I need a different TDO for creating a recipe?
+    // TODO do I need a different DTO for creating a recipe?
     public Recipe createRecipe(CreateRecipeDto createRecipeDto)
     {
         User user = authService.getLoggedInUser();
@@ -138,7 +138,7 @@ public class RecipeService
         sharedRecipe.setUserId(user.getId());
         sharedRecipe.setRating(recipe.getRating());
         sharedRecipe.setIngredients(new ArrayList<>(recipe.getIngredients()));
-        sharedRecipe.setSteps(new ArrayList<>());
+        sharedRecipe.setSteps(new ArrayList<>(recipe.getSteps()));
 
         recipeRepository.save(sharedRecipe);
     }
