@@ -6,20 +6,34 @@ import org.mockito.ArgumentCaptor;
 
 import recipeapplication.dto.CreateRecipeDto;
 import recipeapplication.dto.RecipeDto;
-import recipeapplication.model.Recipe;
-import recipeapplication.model.User;
+import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.model.*;
 import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecentlyViewedRepository;
 import recipeapplication.repository.RecipeRepository;
 import recipeapplication.repository.StepRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class RecipeServiceTest
 {
+    private static final String NOTES = "NOTES";
+    private static final String TITLE = "TITLE";
+    private static final Long RATING = 5L;
+    private static final Long SERVES = 2L;
+    private static final String COOK_TIME = "01:21";
+    private static final String PREP_TIME = "02:04";
+    private static final String TOTAL_TIME = "03:25";
+    private static final String DIFFICULTY = "DIFFICULTY";
+
     private RecipeRepository recipeRepository;
     private IngredientRepository ingredientRepository;
     private StepRepository stepRepository;
@@ -63,9 +77,247 @@ public class RecipeServiceTest
 
         assertEquals(recipeDto.getTitle(), recipe.getTitle());
         assertEquals(loggedInUser.getId(), recipe.getUserId());
-        assertEquals(new Long(0L), recipe.getRating());
-        assertEquals(new Long(1L), recipe.getServes());
+        assertEquals(Long.valueOf(0L), recipe.getRating());
+        assertEquals(Long.valueOf(1L), recipe.getServes());
         assertEquals("Medium", recipe.getDifficulty());
         assertEquals("00:00", recipe.getTotalTime());
+    }
+
+    @Test
+    public void shouldGetRecipesSuccessfully()
+    {
+        Recipe recipe1 = new Recipe();
+        Recipe recipe2 = new Recipe();
+
+        List<Recipe> recipes = new ArrayList<>();
+        recipes.add(recipe1);
+        recipes.add(recipe2);
+
+        when(recipeRepository.findByUserId(loggedInUser.getId())).thenReturn(recipes);
+
+        assertEquals(recipes, recipeService.getRecipes());
+    }
+
+    @Test(expected = RecipeDoesNotExistException.class)
+    public void shouldThrowRecipeDoesNotExistExceptionWhenRecipeDoesNotExist() throws Exception
+    {
+        Long recipeId = 2L;
+
+        when(recipeRepository.findByIdAndUserId(recipeId, loggedInUser.getId())).thenReturn(Optional.empty());
+
+        recipeService.getRecipe(recipeId);
+    }
+
+    @Test
+    public void shouldGetRecipeWhenRecipeExists() throws Exception
+    {
+        Recipe recipe = new Recipe();
+        recipe.setId(3L);
+
+        when(recipeRepository.findByIdAndUserId(recipe.getId(), loggedInUser.getId())).thenReturn(Optional.of(recipe));
+
+        assertEquals(recipe, recipeService.getRecipe(recipe.getId()));
+    }
+
+    @Test(expected = RecipeDoesNotExistException.class)
+    public void shouldThrowRecipeDoesNotExistExceptionWhenDeletingRecipeThatDoesNotExist() throws Exception
+    {
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setId(2L);
+
+        when(recipeRepository.findByIdAndUserId(recipeDto.getId(), loggedInUser.getId())).thenReturn(Optional.empty());
+
+        recipeService.deleteRecipe(recipeDto);
+    }
+
+    @Test
+    public void shouldDeleteRecipeSuccessfully() throws Exception
+    {
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setId(3L);
+
+        Recipe recipe = new Recipe();
+        recipe.setId(3L);
+
+        when(recipeRepository.findByIdAndUserId(recipe.getId(), loggedInUser.getId())).thenReturn(Optional.of(recipe));
+
+        recipeService.deleteRecipe(recipeDto);
+
+        verify(recipeRepository).deleteById(recipe.getId());
+    }
+
+    @Test(expected = RecipeDoesNotExistException.class)
+    public void shouldThrowRecipeDoesNotExistExceptionWhenUpdatingRecipeThatDoesNotExist() throws Exception
+    {
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setId(2L);
+
+        when(recipeRepository.findByIdAndUserId(recipeDto.getId(), loggedInUser.getId())).thenReturn(Optional.empty());
+
+        recipeService.updateRecipe(recipeDto);
+    }
+
+    @Test
+    public void shouldUpdateRecipeSuccessfully() throws Exception
+    {
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setNotes(NOTES);
+        recipeDto.setCookTime(COOK_TIME);
+        recipeDto.setPrepTime(PREP_TIME);
+        recipeDto.setDifficulty(DIFFICULTY);
+        recipeDto.setRating(RATING);
+        recipeDto.setServes(SERVES);
+
+        List<String> ingredients = new ArrayList<>();
+        ingredients.add("Ingredient 1");
+        ingredients.add("Ingredient 2");
+
+        List<String> steps = new ArrayList<>();
+        steps.add("Step 1");
+        steps.add("Step 2");
+
+        recipeDto.setIngredients(ingredients);
+        recipeDto.setSteps(steps);
+
+        when(recipeRepository.findByIdAndUserId(recipeDto.getId(), loggedInUser.getId())).thenReturn(Optional.of(new Recipe()));
+
+        ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+
+        recipeService.updateRecipe(recipeDto);
+
+        verify(recipeRepository).save(argumentCaptor.capture());
+        verify(ingredientRepository).deleteByRecipe(any(Recipe.class));
+        verify(stepRepository).deleteByRecipe(any(Recipe.class));
+
+        Recipe recipe = argumentCaptor.getValue();
+
+        assertEquals(NOTES, recipe.getNotes());
+        assertEquals(DIFFICULTY, recipe.getDifficulty());
+        assertEquals(COOK_TIME, recipe.getCookTime());
+        assertEquals(PREP_TIME, recipe.getPrepTime());
+        assertEquals(TOTAL_TIME, recipe.getTotalTime());
+        assertEquals(RATING, recipe.getRating());
+        assertEquals(SERVES, recipe.getServes());
+
+        assertEquals(ingredients.get(0), recipe.getIngredients().get(0).getName());
+        assertEquals(ingredients.get(1), recipe.getIngredients().get(1).getName());
+
+        assertEquals(steps.get(0), recipe.getSteps().get(0).getName());
+        assertEquals(steps.get(1), recipe.getSteps().get(1).getName());
+    }
+
+    @Test(expected = RecipeDoesNotExistException.class)
+    public void shouldThrowRecipeDoesNotExistExceptionWhenSharingRecipeThatDoesNotExist() throws Exception
+    {
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setId(2L);
+
+        when(recipeRepository.findByIdAndUserId(recipeDto.getId(), loggedInUser.getId())).thenReturn(Optional.empty());
+
+        recipeService.shareRecipe(recipeDto, new User());
+    }
+
+    @Test
+    public void shouldShareRecipeSuccessfully() throws Exception
+    {
+        User userToShareWith = new User();
+        userToShareWith.setId(1L);
+
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setId(1L);
+
+        Recipe recipe = new Recipe();
+        recipe.setTitle(TITLE);
+        recipe.setNotes(NOTES);
+        recipe.setCookTime(COOK_TIME);
+        recipe.setPrepTime(PREP_TIME);
+        recipe.setTotalTime(TOTAL_TIME);
+        recipe.setDifficulty(DIFFICULTY);
+        recipe.setRating(RATING);
+        recipe.setServes(SERVES);
+
+        List<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient(recipe, "Ingredient"));
+
+        List<Step> steps = new ArrayList<>();
+        steps.add(new Step(recipe, "Step"));
+
+        recipe.setIngredients(ingredients);
+        recipe.setSteps(steps);
+
+        when(recipeRepository.findByIdAndUserId(recipeDto.getId(), loggedInUser.getId())).thenReturn(Optional.of(recipe));
+
+        ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+
+        recipeService.shareRecipe(recipeDto, userToShareWith);
+
+        verify(recipeRepository).save(argumentCaptor.capture());
+
+        Recipe sharedRecipe = argumentCaptor.getValue();
+
+        assertEquals(TITLE, sharedRecipe.getTitle());
+        assertEquals(NOTES, sharedRecipe.getNotes());
+        assertEquals(DIFFICULTY, sharedRecipe.getDifficulty());
+        assertEquals(COOK_TIME, sharedRecipe.getCookTime());
+        assertEquals(PREP_TIME, sharedRecipe.getPrepTime());
+        assertEquals(TOTAL_TIME, sharedRecipe.getTotalTime());
+        assertEquals(RATING, sharedRecipe.getRating());
+        assertEquals(SERVES, sharedRecipe.getServes());
+        assertEquals(loggedInUser.getUsername() , sharedRecipe.getSharedBy());
+        assertEquals(userToShareWith.getId(), sharedRecipe.getUserId());
+        assertEquals(ingredients, sharedRecipe.getIngredients());
+        assertEquals(steps, sharedRecipe.getSteps());
+    }
+
+    @Test
+    public void shouldAddRecentlyViewedByIfNotMostRecentRecipe()
+    {
+        Recipe mostRecentRecipe = new Recipe();
+        mostRecentRecipe.setId(1L);
+
+        RecentlyViewed recentlyViewed1 = new RecentlyViewed();
+        recentlyViewed1.setRecipe(mostRecentRecipe);
+        recentlyViewed1.setUserId(loggedInUser.getId());
+
+        Recipe aRecentRecipe = new Recipe();
+        mostRecentRecipe.setId(2L);
+
+        RecentlyViewed recentlyViewed2 = new RecentlyViewed();
+        recentlyViewed2.setRecipe(aRecentRecipe);
+        recentlyViewed2.setUserId(loggedInUser.getId());
+
+        List<RecentlyViewed> recentlyViewed = new ArrayList<>();
+        recentlyViewed.add(recentlyViewed1);
+        recentlyViewed.add(recentlyViewed2);
+
+        when(recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(loggedInUser.getId())).thenReturn(recentlyViewed);
+
+        Recipe viewedRecipe =  new Recipe();
+        viewedRecipe.setId(2L);
+        viewedRecipe.setUserId(loggedInUser.getId());
+
+        ArgumentCaptor<RecentlyViewed> argumentCaptor = ArgumentCaptor.forClass(RecentlyViewed.class);
+
+        recipeService.addRecentlyViewed(viewedRecipe);
+
+        verify(recentlyViewedRepository).save(argumentCaptor.capture());
+
+        RecentlyViewed result = argumentCaptor.getValue();
+
+        assertEquals(viewedRecipe, result.getRecipe());
+        assertEquals(loggedInUser.getId(), result.getUserId());
+    }
+
+    @Test
+    public void shouldGetRecentlyViewedSuccessfully()
+    {
+        List<RecentlyViewed> recentlyViewed = new ArrayList<>();
+
+        recentlyViewed.add(new RecentlyViewed());
+        recentlyViewed.add(new RecentlyViewed());
+
+        when(recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(loggedInUser.getId())).thenReturn(recentlyViewed);
+
+        assertEquals(recentlyViewed, recipeService.getRecentlyViewed());
     }
 }

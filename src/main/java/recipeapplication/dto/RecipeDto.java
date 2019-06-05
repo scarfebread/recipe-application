@@ -74,4 +74,44 @@ public class RecipeDto
     {
         this.newUser = newUser;
     }
+
+    public void setNotes(String notes)
+    {
+        this.notes = notes;
+    }
+
+    public void setRating(Long rating)
+    {
+        this.rating = rating;
+    }
+
+    public void setServes(Long serves)
+    {
+        this.serves = serves;
+    }
+
+    public void setCookTime(String cookTime)
+    {
+        this.cookTime = cookTime;
+    }
+
+    public void setPrepTime(String prepTime)
+    {
+        this.prepTime = prepTime;
+    }
+
+    public void setDifficulty(String difficulty)
+    {
+        this.difficulty = difficulty;
+    }
+
+    public void setIngredients(List<String> ingredients)
+    {
+        this.ingredients = ingredients;
+    }
+
+    public void setSteps(List<String> steps)
+    {
+        this.steps = steps;
+    }
 }
