@@ -7,6 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import recipeapplication.model.User;
 import recipeapplication.security.RecipeUserDetails;
 
+import static junit.framework.TestCase.assertEquals;
+
 public class AuthServiceTest
 {
     @Test
@@ -17,6 +19,6 @@ public class AuthServiceTest
         Authentication auth = new UsernamePasswordAuthenticationToken(new RecipeUserDetails(user), null);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        assert user == new AuthService().getLoggedInUser();
+        assertEquals(user, new AuthService().getLoggedInUser());
     }
 }

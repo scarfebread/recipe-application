@@ -68,4 +68,9 @@ public class RecipeUserDetails implements UserDetails
     {
         this.changePasswordAccess = changePasswordAccess;
     }
+
+    public boolean isChangePasswordAccess()
+    {
+        return changePasswordAccess;
+    }
 }

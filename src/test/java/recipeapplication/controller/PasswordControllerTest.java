@@ -13,6 +13,7 @@ import recipeapplication.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class PasswordControllerTest
@@ -47,8 +48,8 @@ public class PasswordControllerTest
 
         ResponseEntity response =  passwordController.createPasswordReset(request, null);
 
-        assert response.getStatusCodeValue() == 201;
-        assert response.getBody().equals("Created");
+        assertEquals(201, response.getStatusCodeValue());
+        assertEquals("Created", response.getBody());
     }
 
     @Test
@@ -60,8 +61,8 @@ public class PasswordControllerTest
 
         ResponseEntity response =  passwordController.createPasswordReset(request, userDto);
 
-        assert response.getStatusCodeValue() == 201;
-        assert response.getBody().equals("Created");
+        assertEquals(201, response.getStatusCodeValue());
+        assertEquals("Created", response.getBody());
 
         verify(userService).createPasswordResetToken(String.format("%s:%s", SERVER_NAME, SERVER_PORT), userDto);
     }
@@ -75,8 +76,8 @@ public class PasswordControllerTest
 
         ResponseEntity response = passwordController.changePassword(new PasswordDto(), errors);
 
-        assert response.getStatusCodeValue() == 400;
-        assert response.getBody().equals("Invalid session");
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("Invalid session", response.getBody());
     }
 
     @Test
@@ -89,8 +90,8 @@ public class PasswordControllerTest
 
         ResponseEntity response = passwordController.changePassword(new PasswordDto(), errors);
 
-        assert response.getStatusCodeValue() == 400;
-        assert response.getBody().equals("Invalid password");
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("Invalid password", response.getBody());
     }
 
     @Test
@@ -107,8 +108,8 @@ public class PasswordControllerTest
 
         ResponseEntity response = passwordController.changePassword(passwordDto, errors);
 
-        assert response.getStatusCodeValue() == 201;
-        assert response.getBody().equals("Created");
+        assertEquals(201, response.getStatusCodeValue());
+        assertEquals("Created", response.getBody());
 
         verify(userService).changePassword(user, PASSWORD);
     }

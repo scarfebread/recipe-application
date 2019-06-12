@@ -7,6 +7,7 @@ import recipeapplication.dto.UserDto;
 import recipeapplication.exception.UsernameExistsException;
 import recipeapplication.service.SignupService;
 
+import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -22,8 +23,8 @@ public class SignupControllerTest
 
         ResponseEntity response = new SignupController(null).signup(null, errors);
 
-        assert response.getStatusCode().value() == 400;
-        assert response.getBody() == "Invalid user information supplied";
+        assertEquals(400, response.getStatusCode().value());
+        assertEquals("Invalid user information supplied", response.getBody());
     }
 
     @Test
@@ -38,8 +39,8 @@ public class SignupControllerTest
 
         ResponseEntity response = new SignupController(signupService).signup(userDto, errors);
 
-        assert response.getStatusCode().value() == 400;
-        assert response.getBody() == "Username already exists";
+        assertEquals(400, response.getStatusCode().value());
+        assertEquals("Username already exists", response.getBody());
     }
 
     @Test
@@ -53,6 +54,6 @@ public class SignupControllerTest
 
         ResponseEntity response = new SignupController(signupService).signup(userDto, errors);
 
-        assert response.getStatusCode().value() == 201;
+        assertEquals(201, response.getStatusCode().value());
     }
 }
