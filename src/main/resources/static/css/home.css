@@ -64,8 +64,7 @@
     margin-bottom: 10px;
 }
 
-/*TODO this is broken*/
-@media (max-width: 500px) {
+@media (max-width: 500px) and (orientation: portrait) {
     .container {
         margin: 0;
         width: 86%;
@@ -77,5 +76,10 @@
 
     .formPadding {
         padding-left: 75px;
+    }
+
+    body {
+        background: url("../images/carrots.jpg") no-repeat;
+        background-size: 1300px auto;
     }
 }

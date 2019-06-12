@@ -81,7 +81,7 @@ body {
 }
 
 /* Mobile specific styles */
-@media (max-width: 500px) {
+@media (max-width: 500px) and (orientation: portrait) {
     .form {
         width: 100%;
     }
@@ -92,6 +92,13 @@ body {
 
     body {
         background: url("../images/carrots.jpg") no-repeat;
-        background-size: 1100px auto;
+        background-size: 1300px auto;
+    }
+}
+
+@media (max-height: 400px) and (orientation: landscape) {
+    body {
+        background: url("../images/carrots.jpg") no-repeat;
+        background-size: 1400px auto;
     }
 }
