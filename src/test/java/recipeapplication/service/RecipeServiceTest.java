@@ -19,9 +19,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class RecipeServiceTest
 {
@@ -280,7 +278,7 @@ public class RecipeServiceTest
         recentlyViewed1.setUserId(loggedInUser.getId());
 
         Recipe aRecentRecipe = new Recipe();
-        mostRecentRecipe.setId(2L);
+        aRecentRecipe.setId(2L);
 
         RecentlyViewed recentlyViewed2 = new RecentlyViewed();
         recentlyViewed2.setRecipe(aRecentRecipe);
@@ -306,6 +304,38 @@ public class RecipeServiceTest
 
         assertEquals(viewedRecipe, result.getRecipe());
         assertEquals(loggedInUser.getId(), result.getUserId());
+    }
+
+    @Test
+    public void shouldNotAddRecentlyViewedByIfMostRecentRecipe()
+    {
+        Recipe mostRecentRecipe = new Recipe();
+        mostRecentRecipe.setId(2L);
+
+        RecentlyViewed recentlyViewed1 = new RecentlyViewed();
+        recentlyViewed1.setRecipe(mostRecentRecipe);
+        recentlyViewed1.setUserId(loggedInUser.getId());
+
+        Recipe aRecentRecipe = new Recipe();
+        aRecentRecipe.setId(1L);
+
+        RecentlyViewed recentlyViewed2 = new RecentlyViewed();
+        recentlyViewed2.setRecipe(aRecentRecipe);
+        recentlyViewed2.setUserId(loggedInUser.getId());
+
+        List<RecentlyViewed> recentlyViewed = new ArrayList<>();
+        recentlyViewed.add(recentlyViewed1);
+        recentlyViewed.add(recentlyViewed2);
+
+        when(recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(loggedInUser.getId())).thenReturn(recentlyViewed);
+
+        Recipe viewedRecipe =  new Recipe();
+        viewedRecipe.setId(2L);
+        viewedRecipe.setUserId(loggedInUser.getId());
+
+        recipeService.addRecentlyViewed(viewedRecipe);
+
+        verify(recentlyViewedRepository, never()).save(any());
     }
 
     @Test
