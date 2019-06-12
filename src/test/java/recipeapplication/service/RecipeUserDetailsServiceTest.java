@@ -8,6 +8,8 @@ import recipeapplication.repository.UserRepository;
 
 import java.util.Optional;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,6 +40,6 @@ public class RecipeUserDetailsServiceTest
     @Test
     public void shouldGetUserForValidUsername()
     {
-        assert service.loadUserByUsername(VALID_USER) != null;
+        assertNotNull(service.loadUserByUsername(VALID_USER));
     }
 }

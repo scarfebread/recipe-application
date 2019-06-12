@@ -12,6 +12,7 @@ import recipeapplication.repository.UserRepository;
 
 import java.util.Optional;
 
+import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -65,8 +66,8 @@ public class SignupServiceTest
 
         verify(userRepository).save(argumentCaptor.capture());
 
-        assert argumentCaptor.getValue().getUsername().equals(USER2);
-        assert argumentCaptor.getValue().getEmail().equals(EMAIL);
-        assert argumentCaptor.getValue().getPassword().equals(ENCODED_PASSWORD);
+        assertEquals(USER2, argumentCaptor.getValue().getUsername());
+        assertEquals(EMAIL, argumentCaptor.getValue().getEmail());
+        assertEquals(ENCODED_PASSWORD, argumentCaptor.getValue().getPassword());
     }
 }

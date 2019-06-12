@@ -6,6 +6,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import recipeapplication.model.User;
 
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -31,17 +33,11 @@ public class EmailServiceTest
 
         SimpleMailMessage mailMessage = argumentCaptor.getValue();
 
-        assert mailMessage.getTo() != null;
-        assert mailMessage.getTo().length == 1;
-        assert mailMessage.getTo()[0].equals(EMAIL);
-
-        assert mailMessage.getFrom() != null;
-        assert mailMessage.getFrom().equals("noreply@thecookingpot.co.uk");
-
-        assert mailMessage.getSubject() != null;
-        assert mailMessage.getSubject().equals("The Cooking Pot - Password reset");
-
-        assert mailMessage.getText() != null;
-        assert mailMessage.getText().equals(String.format("http://%s/changePassword?token=%s", SERVER, TOKEN));
+        assertNotNull(mailMessage.getTo());
+        assertEquals(1, mailMessage.getTo().length);
+        assertEquals(EMAIL, mailMessage.getTo()[0]);
+        assertEquals("noreply@thecookingpot.co.uk", mailMessage.getFrom());
+        assertEquals("The Cooking Pot - Password reset", mailMessage.getSubject());
+        assertEquals(String.format("http://%s/changePassword?token=%s", SERVER, TOKEN), mailMessage.getText());
     }
 }

@@ -3,9 +3,6 @@ package recipeapplication.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import recipeapplication.dto.UserDto;
 import recipeapplication.exception.InvalidPasswordTokenException;
@@ -22,6 +19,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTest
@@ -43,6 +41,7 @@ public class UserServiceTest
     private PasswordEncoder passwordEncoder;
     private AuthService authService;
     private UserService userService;
+    private EmailService emailService;
 
     @Before
     public void setup()
@@ -80,10 +79,10 @@ public class UserServiceTest
 
         when(passwordEncoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
 
-        // TODO this should be mocked out
-        authService = new AuthService();
+        authService = mock(AuthService.class);
+        emailService = mock(EmailService.class);
 
-        userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
+        userService = new UserService(userRepository, passwordTokenRepository, emailService, passwordEncoder, authService);
     }
 
     @Test(expected = UserNotFoundException.class)
@@ -119,9 +118,6 @@ public class UserServiceTest
     @Test
     public void shouldCreatePasswordResetTokenForValidUsername() throws UserNotFoundException
     {
-        PasswordTokenRepository passwordTokenRepository = mock(PasswordTokenRepository.class);
-        EmailService emailService = mock(EmailService.class);
-
         UserService userService = new UserService(userRepository, passwordTokenRepository, emailService, passwordEncoder, authService);
 
         UserDto userDto = new UserDto();
@@ -141,9 +137,6 @@ public class UserServiceTest
     @Test
     public void shouldCreatePasswordResetTokenForValidEmail() throws UserNotFoundException
     {
-        PasswordTokenRepository passwordTokenRepository = mock(PasswordTokenRepository.class);
-        EmailService emailService = mock(EmailService.class);
-
         UserService userService = new UserService(userRepository, passwordTokenRepository, emailService, passwordEncoder, authService);
 
         UserDto userDto = new UserDto();
@@ -181,20 +174,16 @@ public class UserServiceTest
     {
         UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
 
+        ArgumentCaptor<RecipeUserDetails> argumentCaptor = ArgumentCaptor.forClass(RecipeUserDetails.class);
+
         userService.processPasswordResetToken(VALID_TOKEN);
 
-        UsernamePasswordAuthenticationToken auth = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        verify(authService).authenticateUser(argumentCaptor.capture(), eq(Role.CHANGE_PASSWORD));
 
-        assert auth.getAuthorities().size() == 1;
-
-        for (GrantedAuthority grantedAuthority : auth.getAuthorities())
-        {
-            assert grantedAuthority.getAuthority().equals(Role.CHANGE_PASSWORD.toString());
-        }
-
-        RecipeUserDetails recipeUserDetails = (RecipeUserDetails) auth.getPrincipal();
+        RecipeUserDetails recipeUserDetails = argumentCaptor.getValue();
 
         assertEquals(VALID_USERNAME, recipeUserDetails.getUser().getUsername());
+        assertTrue(recipeUserDetails.isChangePasswordAccess());
     }
 
     @Test
@@ -210,6 +199,7 @@ public class UserServiceTest
 
         verify(userRepository).save(argumentCaptor.capture());
         verify(passwordTokenRepository).deleteByUser(user);
+        verify(authService).disablePasswordReset();
 
         assertEquals(ENCODED_PASSWORD, argumentCaptor.getValue().getPassword());
     }
