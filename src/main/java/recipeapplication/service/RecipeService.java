@@ -160,6 +160,8 @@ public class RecipeService
     {
         User user = authService.getLoggedInUser();
 
+        List<RecentlyViewed> fsfsa = recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(user.getId());
+
         return recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(user.getId());
     }
 }
