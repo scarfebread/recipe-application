@@ -28,7 +28,15 @@ public class EmailService
         message.setTo(user.getEmail());
 
         // TODO create an email template
-        message.setText(String.format("http://%s/changePassword?token=%s", serverName, token));
+        String text = String.format(
+                "Dear %s,\n\nA password reset was requested. Please follow the following link to reset your password:\n" +
+                "http://%s/changePassword?token=%s\n\nRegards,\nThe Cooking Pot",
+                user.getUsername(),
+                serverName,
+                token
+        );
+
+        message.setText(text);
 
         mailSender.send(message);
     }

@@ -1,10 +1,17 @@
+let signupEnabled = true;
+
 document.addEventListener("DOMContentLoaded", function(event)
 {
     let signupButton = getElementById('signupButton');
-    let signupInProgress = false;
 
     signupButton.onclick = function ()
     {
+        if (!signupEnabled) {
+            return;
+        }
+
+        signupEnabled = false;
+
         signup();
     }
 });
@@ -71,6 +78,8 @@ function signup()
                     showElement('signupError');
                 });
 
+                signupEnabled = true;
+
                 // TODO throw error instead
                 return false;
             }
@@ -83,6 +92,8 @@ function signup()
         function (error) {
             document.getElementById("signupError").value = error;
             showElement('signupError');
+
+            signupEnabled = true;
         }
     );
 

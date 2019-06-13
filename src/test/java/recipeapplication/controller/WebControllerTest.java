@@ -74,4 +74,17 @@ public class WebControllerTest
     {
         assertEquals("invalid_token.html", controller.changePassword(INVALID_TOKEN));
     }
+
+    @Test
+    public void shouldGetDeletePageWithModelAttributes()
+    {
+        Model model = mock(Model.class);
+
+        String result = controller.deleteAccount(model);
+
+        assertEquals("delete_account.html", result);
+
+        verify(model).addAttribute("user", USERNAME);
+        verify(model).addAttribute("recentlyViewed", recentlyViewed);
+    }
 }

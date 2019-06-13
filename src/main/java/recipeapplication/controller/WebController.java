@@ -111,4 +111,13 @@ public class WebController
             return "invalid_token.html";
         }
     }
+
+    @GetMapping("/deleteAccount")
+    public String deleteAccount(Model model)
+    {
+        model.addAttribute("user", authService.getLoggedInUser().getUsername());
+        model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
+
+        return "delete_account.html";
+    }
 }
