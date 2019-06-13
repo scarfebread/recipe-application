@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Cooking Pot - Delete Account</title>
+    <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/account.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="application/javascript" src="/js/library.js"></script>
 </head>
 <body>
+<div class="container">
+    <div>
+        <h1 class="title">The Cooking Pot</h1>
+        <div class="loggedInUserContainer">
+            <div class="loggedInUser">
+                <label th:text="${user}"></label>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar">
+        <a href="/">Home</a>
+        <div class="dropdown">
+            <button class="dropbtn">Recipes
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div id="recipeDropdown" class="dropdown-content">
+                <label>Recent recipes:</label>
+                <a
+                        th:each="item : ${recentlyViewed}"
+                        th:href="'/recipe?id=' + ${item.recipe.id}"
+                        th:text="${item.recipe.title}">
+                </a>
+            </div>
+        </div>
+        <div class="dropdown active">
+            <button class="dropbtn">Account
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="/logout">Logout</a>
+                <a href="/changePassword">Change password</a>
+                <a href="/deleteAccount">Delete account</a>
+            </div>
+        </div>
+    </div>
+    <div class="form">
+        <h2>Are you sure you want to delete your account?</h2>
+        <label>This cannot be reversed!</label>
+        <button class="button">DELETE</button>
+    </div>
+</div>
 
 </body>
 </html>

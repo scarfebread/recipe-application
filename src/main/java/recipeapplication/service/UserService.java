@@ -110,4 +110,11 @@ public class UserService
 
         return user.get();
     }
+
+    public void deleteAccount()
+    {
+        User user = authService.getLoggedInUser();
+
+        userRepository.delete(user);
+    }
 }

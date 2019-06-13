@@ -221,4 +221,16 @@ public class UserServiceTest
 
         assertEquals(user, userService.getUser(VALID_USERNAME));
     }
+
+    @Test
+    public void shouldDeleteAccountSuccessfully()
+    {
+        User user = new User();
+
+        when(authService.getLoggedInUser()).thenReturn(user);
+
+        userService.deleteAccount();
+
+        verify(userRepository).delete(user);
+    }
 }
