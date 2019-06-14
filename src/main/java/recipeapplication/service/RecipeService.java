@@ -160,8 +160,13 @@ public class RecipeService
     {
         User user = authService.getLoggedInUser();
 
-        List<RecentlyViewed> fsfsa = recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(user.getId());
-
         return recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(user.getId());
+    }
+
+    public void deleteAllRecipes()
+    {
+        User user = authService.getLoggedInUser();
+
+        recipeRepository.deleteAllByUserId(user.getId());
     }
 }

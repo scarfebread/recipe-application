@@ -350,4 +350,12 @@ public class RecipeServiceTest
 
         assertEquals(recentlyViewed, recipeService.getRecentlyViewed());
     }
+
+    @Test
+    public void shouldDeleteAllRecipesSuccessfully()
+    {
+        recipeService.deleteAllRecipes();
+
+        verify(recipeRepository).deleteAllByUserId(loggedInUser.getId());
+    }
 }

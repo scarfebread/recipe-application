@@ -39,4 +39,9 @@ public class AuthService
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
+
+    public void disableUserSession()
+    {
+        SecurityContextHolder.clearContext();
+    }
 }

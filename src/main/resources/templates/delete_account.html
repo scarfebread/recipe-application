@@ -10,51 +10,70 @@
     <link rel="stylesheet" href="/css/account.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="application/javascript" src="/js/library.js"></script>
+    <script type="application/javascript" src="/js/deleteAccount.js"></script>
 </head>
 <body>
-<div class="container">
-    <div>
-        <h1 class="title">The Cooking Pot</h1>
-        <div class="loggedInUserContainer">
-            <div class="loggedInUser">
-                <label th:text="${user}"></label>
-                <a href="/logout">Logout</a>
+    <div class="container">
+        <div>
+            <h1 class="title">The Cooking Pot</h1>
+            <div class="loggedInUserContainer">
+                <div class="loggedInUser">
+                    <label th:text="${user}"></label>
+                    <a href="/logout">Logout</a>
+                </div>
             </div>
+        </div>
+
+        <div class="navbar">
+            <a href="/">Home</a>
+            <div class="dropdown">
+                <button class="dropbtn">Recipes
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div id="recipeDropdown" class="dropdown-content">
+                    <label>Recent recipes:</label>
+                    <a
+                            th:each="item : ${recentlyViewed}"
+                            th:href="'/recipe?id=' + ${item.recipe.id}"
+                            th:text="${item.recipe.title}">
+                    </a>
+                </div>
+            </div>
+            <div class="dropdown active">
+                <button class="dropbtn">Account
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="/logout">Logout</a>
+                    <a href="/changePassword">Change password</a>
+                    <a href="/deleteAccount">Delete account</a>
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <h2>Click here to delete your account</h2>
+            <button id="deleteAccountButton" class="button">DELETE</button>
         </div>
     </div>
 
-    <div class="navbar">
-        <a href="/">Home</a>
-        <div class="dropdown">
-            <button class="dropbtn">Recipes
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div id="recipeDropdown" class="dropdown-content">
-                <label>Recent recipes:</label>
-                <a
-                        th:each="item : ${recentlyViewed}"
-                        th:href="'/recipe?id=' + ${item.recipe.id}"
-                        th:text="${item.recipe.title}">
-                </a>
+    <div id="deleteAccountModal" class="modal">
+        <div class="modal-content">
+            <span class="close modalClose">&times;</span>
+            <div id="preAccountDeleted">
+                <label>Are you sure you want to delete your account and recipes?</label><br>
+                <label>This cannot be reversed!</label><br>
+                <label id="deleteAccountError" class="hidden error"></label>
+                <button id="confirmDeleteButton" class="button confirmationButton">YES</button>
+                <button id="cancelDeleteButton" class="button confirmationButton">NO</button>
             </div>
-        </div>
-        <div class="dropdown active">
-            <button class="dropbtn">Account
-                <i class="fa fa-caret-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="/logout">Logout</a>
-                <a href="/changePassword">Change password</a>
-                <a href="/deleteAccount">Delete account</a>
+            <div id="postAccountDeleted">
+                <label>Account successfully deleted. We have permanently deleted all information you provided.</label>
+                <br><br>
+                <label>You can click <a href="/signup">here</a> to create another account.</label>
+                <label>Alternatively close the page.</label>
             </div>
         </div>
     </div>
-    <div class="form">
-        <h2>Are you sure you want to delete your account?</h2>
-        <label>This cannot be reversed!</label>
-        <button class="button">DELETE</button>
-    </div>
-</div>
 
 </body>
 </html>
