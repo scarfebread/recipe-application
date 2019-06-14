@@ -26,10 +26,20 @@
     margin-top: 10px;
 }
 
+.confirmationButton {
+    width: 42%;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
 .form {
     float: left;
     width: 50%;
     padding-top: 25px;
     padding-left: 25%;
     padding-right: 25%;
+}
+
+#postAccountDeleted {
+    display: none;
 }

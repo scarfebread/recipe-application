@@ -1,3 +1,9 @@
+// Constants
+const HTTP_GET = 'GET';
+const HTTP_POST = 'POST';
+const HTTP_DELETE = 'DELETE';
+const HTTP_PUT = 'PUT';
+
 function showElement(id)
 {
     document.getElementById(id).style.display = "block";
@@ -45,4 +51,33 @@ function removeChildElements(element)
     {
         element.removeChild(element.firstChild);
     }
+}
+
+function callApi(url, method, body, success, failure)
+{
+    fetch (url, {
+        method: method,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(body)
+    }).then(
+        function (response) {
+            if (!response.ok)
+            {
+                response.text().then(function(data) {
+                    failure(data);
+                });
+
+                return;
+            }
+
+            success();
+        }
+    ).catch(
+        function (error) {
+            failure(error);
+        }
+    );
 }

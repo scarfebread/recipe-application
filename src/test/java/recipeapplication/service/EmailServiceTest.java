@@ -16,13 +16,23 @@ public class EmailServiceTest
     private static final String EMAIL = "EMAIL";
     private static final String TOKEN = "TOKEN";
     private static final String SERVER = "SERVER";
+    private static final String USERNAME = "USERNAME";
 
     @Test
     public void shouldSendPasswordResetEmailWithTheCorrectArguments()
     {
+        String expectedText = "Dear USERNAME,\n" +
+                "\n" +
+                "A password reset was requested. Please follow the following link to reset your password:\n" +
+                "http://SERVER/changePassword?token=TOKEN\n" +
+                "\n" +
+                "Regards,\n" +
+                "The Cooking Pot";
+
         JavaMailSender mailSender = mock(JavaMailSender.class);
 
         User user = new User();
+        user.setUsername(USERNAME);
         user.setEmail(EMAIL);
 
         ArgumentCaptor<SimpleMailMessage> argumentCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
@@ -38,6 +48,6 @@ public class EmailServiceTest
         assertEquals(EMAIL, mailMessage.getTo()[0]);
         assertEquals("noreply@thecookingpot.co.uk", mailMessage.getFrom());
         assertEquals("The Cooking Pot - Password reset", mailMessage.getSubject());
-        assertEquals(String.format("http://%s/changePassword?token=%s", SERVER, TOKEN), mailMessage.getText());
+        assertEquals(expectedText, mailMessage.getText());
     }
 }
