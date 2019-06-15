@@ -307,6 +307,30 @@ public class RecipeServiceTest
     }
 
     @Test
+    public void shouldAddRecentlyViewedByIfNoRecentlyViewedRecipes()
+    {
+        Recipe mostRecentRecipe = new Recipe();
+        mostRecentRecipe.setId(1L);
+
+        when(recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(loggedInUser.getId())).thenReturn(new ArrayList<>());
+
+        Recipe viewedRecipe =  new Recipe();
+        viewedRecipe.setId(2L);
+        viewedRecipe.setUserId(loggedInUser.getId());
+
+        ArgumentCaptor<RecentlyViewed> argumentCaptor = ArgumentCaptor.forClass(RecentlyViewed.class);
+
+        recipeService.addRecentlyViewed(viewedRecipe);
+
+        verify(recentlyViewedRepository).save(argumentCaptor.capture());
+
+        RecentlyViewed result = argumentCaptor.getValue();
+
+        assertEquals(viewedRecipe, result.getRecipe());
+        assertEquals(loggedInUser.getId(), result.getUserId());
+    }
+
+    @Test
     public void shouldNotAddRecentlyViewedByIfMostRecentRecipe()
     {
         Recipe mostRecentRecipe = new Recipe();

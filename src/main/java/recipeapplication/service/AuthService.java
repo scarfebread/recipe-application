@@ -23,11 +23,14 @@ public class AuthService
     {
         RecipeUserDetails user = ((RecipeUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
-        user.setChangePasswordAccess(false);
+        if (user.isChangePasswordAccess())
+        {
+            user.setChangePasswordAccess(false);
 
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(user, null
-        ));
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(user, null
+            ));
+        }
     }
 
     public void authenticateUser(RecipeUserDetails userDetails, Role role)

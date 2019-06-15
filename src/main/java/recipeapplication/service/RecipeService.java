@@ -145,9 +145,15 @@ public class RecipeService
 
     public void addRecentlyViewed(Recipe recipe)
     {
-        Recipe mostRecentRecipe = getRecentlyViewed().get(0).getRecipe();
+        Recipe mostRecentRecipe = null;
+        List<RecentlyViewed> recentlyViewedRecipes = getRecentlyViewed();
 
-        if (!mostRecentRecipe.getId().equals(recipe.getId()))
+        if (recentlyViewedRecipes.size() > 0)
+        {
+            mostRecentRecipe = recentlyViewedRecipes.get(0).getRecipe();
+        }
+
+        if (mostRecentRecipe == null || !mostRecentRecipe.getId().equals(recipe.getId()))
         {
             RecentlyViewed recentlyViewed = new RecentlyViewed();
             recentlyViewed.setRecipe(recipe);
