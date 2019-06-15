@@ -1,3 +1,12 @@
+document.addEventListener("DOMContentLoaded", function(event)
+{
+    let changePasswordButton = getElementById('changePasswordButton');
+
+    changePasswordButton.onclick = function () {
+        changePassword();
+    }
+});
+
 function changePassword()
 {
     resetErrors();

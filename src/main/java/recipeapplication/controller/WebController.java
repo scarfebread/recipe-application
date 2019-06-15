@@ -112,6 +112,16 @@ public class WebController
         }
     }
 
+    // TODO this could have a better name
+    @GetMapping("/changePasswordLoggedIn")
+    public String changePasswordLoggedIn(Model model)
+    {
+        model.addAttribute("user", authService.getLoggedInUser().getUsername());
+        model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
+
+        return "change_password_logged_in.html";
+    }
+
     @GetMapping("/deleteAccount")
     public String deleteAccount(Model model)
     {
