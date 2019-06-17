@@ -1,5 +1,7 @@
 package recipeapplication.model;
 
+import recipeapplication.utility.IngredientConverter;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,18 +16,25 @@ public class Ingredient
     @JoinColumn(name = "recipe")
     private Recipe recipe;
 
-    private String name;
+    private String metric;
+    private String imperial;
 
-    public Ingredient(Recipe recipe, String name)
+    public Ingredient(Recipe recipe, String ingredient)
     {
         this.recipe = recipe;
-        this.name = name;
+        this.metric = IngredientConverter.toMetric(ingredient);
+        this.imperial = IngredientConverter.toImperial(ingredient);
     }
 
     public Ingredient() {}
 
-    public String getName()
+    public String getMetric()
     {
-        return name;
+        return metric;
+    }
+
+    public String getImperial()
+    {
+        return imperial;
     }
 }

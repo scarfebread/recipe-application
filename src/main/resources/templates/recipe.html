@@ -132,8 +132,9 @@
             <div class="ingredientContainer">
                 <h2>Ingredients</h2>
                 <table id="ingredientTable">
-                    <tr th:each="ingredient : ${ingredients}">
-                        <td class="ingredients" th:text="${ingredient}"></td>
+                    <tr th:each="ingredient : ${recipe.ingredients}">
+                        <td class="ingredients metric" th:text="${ingredient.metric}"></td>
+                        <td class="ingredients imperial hidden" th:text="${ingredient.imperial}"></td>
                         <td class="ingredientActionColumn recipeTableRow">
                             <span hidden class="close ingredientDelete">&times;</span>
                         </td>
@@ -150,10 +151,10 @@
                 <div class="ingredientFormatContainer">
                     <label class="ingredientFormatLabel">Ingredient format:</label>
                     <label class="switch">
-                        <input type="checkbox" id="togBtn">
+                        <input type="checkbox" id="ingredientFormatButton">
                         <div class="slider round">
-                            <span class="on">METRIC</span>
-                            <span class="off">IMPERIAL</span>
+                            <span class="off">METRIC</span>
+                            <span class="on">IMPERIAL</span>
                         </div>
                     </label>
                 </div>
@@ -162,9 +163,9 @@
             <div class="stepContainer">
                 <h2>Method</h2>
                 <table id="stepTable">
-                    <tr th:each="step,iter : ${steps}">
+                    <tr th:each="step,iter : ${recipe.steps}">
                         <td><h3 th:text="${iter.index + 1 + '.'}"></h3></td>
-                        <td class="recipeTableRow steps" th:text="${step}"></td>
+                        <td class="recipeTableRow steps" th:text="${step.name}"></td>
                         <td class="ingredientActionColumn recipeTableRow">
                             <span hidden class="close ingredientDelete">&times;</span>
                         </td>
