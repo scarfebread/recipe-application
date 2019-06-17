@@ -1,6 +1,7 @@
 let rating;
 let recipeDeleted = false;
 let editRecipe = false;
+let metric = true;
 
 document.addEventListener("DOMContentLoaded", function(event)
 {
@@ -14,6 +15,31 @@ document.addEventListener("DOMContentLoaded", function(event)
     let deleteRecipeModal = getElementById('deleteRecipeModal');
     let closeDeleteRecipeModalButton = getElementById('closeDeleteRecipeModal');
     let deleteRecipeLabel = getElementById('deleteLabel');
+    let ingredientFormatButton = getElementById('ingredientFormatButton');
+
+    ingredientFormatButton.onclick = function()
+    {
+        metric = !metric;
+
+        let displayClass;
+        let hideClass;
+
+        if (metric) {
+            displayClass = 'metric';
+            hideClass = 'imperial';
+        } else {
+            displayClass = 'imperial';
+            hideClass = 'metric';
+        }
+
+        Array.from(document.getElementsByClassName(hideClass)).forEach(function(element) {
+            element.style.display = "none";
+        });
+
+        Array.from(document.getElementsByClassName(displayClass)).forEach(function(element) {
+            element.style.display = "table-cell";
+        });
+    };
 
     shareRecipeButton.onclick = function()
     {

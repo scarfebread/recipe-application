@@ -62,25 +62,10 @@ public class WebController
         {
             Recipe recipe = recipeService.getRecipe(id);
 
-            // TODO I don't think we need to extract the ingredients + steps
-            List<String> ingredients = new ArrayList<>();
-            for (Ingredient ingredient : recipe.getIngredients())
-            {
-                ingredients.add(ingredient.getName());
-            }
-
-            List<String> steps = new ArrayList<>();
-            for (Step step : recipe.getSteps())
-            {
-                steps.add(step.getName());
-            }
-
             recipeService.addRecentlyViewed(recipe);
 
             model.addAttribute("recipe", recipe);
             model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
-            model.addAttribute("ingredients", ingredients);
-            model.addAttribute("steps", steps);
             model.addAttribute("user", authService.getLoggedInUser().getUsername());
 
             return "recipe.html";

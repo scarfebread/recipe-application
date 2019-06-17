@@ -197,8 +197,8 @@ public class RecipeServiceTest
         assertEquals(RATING, recipe.getRating());
         assertEquals(SERVES, recipe.getServes());
 
-        assertEquals(ingredients.get(0), recipe.getIngredients().get(0).getName());
-        assertEquals(ingredients.get(1), recipe.getIngredients().get(1).getName());
+        assertEquals(ingredients.get(0), recipe.getIngredients().get(0).getImperial());
+        assertEquals(ingredients.get(1), recipe.getIngredients().get(1).getMetric());
 
         assertEquals(steps.get(0), recipe.getSteps().get(0).getName());
         assertEquals(steps.get(1), recipe.getSteps().get(1).getName());
