@@ -5,9 +5,11 @@ import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import recipeapplication.dto.CreateRecipeDto;
+import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.exception.UserNotFoundException;
+import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
 import recipeapplication.model.User;
 import recipeapplication.service.RecipeService;
@@ -228,5 +230,41 @@ public class RecipeControllerTest
 
         assertEquals("Created", response.getBody());
         assertEquals(201, response.getStatusCodeValue());
+    }
+
+    @Test
+    public void shouldReturnInvalidIngredientWheInvalidIngredientSupplied()
+    {
+        ResponseEntity response = recipeController.addIngredient(null, errors);
+
+        assertEquals("Invalid ingredient", response.getBody());
+        assertEquals(400, response.getStatusCodeValue());
+    }
+
+    @Test
+    public void shouldReturnRecipeDoesNotExistWhenRecipeDoesNotExist() throws Exception
+    {
+        IngredientDto ingredientDto = new IngredientDto();
+
+        when(recipeService.addIngredient(ingredientDto)).thenThrow(RecipeDoesNotExistException.class);
+
+        ResponseEntity response = recipeController.addIngredient(ingredientDto, noErrors);
+
+        assertEquals("Recipe does not exist", response.getBody());
+        assertEquals(404, response.getStatusCodeValue());
+    }
+
+    @Test
+    public void shouldReturnIngredientWhenIngredientCreatedSuccessfully() throws Exception
+    {
+        IngredientDto ingredientDto = new IngredientDto();
+        Ingredient ingredient = new Ingredient();
+
+        when(recipeService.addIngredient(ingredientDto)).thenReturn(ingredient);
+
+        ResponseEntity response = recipeController.addIngredient(ingredientDto, noErrors);
+
+        assertEquals(ingredient, response.getBody());
+        assertEquals(202, response.getStatusCodeValue());
     }
 }

@@ -5,9 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import recipeapplication.dto.CreateRecipeDto;
+import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.exception.UserNotFoundException;
+import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
 import recipeapplication.model.User;
 import recipeapplication.service.RecipeService;
@@ -88,6 +90,28 @@ public class RecipeController
         }
 
         return ResponseEntity.status(202).body("Updated");
+    }
+
+    @PutMapping(path = "/ingredient")
+    public ResponseEntity addIngredient(@Valid @RequestBody IngredientDto ingredientDto, Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.status(400).body("Invalid ingredient");
+        }
+
+        Ingredient ingredient;
+
+        try
+        {
+            ingredient = recipeService.addIngredient(ingredientDto);
+        }
+        catch (RecipeDoesNotExistException e)
+        {
+            return ResponseEntity.status(404).body("Recipe does not exist");
+        }
+
+        return ResponseEntity.status(202).body(ingredient);
     }
 
     @PostMapping(path = "/share")

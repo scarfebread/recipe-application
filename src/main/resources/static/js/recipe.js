@@ -272,10 +272,19 @@ document.addEventListener("DOMContentLoaded", function(event)
             return;
         }
 
-        addIngredient(newIngredient.value);
-        updateRecipe();
+        let ingredient = {
+            recipe: recipeId,
+            name: newIngredient.value
+        };
 
-        newIngredient.value = '';
+        let success = function(ingredient) {
+            addIngredient(ingredient.metric, ingredient.imperial);
+            newIngredient.value = '';
+        };
+
+        let failure = function(failure) {};
+
+        callApi("/api/recipe/ingredient", HTTP_PUT, ingredient, true, success, failure);
     };
 
     addStepButton.onclick = function ()
@@ -533,16 +542,29 @@ function closeModal(modal)
     getElementById('username').value = '';
 }
 
-function addIngredient(ingredient)
+function addIngredient(metric, imperial)
 {
     let ingredientTable = getElementById('ingredientTable').children[0];
 
     let row = createElement('tr');
 
-    let ingredientColumn = createElement('td');
-    ingredientColumn.innerText = ingredient;
-    ingredientColumn.contentEditable = editRecipe;
-    ingredientColumn.className = 'ingredients';
+    let metricColumn = createElement('td');
+    metricColumn.innerText = metric;
+    metricColumn.contentEditable = editRecipe;
+    metricColumn.classList.add('ingredients');
+    metricColumn.classList.add('metric');
+
+    let imperialColumn = createElement('td');
+    imperialColumn.innerText = imperial;
+    imperialColumn.contentEditable = editRecipe;
+    imperialColumn.classList.add('ingredients');
+    imperialColumn.classList.add('imperial');
+
+    if (metric) {
+        imperialColumn.style.display = "none";
+    } else {
+        metricColumn.style.display = "none";
+    }
 
     let actionColumn = createElement('td');
     actionColumn.className = 'ingredientActionColumn';
@@ -554,12 +576,14 @@ function addIngredient(ingredient)
     deleteButton.style.display = 'inline-block';
 
     actionColumn.appendChild(deleteButton);
-    row.appendChild(ingredientColumn);
+    row.appendChild(metricColumn);
+    row.appendChild(imperialColumn);
     row.appendChild(actionColumn);
 
     ingredientTable.insertBefore(row, ingredientTable.children[ingredientTable.children.length -1]);
 
-    addEditListener(ingredientColumn);
+    addEditListener(metricColumn);
+    addEditListener(imperialColumn);
     addIngredientDeleteListeners();
 }
 
