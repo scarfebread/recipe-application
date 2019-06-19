@@ -22,15 +22,13 @@ public class IngredientConverter
                 {
                     double value = extractValue(word, KILOGRAM);
                     value = value * KILOGRAM_TO_POUND;
-                    value = Math.round(value * 100.0) / 100.0;
-                    words[index] = value + POUND;
+                    words[index] = roundOneDecimalPlace(value) + POUND;
 
                 } else if (word.toLowerCase().endsWith(GRAM))
                 {
                     double value = extractValue(word, GRAM);
                     value = value / OUNCE_TO_GRAM;
-                    value = Math.round(value * 100.0) / 100.0;
-                    words[index] = value + OUNCE;
+                    words[index] = roundOneDecimalPlace(value) + OUNCE;
                 }
             }
             catch (NumberFormatException e)
@@ -57,8 +55,7 @@ public class IngredientConverter
                 {
                     double value = extractValue(word, POUND);
                     value = value / KILOGRAM_TO_POUND;
-                    value = Math.round(value * 100.0) / 100.0;
-                    words[index] = value + KILOGRAM;
+                    words[index] = roundOneDecimalPlace(value) + KILOGRAM;
 
                 } else if (word.toLowerCase().endsWith(OUNCE))
                 {
@@ -82,5 +79,10 @@ public class IngredientConverter
     private static double extractValue(String word, String measurement)
     {
         return Double.parseDouble(word.substring(0, word.length() - measurement.length()));
+    }
+
+    private static double roundOneDecimalPlace(double value)
+    {
+        return Math.round(value * 10.0) / 10.0;
     }
 }
