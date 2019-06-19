@@ -53,7 +53,7 @@ function removeChildElements(element)
     }
 }
 
-function callApi(url, method, body, success, failure)
+function callApi(url, method, body, jsonResponse, success, failure)
 {
     fetch (url, {
         method: method,
@@ -73,7 +73,13 @@ function callApi(url, method, body, success, failure)
                 return;
             }
 
-            success();
+            if (jsonResponse) {
+                response.json().then(function(data) {
+                    success(data);
+                });
+            } else {
+                success()
+            }
         }
     ).catch(
         function (error) {

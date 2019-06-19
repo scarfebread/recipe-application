@@ -42,4 +42,9 @@ public class Ingredient
     {
         this.id = id;
     }
+
+    public Recipe getRecipe()
+    {
+        return recipe;
+    }
 }

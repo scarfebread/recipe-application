@@ -4,6 +4,7 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import recipeapplication.dto.CreateRecipeDto;
+import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.*;
@@ -182,5 +183,14 @@ public class RecipeService
         User user = authService.getLoggedInUser();
 
         recipeRepository.deleteAllByUserId(user.getId());
+    }
+
+    public Ingredient addIngredient(IngredientDto ingredientDto) throws RecipeDoesNotExistException
+    {
+        Ingredient ingredient = new Ingredient(getRecipe(ingredientDto.getRecipe()), ingredientDto.getName());
+
+        ingredientRepository.save(ingredient);
+
+        return ingredient;
     }
 }

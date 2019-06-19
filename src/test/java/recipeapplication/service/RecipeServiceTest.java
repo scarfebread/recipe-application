@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import recipeapplication.dto.CreateRecipeDto;
+import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.*;
@@ -391,5 +392,25 @@ public class RecipeServiceTest
         recipeService.deleteAllRecipes();
 
         verify(recipeRepository).deleteAllByUserId(loggedInUser.getId());
+    }
+
+    @Test
+    public void shouldAddIngredientSuccessfully() throws Exception
+    {
+        IngredientDto ingredientDto = new IngredientDto();
+        ingredientDto.setName("Ingredient");
+        ingredientDto.setRecipe(1L);
+
+        Recipe recipe = new Recipe();
+
+        when(recipeRepository.findByIdAndUserId(ingredientDto.getRecipe(), loggedInUser.getId())).thenReturn(Optional.of(recipe));
+
+        Ingredient ingredient = recipeService.addIngredient(ingredientDto);
+
+        verify(ingredientRepository).save(ingredient);
+
+        assertEquals(recipe, ingredient.getRecipe());
+        assertEquals(ingredientDto.getName(), ingredient.getMetric());
+        assertEquals(ingredientDto.getName(), ingredient.getImperial());
     }
 }

@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
 function deleteAccount()
 {
-    let successCallback = function() {
+    let successCallback = function(success) {
         hideElement('preAccountDeleted');
         showElement('postAccountDeleted');
     };
@@ -53,7 +53,7 @@ function deleteAccount()
         showElement('deleteAccountError');
     };
 
-    callApi('/api/user', HTTP_DELETE, null, successCallback, failureCallback)
+    callApi('/api/user', HTTP_DELETE, null, false, successCallback, failureCallback)
 }
 
 function closeModal(modal)
