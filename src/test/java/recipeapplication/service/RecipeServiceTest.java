@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -37,6 +40,7 @@ public class RecipeServiceTest
     private StepRepository stepRepository;
     private AuthService authService;
     private RecentlyViewedRepository recentlyViewedRepository;
+    private EntityManager entityManager;
     private RecipeService recipeService;
     private User loggedInUser;
 
@@ -48,6 +52,7 @@ public class RecipeServiceTest
         stepRepository = mock(StepRepository.class);
         authService = mock(AuthService.class);
         recentlyViewedRepository = mock(RecentlyViewedRepository.class);
+        entityManager = mock(EntityManager.class);
 
         loggedInUser = new User();
         loggedInUser.setUsername("testuser");
@@ -55,7 +60,7 @@ public class RecipeServiceTest
 
         when(authService.getLoggedInUser()).thenReturn(loggedInUser);
 
-        recipeService = new RecipeService(recipeRepository, ingredientRepository, stepRepository, authService, recentlyViewedRepository);
+        recipeService = new RecipeService(recipeRepository, ingredientRepository, stepRepository, authService, recentlyViewedRepository, entityManager);
     }
 
     @Test
@@ -225,6 +230,7 @@ public class RecipeServiceTest
         recipeDto.setId(1L);
 
         Recipe recipe = new Recipe();
+        recipe.setId(recipeDto.getId());
         recipe.setTitle(TITLE);
         recipe.setNotes(NOTES);
         recipe.setCookTime(COOK_TIME);
@@ -250,9 +256,13 @@ public class RecipeServiceTest
         recipeService.shareRecipe(recipeDto, userToShareWith);
 
         verify(recipeRepository).save(argumentCaptor.capture());
+        verify(entityManager).detach(recipe);
+        verify(entityManager).detach(ingredients.get(0));
+        verify(entityManager).detach(steps.get(0));
 
         Recipe sharedRecipe = argumentCaptor.getValue();
 
+        assertNull(sharedRecipe.getId());
         assertEquals(TITLE, sharedRecipe.getTitle());
         assertEquals(NOTES, sharedRecipe.getNotes());
         assertEquals(DIFFICULTY, sharedRecipe.getDifficulty());

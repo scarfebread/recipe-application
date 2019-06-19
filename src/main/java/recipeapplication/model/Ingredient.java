@@ -37,4 +37,9 @@ public class Ingredient
     {
         return imperial;
     }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 }

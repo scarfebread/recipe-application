@@ -1,5 +1,6 @@
 package recipeapplication.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import recipeapplication.dto.CreateRecipeDto;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 @Service
@@ -27,6 +29,7 @@ public class RecipeService
     private StepRepository stepRepository;
     private AuthService authService;
     private RecentlyViewedRepository recentlyViewedRepository;
+    private EntityManager entityManager;
 
     @Autowired
     public RecipeService(
@@ -34,13 +37,15 @@ public class RecipeService
             IngredientRepository ingredientRepository,
             StepRepository stepRepository,
             AuthService authService,
-            RecentlyViewedRepository recentlyViewedRepository)
+            RecentlyViewedRepository recentlyViewedRepository,
+            EntityManager entityManager)
     {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
         this.stepRepository = stepRepository;
         this.authService = authService;
         this.recentlyViewedRepository = recentlyViewedRepository;
+        this.entityManager = entityManager;
     }
 
     // TODO do I need a different DTO for creating a recipe?
@@ -122,25 +127,28 @@ public class RecipeService
     {
         Recipe recipe = getRecipe(recipeDto.getId());
 
-        User loggedInUser = authService.getLoggedInUser();
+        // Clone the existing recipe
+        Hibernate.initialize(recipe.getIngredients());
+        Hibernate.initialize(recipe.getSteps());
+        entityManager.detach(recipe);
+        recipe.setId(null);
 
-        Recipe sharedRecipe = new Recipe();
+        recipe.setSharedBy(authService.getLoggedInUser().getUsername());
+        recipe.setUserId(user.getId());
 
-        // TODO there should be a better way of cloning a recipe
-        sharedRecipe.setTitle(recipe.getTitle());
-        sharedRecipe.setDifficulty(recipe.getDifficulty());
-        sharedRecipe.setPrepTime(recipe.getPrepTime());
-        sharedRecipe.setCookTime(recipe.getCookTime());
-        sharedRecipe.setTotalTime(recipe.getTotalTime());
-        sharedRecipe.setServes(recipe.getServes());
-        sharedRecipe.setNotes(recipe.getNotes());
-        sharedRecipe.setSharedBy(loggedInUser.getUsername());
-        sharedRecipe.setUserId(user.getId());
-        sharedRecipe.setRating(recipe.getRating());
-        sharedRecipe.setIngredients(new ArrayList<>(recipe.getIngredients()));
-        sharedRecipe.setSteps(new ArrayList<>(recipe.getSteps()));
+        for (Ingredient ingredient : recipe.getIngredients())
+        {
+            entityManager.detach(ingredient);
+            ingredient.setId(null);
+        }
 
-        recipeRepository.save(sharedRecipe);
+        for (Step step : recipe.getSteps())
+        {
+            entityManager.detach(step);
+            step.setId(null);
+        }
+
+        recipeRepository.save(recipe);
     }
 
     public void addRecentlyViewed(Recipe recipe)
