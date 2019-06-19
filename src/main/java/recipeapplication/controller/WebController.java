@@ -1,20 +1,13 @@
 package recipeapplication.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
-import recipeapplication.dto.UserDto;
 import recipeapplication.exception.InvalidPasswordTokenException;
 import recipeapplication.exception.RecipeDoesNotExistException;
-import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
-import recipeapplication.model.Step;
 import recipeapplication.service.AuthService;
 import recipeapplication.service.RecipeService;
 import recipeapplication.service.UserService;
