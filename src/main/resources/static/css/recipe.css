@@ -230,9 +230,13 @@ input:checked + .slider .off {
     width: 100%;
 }
 
-.recipeTableRow {
+/*.recipeTableRow {*/
+    /*padding-top: 10px;*/
+    /*padding-bottom: 10px;*/
+/*}*/
+
+.addIngredient {
     padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .pointer {
@@ -268,7 +272,7 @@ input:checked + .slider .off {
     cursor: pointer;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    width: 100%;
+    width: 95%;
 }
 
 #ratingLabel {

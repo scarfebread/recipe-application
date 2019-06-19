@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
             Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
                 element.contentEditable = false;
-                element.style.width = '100%';
+                element.style.width = '95%';
             });
 
             Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
@@ -395,7 +395,9 @@ function getIngredients()
             break;
         }
 
-        ingredients.push(row.children[0].innerHTML)
+        let tableRow = metric ? 0 : 1;
+
+        ingredients.push(row.children[tableRow].innerHTML)
     }
 
     return ingredients;
@@ -549,13 +551,7 @@ function addIngredient(ingredient)
     deleteButton.classList.add('close');
     deleteButton.classList.add('ingredientDelete');
     deleteButton.innerText = '×';
-    deleteButton.hidden = !editRecipe;
-
-    if (editRecipe) {
-        deleteButton.style.display = 'inline-block';
-    } else {
-        deleteButton.style.display = 'hidden'
-    }
+    deleteButton.style.display = 'inline-block';
 
     actionColumn.appendChild(deleteButton);
     row.appendChild(ingredientColumn);
@@ -584,6 +580,7 @@ function addStep(step)
     stepColumn.contentEditable = editRecipe;
     stepColumn.classList.add('steps');
     stepColumn.classList.add('recipeTableRow');
+    stepColumn.style.width = '78%';
 
     let actionColumn = createElement('td');
     actionColumn.className = 'ingredientActionColumn';
@@ -592,13 +589,7 @@ function addStep(step)
     deleteButton.classList.add('close');
     deleteButton.classList.add('ingredientDelete');
     deleteButton.innerText = '×';
-    deleteButton.hidden = !editRecipe;
-
-    if (editRecipe) {
-        deleteButton.style.display = 'inline-block';
-    } else {
-        deleteButton.style.display = 'hidden'
-    }
+    deleteButton.style.display = 'inline-block';
 
     actionColumn.appendChild(deleteButton);
     row.appendChild(stepNumberColumn);
