@@ -187,10 +187,10 @@ public class RecipeService
 
     public Ingredient addIngredient(IngredientDto ingredientDto) throws RecipeDoesNotExistException
     {
-        Ingredient ingredient = new Ingredient(getRecipe(ingredientDto.getRecipe()), ingredientDto.getName());
+        Recipe recipe = getRecipe(ingredientDto.getRecipe());
 
-        ingredientRepository.save(ingredient);
+        Ingredient ingredient = new Ingredient(recipe, ingredientDto.getName());
 
-        return ingredient;
+        return ingredientRepository.save(ingredient);
     }
 }

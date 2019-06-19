@@ -1,3 +1,5 @@
+let createRecipeEnabled = true;
+
 document.addEventListener("DOMContentLoaded", function(event)
 {
     let modal = getElementById('createRecipeModal');
@@ -69,7 +71,6 @@ function getRecipes()
             {
                 response.text().then(function(data) {
                     // TODO throw error
-                    alert(data);
                 });
 
                 return false;
@@ -159,41 +160,27 @@ function closeModal(modal)
 
 function createRecipe(recipe)
 {
-    fetch ("/api/recipe", {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(recipe)
-    }).then(
-        function (response)
-        {
-            if (response.status !== 201)
-            {
-                response.text().then(function(data) {
-                    getElementById('createRecipeError').innerText = data;
-                    showElement('createRecipeError');
-                });
+    let success = function(response) {
+        getElementById('newRecipe').href = `/recipe?id=${response.id}`;
 
-                return;
-            }
+        hideElement('preRecipeCreated');
+        showElement('postRecipeCreated');
+        getRecipes();
 
-            response.json().then(function(recipe) {
-                getElementById('newRecipe').href = `/recipe?id=${recipe.id}`
-            });
+        createRecipeEnabled = true;
+    };
 
-            hideElement('preRecipeCreated');
-            showElement('postRecipeCreated');
-            getRecipes();
-        }
-    ).catch(
-        function (error)
-        {
-            getElementById("createRecipeError").value = error;
-            showElement('createRecipeError');
-        }
-    );
+    let failure = function(failure) {
+        getElementById('createRecipeError').innerText = failure;
+        showElement('createRecipeError');
+
+        createRecipeEnabled = true;
+    };
+
+    if (createRecipeEnabled) {
+        createRecipeEnabled = false;
+        callApi("/api/recipe", HTTP_POST, recipe, true, success, failure);
+    }
 }
 
 function enableAutocomplete(recipes)

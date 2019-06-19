@@ -259,6 +259,8 @@ public class RecipeControllerTest
     {
         IngredientDto ingredientDto = new IngredientDto();
         Ingredient ingredient = new Ingredient();
+        ingredient.setImperial("imperial");
+        ingredient.setMetric("metric");
 
         when(recipeService.addIngredient(ingredientDto)).thenReturn(ingredient);
 
