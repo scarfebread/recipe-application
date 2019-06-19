@@ -402,15 +402,19 @@ public class RecipeServiceTest
         ingredientDto.setRecipe(1L);
 
         Recipe recipe = new Recipe();
+        Ingredient ingredient = new Ingredient();
+        ingredient.setRecipe(recipe);
+        ingredient.setMetric("metric");
+        ingredient.setImperial("imperial");
 
         when(recipeRepository.findByIdAndUserId(ingredientDto.getRecipe(), loggedInUser.getId())).thenReturn(Optional.of(recipe));
+        when(ingredientRepository.save(any())).thenReturn(ingredient);
 
-        Ingredient ingredient = recipeService.addIngredient(ingredientDto);
+        Ingredient result = recipeService.addIngredient(ingredientDto);
 
-        verify(ingredientRepository).save(ingredient);
+        verify(ingredientRepository).save(any(Ingredient.class));
 
-        assertEquals(recipe, ingredient.getRecipe());
-        assertEquals(ingredientDto.getName(), ingredient.getMetric());
-        assertEquals(ingredientDto.getName(), ingredient.getImperial());
+        assertEquals(ingredient.getMetric(), result.getMetric());
+        assertEquals(ingredient.getImperial(), result.getImperial());
     }
 }

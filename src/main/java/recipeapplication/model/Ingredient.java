@@ -43,8 +43,18 @@ public class Ingredient
         this.id = id;
     }
 
-    public Recipe getRecipe()
+    public void setMetric(String metric)
     {
-        return recipe;
+        this.metric = metric;
+    }
+
+    public void setImperial(String imperial)
+    {
+        this.imperial = imperial;
+    }
+
+    public void setRecipe(Recipe recipe)
+    {
+        this.recipe = recipe;
     }
 }
