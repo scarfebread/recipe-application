@@ -24,17 +24,15 @@ function passwordReset()
         return false;
     }
 
-    fetch ("/api/password_reset", {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(user)
-    }).then(
-        function (response) {
-            hideElement('passwordResetForm');
-            showElement('postPasswordResetDisplay');
-        }
-    );
+    let success = function() {
+        hideElement('passwordResetForm');
+        showElement('postPasswordResetDisplay');
+    };
+
+    let failure = function() {
+        hideElement('passwordResetForm');
+        showElement('postPasswordResetDisplay');
+    };
+
+    callApi("/api/password_reset", HTTP_POST, user, false, success, failure);
 }

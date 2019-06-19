@@ -62,42 +62,19 @@ function signup()
         email: email
     };
 
-    fetch ("/api/signup", {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(user)
-    }).then(
-        function (response) {
-            if (response.status !== 201)
-            {
-                response.text().then(function(data) {
-                    document.getElementById("signupError").innerText = data;
-                    showElement('signupError');
-                });
+    let success = function() {
+        hideElement('preSignupDisplay');
+        showElement('postSignupDisplay');
+    };
 
-                signupEnabled = true;
+    let failure = function(failure) {
+        document.getElementById("signupError").innerText = failure;
+        showElement('signupError');
 
-                // TODO throw error instead
-                return false;
-            }
+        signupEnabled = true;
+    };
 
-            hideElement('preSignupDisplay');
-            showElement('postSignupDisplay');
-            return true;
-        }
-    ).catch(
-        function (error) {
-            document.getElementById("signupError").value = error;
-            showElement('signupError');
-
-            signupEnabled = true;
-        }
-    );
-
-    return false;
+    callApi("/api/signup", HTTP_POST, user, false, success, failure);
 }
 
 function resetErrors()

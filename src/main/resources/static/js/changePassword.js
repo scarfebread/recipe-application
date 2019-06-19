@@ -18,20 +18,17 @@ function changePassword()
 
     let isValid = true;
 
-    if (!validatePasswordMatches(password, repeatPassword))
-    {
+    if (!validatePasswordMatches(password, repeatPassword)) {
         showElement('passwordsDoNotMatchError');
         isValid = false;
     }
 
-    if (!validateStringLength(password, 5))
-    {
+    if (!validateStringLength(password, 5)) {
         showElement('passwordTooShortError');
         isValid = false;
     }
 
-    if (!isValid)
-    {
+    if (!isValid) {
         return false;
     }
 
@@ -39,37 +36,17 @@ function changePassword()
         password: password
     };
 
-    fetch ("/api/change_password", {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(passwordDto)
-    }).then(
-        function (response) {
-            if (response.status !== 201)
-            {
-                response.text().then(function(data) {
-                    document.getElementById("passwordChangeError").innerText = data;
-                    showElement('passwordChangeError');
-                });
+    let success = function() {
+        hideElement('preChangePasswordDisplay');
+        showElement('postChangePasswordDisplay');
+    };
 
-                return false;
-            }
+    let failure = function(failure) {
+        document.getElementById("passwordChangeError").innerText = failure;
+        showElement('passwordChangeError');
+    };
 
-            hideElement('preChangePasswordDisplay');
-            showElement('postChangePasswordDisplay');
-            return true;
-        }
-    ).catch(
-        function (error) {
-            document.getElementById("passwordChangeError").value = error;
-            showElement('passwordChangeError');
-        }
-    );
-
-    return false;
+    callApi("/api/change_password", HTTP_POST, passwordDto, false, success, failure);
 }
 
 function resetErrors()
