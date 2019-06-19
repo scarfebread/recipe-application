@@ -55,17 +55,21 @@ function removeChildElements(element)
 
 function callApi(url, method, body, jsonResponse, success, failure)
 {
-    fetch (url, {
+    let request = {
         method: method,
         headers: {
             "Content-Type": "application/json"
         },
-        credentials: "same-origin",
-        body: JSON.stringify(body)
-    }).then(
+        credentials: "same-origin"
+    };
+
+    if (body) {
+        request.body = JSON.stringify(body);
+    }
+
+    fetch (url, request).then(
         function (response) {
-            if (!response.ok)
-            {
+            if (!response.ok) {
                 response.text().then(function(data) {
                     failure(data);
                 });

@@ -60,34 +60,16 @@ document.addEventListener("DOMContentLoaded", function(event)
 
 function getRecipes()
 {
-    fetch ("/api/recipe", {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(
-        function (response) {
-            if (response.status !== 200)
-            {
-                response.text().then(function(data) {
-                    // TODO throw error
-                });
+    let success = function(recipes) {
+        displayRecipes(recipes);
+        enableAutocomplete(recipes);
+    };
 
-                return false;
-            }
+    let failure = function(failure) {
+        // TODO show error banner
+    };
 
-            response.json().then(function(recipes) {
-                displayRecipes(recipes);
-
-                enableAutocomplete(recipes);
-            });
-        }
-    ).catch(
-        function (error) {
-            alert(error);
-            // TODO show error banner
-        }
-    );
+    callApi("/api/recipe", HTTP_GET, null, true, success, failure);
 }
 
 function displayRecipes(recipes)

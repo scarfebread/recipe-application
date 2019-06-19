@@ -367,29 +367,13 @@ function updateRecipe()
         steps: getSteps()
     };
 
-    fetch ("/api/recipe", {
-        method: 'PUT',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(recipe)
-    }).then(
-        function (response) {
-            if (response.status !== 202)
-            {
-                response.text().then(function(data) {
-                    // TODO throw error
-                });
+    let success = function() {};
 
-                return false;
-            }
-        }
-    ).catch(
-        function (error) {
-            // TODO show error banner
-        }
-    );
+    let failure = function(failure) {
+        // TODO show error banner
+    };
+
+    callApi("/api/recipe", HTTP_PUT, recipe, false, success, failure);
 }
 
 function getIngredients()
@@ -439,74 +423,38 @@ function shareRecipe(newUser)
         newUser: newUser
     };
 
-    fetch ("/api/recipe/share", {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(recipe)
-    }).then(
-        function (response) {
-            if (response.status !== 201)
-            {
-                response.text().then(function(data) {
-                    getElementById('shareRecipeError').innerText = data;
-                    showElement('shareRecipeError');
-                });
+    let success = function() {
+        hideElement('preShare');
+        showElement('postShare');
+    };
 
-                return;
-            }
+    let failure = function(failure) {
+        getElementById('shareRecipeError').innerText = failure;
+        showElement('shareRecipeError');
+    };
 
-            hideElement('preShare');
-            showElement('postShare');
-        }
-    ).catch(
-        function (error) {
-            getElementById('shareRecipeError').innerText = error;
-            showElement('shareRecipeError');
-        }
-    );
+    callApi("/api/recipe/share", HTTP_POST, recipe, false, success, failure);
 }
 
-// TODO there's a lot of duplicate code with the fetch api. This should be refactored.
 function deleteRecipe()
 {
     let recipe = {
         id: recipeId
     };
 
-    fetch ("/api/recipe", {
-        method: 'DELETE',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "same-origin",
-        body: JSON.stringify(recipe)
-    }).then(
-        function (response) {
-            // TODO specifically checking status codes will break if the controller was changed
-            if (response.status !== 202)
-            {
-                response.text().then(function(data) {
-                    getElementById('deleteRecipeError').innerText = data;
-                    showElement('deleteRecipeError');
-                });
+    let success = function() {
+        hideElement('preDelete');
+        showElement('postDelete');
 
-                return;
-            }
+        recipeDeleted = true;
+    };
 
-            hideElement('preDelete');
-            showElement('postDelete');
+    let failure = function(failure) {
+        getElementById('deleteRecipeError').innerText = failure;
+        showElement('deleteRecipeError');
+    };
 
-            recipeDeleted = true;
-        }
-    ).catch(
-        function (error) {
-            getElementById('deleteRecipeError').innerText = error;
-            showElement('deleteRecipeError');
-        }
-    );
+    callApi("/api/recipe", HTTP_DELETE, recipe, false, success, failure);
 }
 
 function displayRating()
