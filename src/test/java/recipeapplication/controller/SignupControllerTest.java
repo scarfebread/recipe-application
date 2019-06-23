@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import recipeapplication.dto.UserDto;
+import recipeapplication.exception.EmailExistsException;
 import recipeapplication.exception.UsernameExistsException;
 import recipeapplication.service.SignupService;
 
@@ -41,6 +42,22 @@ public class SignupControllerTest
 
         assertEquals(400, response.getStatusCode().value());
         assertEquals("Username already exists", response.getBody());
+    }
+
+    @Test
+    public void shouldReturn400WhenEmailAlreadyExists() throws Exception
+    {
+        UserDto userDto = new UserDto();
+        Errors errors = mock(Errors.class);
+        SignupService signupService = mock(SignupService.class);
+
+        when(errors.hasErrors()).thenReturn(false);
+        doThrow(new EmailExistsException()).when(signupService).registerNewUser(userDto);
+
+        ResponseEntity response = new SignupController(signupService).signup(userDto, errors);
+
+        assertEquals(400, response.getStatusCode().value());
+        assertEquals("Email address already exists", response.getBody());
     }
 
     @Test

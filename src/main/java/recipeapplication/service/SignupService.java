@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import recipeapplication.dto.UserDto;
+import recipeapplication.exception.EmailExistsException;
 import recipeapplication.exception.UsernameExistsException;
 import recipeapplication.model.User;
 import recipeapplication.repository.UserRepository;
@@ -21,11 +22,16 @@ public class SignupService
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void registerNewUser(UserDto userDto) throws UsernameExistsException
+    public void registerNewUser(UserDto userDto) throws UsernameExistsException, EmailExistsException
     {
         if (usernameAlreadyRegistered(userDto.getUsername()))
         {
             throw new UsernameExistsException();
+        }
+
+        if (emailAlreadyRegistered(userDto.getEmail()))
+        {
+            throw new EmailExistsException();
         }
 
         User user = new User();
@@ -42,5 +48,10 @@ public class SignupService
     private boolean usernameAlreadyRegistered(String username)
     {
         return (userRepository.findByUsername(username).isPresent());
+    }
+
+    private boolean emailAlreadyRegistered(String email)
+    {
+        return (userRepository.findByEmail(email).isPresent());
     }
 }

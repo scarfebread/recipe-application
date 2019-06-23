@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import recipeapplication.exception.EmailExistsException;
 import recipeapplication.exception.UsernameExistsException;
 import recipeapplication.service.SignupService;
 import recipeapplication.dto.UserDto;
@@ -34,9 +35,13 @@ public class SignupController
         {
             signupService.registerNewUser(userDto);
         }
-        catch (UsernameExistsException e)
+        catch (UsernameExistsException usernameExists)
         {
             return ResponseEntity.status(400).body("Username already exists");
+        }
+        catch (EmailExistsException emailExists)
+        {
+            return ResponseEntity.status(400).body("Email address already exists");
         }
 
         // TODO enable auto login after signup
