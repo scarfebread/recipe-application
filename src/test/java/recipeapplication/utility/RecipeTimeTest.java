@@ -35,4 +35,16 @@ public class RecipeTimeTest
     {
         assertEquals("23:59", RecipeTime.combineCookAndPrepTime("23:59", ""));
     }
+
+    @Test
+    public void shouldIncrementHourAfter59Minutes()
+    {
+        assertEquals("01:20", RecipeTime.combineCookAndPrepTime("00:35", "00:45"));
+    }
+
+    @Test
+    public void shouldHandleZeroMinutes()
+    {
+        assertEquals("03:00", RecipeTime.combineCookAndPrepTime("01:00", "02:00"));
+    }
 }
