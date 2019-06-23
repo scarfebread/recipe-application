@@ -42,7 +42,7 @@ function changePassword()
     };
 
     let failure = function(failure) {
-        document.getElementById("passwordChangeError").innerText = failure;
+        getElementById("passwordChangeError").innerText = failure;
         showElement('passwordChangeError');
     };
 
