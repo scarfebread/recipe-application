@@ -55,13 +55,13 @@ CREATE TABLE recipe.inventory (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES recipe.users(id),
   ingredient VARCHAR NOT NULL,
-  measurement VARCHAR NOT NULL
+  quantity VARCHAR NOT NULL
 );
 
 CREATE TABLE recipe.shopping_list (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES recipe.users(id),
   ingredient VARCHAR NOT NULL,
-  measurement VARCHAR NOT NULL,
+  quantity VARCHAR NOT NULL,
   inventory_id INT REFERENCES recipe.inventory(id)
 );
