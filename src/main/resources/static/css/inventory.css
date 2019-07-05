@@ -17,8 +17,77 @@
     text-align: left;
 }
 
-.title {
+.inventoryTitle {
     margin-top: 0;
     font-size: 32px;
-    padding-left: 5%;
+    padding-left: 10px;
+}
+
+.shoppingCartIcon {
+    font-size:24px;
+    color: #aaaaaa;;
+    font-weight: bold;
+}
+
+.shoppingCartIcon:hover,
+.shoppingCartIcon:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#shoppingCartIcon {
+    font-size:24px;
+}
+
+.inventoryItem {
+    float: left;
+    margin: 7px 7px 7px 7px;
+}
+
+.addIngredientContainer {
+    padding-top: 15px;
+    width: 330px;
+    clear: both;
+    margin:auto;
+}
+
+.itemAndQuantity {
+    float: left;
+    margin-right: 10px;
+}
+
+.cartAndDelete {
+    float: left;
+}
+
+
+.button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 60px;
+    width: 75px;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+.input {
+    height: 25px;
+}
+
+.searchContainer {
+    float: left;
+    width: 50%;
+    padding-top: 25px;
+    padding-left: 25%;
+    padding-right: 25%;
+}
+
+.addIngredientLabel {
+    height: 25px;
+    margin-bottom: 3px;
+    margin-top: 3px;
+    display: block;
 }
