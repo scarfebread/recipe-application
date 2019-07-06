@@ -3,8 +3,8 @@ package recipeapplication.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "inventory")
-public class InventoryItem
+@Table(name = "shopping_list")
+public class ShoppingListItem
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +13,7 @@ public class InventoryItem
     private Long userId;
     private String ingredient;
     private String quantity;
+    private Long inventoryId;
 
     public Long getId()
     {
