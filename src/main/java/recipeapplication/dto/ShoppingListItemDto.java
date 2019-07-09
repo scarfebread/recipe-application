@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 public class ShoppingListItemDto
 {
     private Long id;
-    
 
     @NotNull
     @NotEmpty
@@ -15,6 +14,8 @@ public class ShoppingListItemDto
     @NotNull
     @NotEmpty
     private String quantity;
+
+    private Long inventoryItemId;
 
     public Long getId()
     {
@@ -44,5 +45,15 @@ public class ShoppingListItemDto
     public void setQuantity(String quantity)
     {
         this.quantity = quantity;
+    }
+
+    public Long getInventoryItemId()
+    {
+        return inventoryItemId;
+    }
+
+    public void setInventoryItemId(Long inventoryItemId)
+    {
+        this.inventoryItemId = inventoryItemId;
     }
 }

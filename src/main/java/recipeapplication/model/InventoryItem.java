@@ -48,4 +48,9 @@ public class InventoryItem
     {
         this.quantity = quantity;
     }
+
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
 }
