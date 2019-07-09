@@ -96,4 +96,56 @@ public class InventoryControllerTest
         assertEquals(202, responseEntity.getStatusCodeValue());
         assertEquals("Deleted successfully", responseEntity.getBody());
     }
+
+    @Test
+    public void shouldReturnInventoryItemNotFoundWhenDoesNotExistWhenAddingToShoppingList() throws Exception
+    {
+        InventoryItemDto inventoryItemDto = new InventoryItemDto();
+
+        doThrow(InventoryItemNotFoundException.class).when(inventoryService).addToShoppingList(inventoryItemDto);
+
+        ResponseEntity responseEntity = inventoryController.addToShoppingList(inventoryItemDto);
+
+        assertEquals(404, responseEntity.getStatusCodeValue());
+        assertEquals("Inventory item not found", responseEntity.getBody());
+    }
+
+    @Test
+    public void shouldReturnCreatedWhenAddedToShoppingListWithValidInventoryItem() throws Exception
+    {
+        InventoryItemDto inventoryItemDto = new InventoryItemDto();
+
+        ResponseEntity responseEntity = inventoryController.addToShoppingList(inventoryItemDto);
+
+        verify(inventoryService).addToShoppingList(inventoryItemDto);
+
+        assertEquals(201, responseEntity.getStatusCodeValue());
+        assertEquals("Created", responseEntity.getBody());
+    }
+
+    @Test
+    public void shouldReturnInventoryItemNotFoundWhenDoesNotExistWhenRemovingFromShoppingList() throws Exception
+    {
+        InventoryItemDto inventoryItemDto = new InventoryItemDto();
+
+        doThrow(InventoryItemNotFoundException.class).when(inventoryService).removeFromShoppingList(inventoryItemDto);
+
+        ResponseEntity responseEntity = inventoryController.removeFromShoppingList(inventoryItemDto);
+
+        assertEquals(404, responseEntity.getStatusCodeValue());
+        assertEquals("Not found", responseEntity.getBody());
+    }
+
+    @Test
+    public void shouldReturnCreatedWhenRemovingFromShoppingListWithValidInventoryItem() throws Exception
+    {
+        InventoryItemDto inventoryItemDto = new InventoryItemDto();
+
+        ResponseEntity responseEntity = inventoryController.removeFromShoppingList(inventoryItemDto);
+
+        verify(inventoryService).removeFromShoppingList(inventoryItemDto);
+
+        assertEquals(202, responseEntity.getStatusCodeValue());
+        assertEquals("Deleted successfully", responseEntity.getBody());
+    }
 }

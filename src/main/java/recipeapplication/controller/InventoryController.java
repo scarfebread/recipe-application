@@ -6,6 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.exception.InventoryItemNotFoundException;
+import recipeapplication.exception.ShoppingListItemNotFoundException;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.service.InventoryService;
 
@@ -52,6 +53,36 @@ public class InventoryController
         catch (InventoryItemNotFoundException e)
         {
             return ResponseEntity.status(404).body("Inventory item not found");
+        }
+
+        return ResponseEntity.status(202).body("Deleted successfully");
+    }
+
+    @PostMapping("/shoppingList")
+    public ResponseEntity addToShoppingList(InventoryItemDto inventoryItemDto)
+    {
+        try
+        {
+            inventoryService.addToShoppingList(inventoryItemDto);
+        }
+        catch (InventoryItemNotFoundException e)
+        {
+            return ResponseEntity.status(404).body("Inventory item not found");
+        }
+
+        return ResponseEntity.status(201).body("Created");
+    }
+
+    @DeleteMapping("/shoppingList")
+    public ResponseEntity removeFromShoppingList(InventoryItemDto inventoryItemDto)
+    {
+        try
+        {
+            inventoryService.removeFromShoppingList(inventoryItemDto);
+        }
+        catch (InventoryItemNotFoundException | ShoppingListItemNotFoundException e)
+        {
+            return ResponseEntity.status(404).body("Not found");
         }
 
         return ResponseEntity.status(202).body("Deleted successfully");
