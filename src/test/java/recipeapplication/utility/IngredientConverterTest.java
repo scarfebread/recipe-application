@@ -3,6 +3,7 @@ package recipeapplication.utility;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNull;
 
 public class IngredientConverterTest
 {
@@ -58,5 +59,17 @@ public class IngredientConverterTest
         String output = "Chicken thigh bkg";
 
         assertEquals(output, IngredientConverter.toImperial(input));
+    }
+
+    @Test
+    public void shouldReturnNullIfInputIsNullForToImperial()
+    {
+        assertNull(IngredientConverter.toImperial(null));
+    }
+
+    @Test
+    public void shouldReturnNullIfInputIsNullForToMetric()
+    {
+        assertNull(IngredientConverter.toMetric(null));
     }
 }

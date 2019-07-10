@@ -50,3 +50,21 @@ input {
     margin-bottom: 5px;
     text-align: left;
 }
+
+@media (max-width: 500px) and (orientation: portrait) {
+    .container {
+        margin: 0;
+        width: 86%;
+    }
+
+    body {
+        background: url("../images/carrots.jpg") no-repeat;
+        background-size: 1300px auto;
+    }
+
+    .form {
+        width: 76%;
+        padding-left: 12%;
+        padding-right: 12%;
+    }
+}

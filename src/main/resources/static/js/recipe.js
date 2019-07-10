@@ -218,14 +218,19 @@ document.addEventListener("DOMContentLoaded", function(event)
             getElementById('addIngredientRow').hidden = false;
             getElementById('addStepRow').hidden = false;
 
-            Array.from(document.getElementsByClassName('ingredients')).forEach(function(element) {
+            Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
                 element.contentEditable = true;
-                element.style.width = '82%';
+                element.style.width = '45%';
+            });
+
+            Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
+                element.contentEditable = true;
+                element.style.width = '28%';
             });
 
             Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
                 element.contentEditable = true;
-                element.style.width = '78%';
+                element.style.width = '70%';
             });
 
             Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
@@ -244,9 +249,14 @@ document.addEventListener("DOMContentLoaded", function(event)
             getElementById('addIngredientRow').hidden = true;
             getElementById('addStepRow').hidden = true;
 
-            Array.from(document.getElementsByClassName('ingredients')).forEach(function(element) {
+            Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
                 element.contentEditable = false;
-                element.style.width = '100%';
+                element.style.width = '60%';
+            });
+
+            Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
+                element.contentEditable = false;
+                element.style.width = '40%';
             });
 
             Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
@@ -265,21 +275,24 @@ document.addEventListener("DOMContentLoaded", function(event)
 
     addIngredientButton.onclick = function ()
     {
-        let newIngredient = getElementById('newIngredient');
+        let ingredientDescription = getElementById('ingredientDescription');
+        let ingredientQuantity = getElementById('ingredientQuantity');
 
-        if (!validateStringLength(newIngredient.value, 1))
+        if (!validateStringLength(ingredientDescription.value, 1))
         {
             return;
         }
 
         let ingredient = {
             recipe: recipeId,
-            name: newIngredient.value
+            description: ingredientDescription.value,
+            quantity: ingredientQuantity.value
         };
 
         let success = function(ingredient) {
-            addIngredient(ingredient.metric, ingredient.imperial);
-            newIngredient.value = '';
+            addIngredient(ingredient.description, ingredient.metric, ingredient.imperial);
+            ingredientDescription.value = '';
+            ingredientQuantity.value = '';
         };
 
         let failure = function(failure) {};
@@ -309,7 +322,11 @@ document.addEventListener("DOMContentLoaded", function(event)
 
 function addIngredientEditListeners()
 {
-    Array.from(document.getElementsByClassName('ingredients')).forEach(function(element) {
+    Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
+        addEditListener(element);
+    });
+
+    Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
         addEditListener(element);
     });
 }
@@ -382,15 +399,17 @@ function getIngredients()
 
     let ingredientTable = getElementById('ingredientTable');
 
-    for (let i = 0, row; row = ingredientTable.rows[i]; i++) {
-        if (i === ingredientTable.rows.length -1)
-        {
+    for (let i = 1, row; row = ingredientTable.rows[i]; i++) {
+        if (i === ingredientTable.rows.length -1) {
             break;
         }
 
-        let tableRow = metric ? 0 : 1;
+        let tableRow = metric ? 1 : 2;
 
-        ingredients.push(row.children[tableRow].innerHTML)
+        ingredients.push({
+            description: row.children[0].innerHTML,
+            quantity: row.children[tableRow].innerHTML
+        });
     }
 
     return ingredients;
@@ -490,22 +509,28 @@ function closeModal(modal)
     getElementById('username').value = '';
 }
 
-function addIngredient(metric, imperial)
+function addIngredient(description, metric, imperial)
 {
     let ingredientTable = getElementById('ingredientTable').children[0];
 
     let row = createElement('tr');
 
+    let descriptionColumn = createElement('td');
+    descriptionColumn.innerText = description;
+    descriptionColumn.contentEditable = editRecipe;
+    descriptionColumn.classList.add('ingredientColumn');
+    descriptionColumn.classList.add('metric');
+
     let metricColumn = createElement('td');
     metricColumn.innerText = metric;
     metricColumn.contentEditable = editRecipe;
-    metricColumn.classList.add('ingredients');
+    metricColumn.classList.add('quantityColumn');
     metricColumn.classList.add('metric');
 
     let imperialColumn = createElement('td');
     imperialColumn.innerText = imperial;
     imperialColumn.contentEditable = editRecipe;
-    imperialColumn.classList.add('ingredients');
+    imperialColumn.classList.add('quantityColumn');
     imperialColumn.classList.add('imperial');
 
     if (metric) {
@@ -524,12 +549,14 @@ function addIngredient(metric, imperial)
     deleteButton.style.display = 'inline-block';
 
     actionColumn.appendChild(deleteButton);
+    row.appendChild(descriptionColumn);
     row.appendChild(metricColumn);
     row.appendChild(imperialColumn);
     row.appendChild(actionColumn);
 
     ingredientTable.insertBefore(row, ingredientTable.children[ingredientTable.children.length -1]);
 
+    addEditListener(descriptionColumn);
     addEditListener(metricColumn);
     addEditListener(imperialColumn);
     addIngredientDeleteListeners();

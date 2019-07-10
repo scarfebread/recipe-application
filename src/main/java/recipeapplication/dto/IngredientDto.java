@@ -7,19 +7,31 @@ public class IngredientDto
 {
     @NotNull
     @NotEmpty
-    private String name;
+    private String description;
+
+    private String quantity;
 
     @NotNull
     private Long recipe;
 
-    public String getName()
+    public String getDescription()
     {
-        return name;
+        return description;
     }
 
-    public void setName(String name)
+    public void setDescription(String description)
     {
-        this.name = name;
+        this.description = description;
+    }
+
+    public String getQuantity()
+    {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity)
+    {
+        this.quantity = quantity;
     }
 
     public Long getRecipe()

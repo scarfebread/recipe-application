@@ -16,14 +16,16 @@ public class Ingredient
     @JoinColumn(name = "recipe")
     private Recipe recipe;
 
+    private String description;
     private String metric;
     private String imperial;
 
-    public Ingredient(Recipe recipe, String ingredient)
+    public Ingredient(Recipe recipe, String description, String quantity)
     {
         this.recipe = recipe;
-        this.metric = IngredientConverter.toMetric(ingredient);
-        this.imperial = IngredientConverter.toImperial(ingredient);
+        this.description = description;
+        this.metric = IngredientConverter.toMetric(quantity);
+        this.imperial = IngredientConverter.toImperial(quantity);
     }
 
     public Ingredient() {}
@@ -56,5 +58,15 @@ public class Ingredient
     public void setRecipe(Recipe recipe)
     {
         this.recipe = recipe;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }

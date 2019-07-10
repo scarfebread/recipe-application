@@ -1,13 +1,4 @@
 .container {
-    float: left;
-    background: rgba(221, 221, 221, 0.8);
-    border-radius: 40px;
-
-    height: 94%;
-    padding-bottom: 3%;
-    margin-bottom: 3%;
-    margin-top: 15px;
-
     width: 86%;
     margin-left: 7%;
     margin-right: 7%;
@@ -230,12 +221,7 @@ input:checked + .slider .off {
     width: 100%;
 }
 
-/*.recipeTableRow {*/
-    /*padding-top: 10px;*/
-    /*padding-bottom: 10px;*/
-/*}*/
-
-.addIngredient {
+.addIngredientOrStep {
     padding-top: 10px;
 }
 
@@ -321,4 +307,38 @@ input:checked + .slider .off {
         padding-left: 0;
         padding-top: 10px;
     }
+}
+
+
+
+
+
+.ingredientColumn {
+    height: 36px;
+    padding-right: 8px;
+    width: 60%
+}
+
+.quantityColumn {
+    height: 36px;
+    width: 40%
+}
+
+.buttonColumn {
+    width: 20%;
+}
+
+.addIngredientLabel {
+    margin-bottom: 3px;
+    margin-top: 3px;
+}
+
+.addIngredientButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 30px;
+    margin-left: 6px;
+    width: 100%;
 }

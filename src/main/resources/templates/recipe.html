@@ -16,14 +16,13 @@
         let recipeServes = [[${recipe.serves}]];
         let recipePrepTime = "[[${recipe.prepTime}]]";
         let recipeCookTime = "[[${recipe.cookTime}]]";
-        let recipeNotes = "[[${recipe.notes}]]";
         let recipeDifficulty = "[[${recipe.difficulty}]]";
     </script>
     <script type="application/javascript" src="/js/library.js"></script>
     <script type="application/javascript" src="/js/recipe.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="baseContainer container">
         <div class="header">
             <div>
                 <h1 class="title">The Cooking Pot</h1>
@@ -132,19 +131,27 @@
             <div class="ingredientContainer">
                 <h2>Ingredients</h2>
                 <table id="ingredientTable">
+                    <tr>
+                        <td class="ingredientColumn">Description</td>
+                        <td class="quantityColumn">Quantity</td>
+                    </tr>
                     <tr th:each="ingredient : ${recipe.ingredients}">
-                        <td class="ingredients metric" th:text="${ingredient.metric}"></td>
-                        <td class="ingredients imperial hidden" th:text="${ingredient.imperial}"></td>
-                        <td class="ingredientActionColumn recipeTableRow">
-                            <span hidden class="close ingredientDelete">&times;</span>
+                        <td class="ingredientColumn" th:text="${ingredient.description}"></td>
+                        <td class="quantityColumn metric" th:text="${ingredient.metric}">
+                        <td class="quantityColumn imperial hidden" th:text="${ingredient.imperial}"></td>
+                        <td class="ingredientActionColumn">
+                            <span class="close ingredientDelete">&times;</span>
                         </td>
                     </tr>
                     <tr hidden id="addIngredientRow">
-                        <td class="addIngredient">
-                            <input id="newIngredient" class="input">
+                        <td class="ingredientColumn">
+                            <input class="input" id="ingredientDescription"><br>
                         </td>
-                        <td class="ingredientActionColumn addIngredient">
-                            <button id="addIngredientButton" class="ingredientAndStepButton">ADD</button>
+                        <td class="quantityColumn">
+                            <input class="input " id="ingredientQuantity">
+                        </td>
+                        <td class="buttonColumn">
+                            <button id="addIngredientButton" class="addIngredientButton">ADD</button>
                         </td>
                     </tr>
                 </table>
@@ -165,17 +172,17 @@
                 <table id="stepTable">
                     <tr th:each="step,iter : ${recipe.steps}">
                         <td><h3 th:text="${iter.index + 1 + '.'}"></h3></td>
-                        <td class="recipeTableRow steps" th:text="${step.name}"></td>
+                        <td class="recipeTableRow steps" th:text="${step.description}"></td>
                         <td class="ingredientActionColumn recipeTableRow">
                             <span hidden class="close ingredientDelete">&times;</span>
                         </td>
                     </tr>
                     <tr hidden id="addStepRow">
                         <td></td>
-                        <td>
+                        <td class="addIngredientOrStep">
                             <input id="newStep" class="input">
                         </td>
-                        <td class="ingredientActionColumn">
+                        <td class="ingredientActionColumn addIngredientOrStep">
                             <button id="addStepButton" class="ingredientAndStepButton">ADD</button>
                         </td>
                     </tr>

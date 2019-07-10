@@ -172,9 +172,17 @@ public class RecipeServiceTest
         recipeDto.setRating(RATING);
         recipeDto.setServes(SERVES);
 
-        List<String> ingredients = new ArrayList<>();
-        ingredients.add("Ingredient 1");
-        ingredients.add("Ingredient 2");
+        IngredientDto ingredientDto1 = new IngredientDto();
+        ingredientDto1.setDescription("description");
+        ingredientDto1.setQuantity("quantity");
+
+        IngredientDto ingredientDto2 = new IngredientDto();
+        ingredientDto2.setDescription("description");
+        ingredientDto2.setQuantity("quantity");
+
+        List<IngredientDto> ingredients = new ArrayList<>();
+        ingredients.add(ingredientDto1);
+        ingredients.add(ingredientDto2);
 
         List<String> steps = new ArrayList<>();
         steps.add("Step 1");
@@ -203,11 +211,11 @@ public class RecipeServiceTest
         assertEquals(RATING, recipe.getRating());
         assertEquals(SERVES, recipe.getServes());
 
-        assertEquals(ingredients.get(0), recipe.getIngredients().get(0).getImperial());
-        assertEquals(ingredients.get(1), recipe.getIngredients().get(1).getMetric());
+        assertEquals(ingredients.get(0).getQuantity(), recipe.getIngredients().get(0).getImperial());
+        assertEquals(ingredients.get(1).getQuantity(), recipe.getIngredients().get(1).getMetric());
 
-        assertEquals(steps.get(0), recipe.getSteps().get(0).getName());
-        assertEquals(steps.get(1), recipe.getSteps().get(1).getName());
+        assertEquals(steps.get(0), recipe.getSteps().get(0).getDescription());
+        assertEquals(steps.get(1), recipe.getSteps().get(1).getDescription());
     }
 
     @Test(expected = RecipeDoesNotExistException.class)
@@ -242,7 +250,7 @@ public class RecipeServiceTest
         recipe.setServes(SERVES);
 
         List<Ingredient> ingredients = new ArrayList<>();
-        ingredients.add(new Ingredient(recipe, "Ingredient"));
+        ingredients.add(new Ingredient(recipe, "Ingredient", "Quantity"));
 
         List<Step> steps = new ArrayList<>();
         steps.add(new Step(recipe, "Step"));
@@ -398,7 +406,8 @@ public class RecipeServiceTest
     public void shouldAddIngredientSuccessfully() throws Exception
     {
         IngredientDto ingredientDto = new IngredientDto();
-        ingredientDto.setName("Ingredient");
+        ingredientDto.setDescription("Ingredient");
+        ingredientDto.setQuantity("Quantity");
         ingredientDto.setRecipe(1L);
 
         Recipe recipe = new Recipe();

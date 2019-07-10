@@ -14,20 +14,20 @@ public class Step
     @JoinColumn(name = "recipe")
     private Recipe recipe;
 
-    private String name;
+    private String description;
     private int step;
 
     public Step() {}
 
-    public Step(Recipe recipe, String name)
+    public Step(Recipe recipe, String description)
     {
         this.recipe = recipe;
-        this.name = name;
+        this.description = description;
     }
 
-    public String getName()
+    public String getDescription()
     {
-        return name;
+        return description;
     }
 
     public void setId(Long id)
