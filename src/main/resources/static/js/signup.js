@@ -53,6 +53,7 @@ function signup()
 
     if (!isValid)
     {
+        signupEnabled = true;
         return false;
     }
 

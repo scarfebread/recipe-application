@@ -33,6 +33,7 @@ CREATE TABLE recipe.recipes (
 CREATE TABLE recipe.ingredients (
   id SERIAL PRIMARY KEY,
   recipe INT REFERENCES recipe.recipes(id),
+  description VARCHAR NOT NULL,
   metric VARCHAR NOT NULL,
   imperial VARCHAR NOT NULL
 );
@@ -40,7 +41,7 @@ CREATE TABLE recipe.ingredients (
 CREATE TABLE recipe.steps (
   id SERIAL PRIMARY KEY,
   recipe INT REFERENCES recipe.recipes(id),
-  name VARCHAR NOT NULL,
+  description VARCHAR NOT NULL,
   step INT NOT NULL
 );
 

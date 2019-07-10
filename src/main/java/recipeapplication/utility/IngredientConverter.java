@@ -9,9 +9,14 @@ public class IngredientConverter
     private static final String KILOGRAM = "kg";
     private static final String POUND = "lbs";
 
-    public static String toImperial(String sentence)
+    public static String toImperial(String quantity)
     {
-        String[] words = sentence.split(" ");
+        if (quantity == null)
+        {
+            return null;
+        }
+
+        String[] words = quantity.split(" ");
 
         int index = 0;
         for (String word : words)
@@ -42,9 +47,14 @@ public class IngredientConverter
         return String.join(" ", words);
     }
 
-    public static String toMetric(String sentence)
+    public static String toMetric(String quantity)
     {
-        String[] words = sentence.split(" ");
+        if (quantity == null)
+        {
+            return null;
+        }
+
+        String[] words = quantity.split(" ");
 
         int index = 0;
         for (String word : words)
