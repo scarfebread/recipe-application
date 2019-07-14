@@ -105,7 +105,7 @@ public class ShoppingListControllerTest
     {
         ShoppingListItemDto shoppingListItemDto = new ShoppingListItemDto();
 
-        doThrow(ShoppingListItemNotFoundException.class).when(shoppingListService).purchaseIngredient(shoppingListItemDto);
+        doThrow(ShoppingListItemNotFoundException.class).when(shoppingListService).deleteShoppingListItem(shoppingListItemDto);
 
         ResponseEntity responseEntity = shoppingListController.purchaseIngredient(shoppingListItemDto);
 
@@ -120,7 +120,8 @@ public class ShoppingListControllerTest
 
         ResponseEntity responseEntity = shoppingListController.purchaseIngredient(shoppingListItemDto);
 
-        verify(shoppingListService).purchaseIngredient(shoppingListItemDto);
+        verify(shoppingListService).deleteShoppingListItem(shoppingListItemDto);
+        verify(inventoryService).createInventoryItem(shoppingListItemDto);
 
         assertEquals(201, responseEntity.getStatusCodeValue());
         assertEquals("Created", responseEntity.getBody());

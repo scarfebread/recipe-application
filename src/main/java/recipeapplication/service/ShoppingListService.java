@@ -2,7 +2,6 @@ package recipeapplication.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
 import recipeapplication.model.InventoryItem;
@@ -17,17 +16,12 @@ import java.util.Optional;
 public class ShoppingListService
 {
     private ShoppingListRepository shoppingListRepository;
-    private InventoryService inventoryService;
     private AuthService authService;
 
     @Autowired
-    public ShoppingListService(
-            ShoppingListRepository shoppingListRepository,
-            InventoryService inventoryService,
-            AuthService authService)
+    public ShoppingListService(ShoppingListRepository shoppingListRepository, AuthService authService)
     {
         this.shoppingListRepository = shoppingListRepository;
-        this.inventoryService = inventoryService;
         this.authService = authService;
     }
 
@@ -79,15 +73,14 @@ public class ShoppingListService
         return shoppingListRepository.save(shoppingListItem);
     }
 
-    public void purchaseIngredient(ShoppingListItemDto shoppingListItemDto) throws ShoppingListItemNotFoundException
+    public void createShoppingListItem(InventoryItem inventoryItem)
     {
-        deleteShoppingListItem(shoppingListItemDto);
+        ShoppingListItemDto shoppingListItemDto = new ShoppingListItemDto();
 
-        InventoryItemDto inventoryItemDto = new InventoryItemDto();
+        shoppingListItemDto.setIngredient(inventoryItem.getIngredient());
+        shoppingListItemDto.setQuantity(inventoryItem.getQuantity());
+        shoppingListItemDto.setInventoryItemId(inventoryItem.getId());
 
-        inventoryItemDto.setIngredient(shoppingListItemDto.getIngredient());
-        inventoryItemDto.setQuantity(shoppingListItemDto.getQuantity());
-
-        inventoryService.createInventoryItem(inventoryItemDto);
+        createShoppingListItem(shoppingListItemDto);
     }
 }
