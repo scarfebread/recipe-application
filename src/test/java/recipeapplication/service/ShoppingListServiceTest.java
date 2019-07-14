@@ -23,7 +23,6 @@ public class ShoppingListServiceTest
 {
     private ShoppingListRepository shoppingListRepository;
     private ShoppingListService shoppingListService;
-    private InventoryService inventoryService;
     private User user;
 
     @Before
@@ -37,9 +36,8 @@ public class ShoppingListServiceTest
         when(authService.getLoggedInUser()).thenReturn(user);
 
         shoppingListRepository = mock(ShoppingListRepository.class);
-        inventoryService = mock(InventoryService.class);
 
-        shoppingListService = new ShoppingListService(shoppingListRepository, inventoryService, authService);
+        shoppingListService = new ShoppingListService(shoppingListRepository, authService);
     }
 
     @Test
@@ -123,24 +121,19 @@ public class ShoppingListServiceTest
     }
 
     @Test
-    public void shouldPurchaseIngredientByDeletingShoppingListAndCreatingInventoryItem() throws Exception
+    public void shouldCreateRecipeFromInventoryItem()
     {
-        ShoppingListItemDto shoppingListItemDto = new ShoppingListItemDto();
-        shoppingListItemDto.setIngredient("INGREDIENT");
-        shoppingListItemDto.setQuantity("QUANTITY");
+        InventoryItem inventoryItem = new InventoryItem();
+        inventoryItem.setIngredient("INGREDIENT");
+        inventoryItem.setQuantity("QUANTITY");
 
-        ShoppingListItem shoppingListItem = new ShoppingListItem();
+        ArgumentCaptor<ShoppingListItem> argumentCaptor = ArgumentCaptor.forClass(ShoppingListItem.class);
 
-        when(shoppingListRepository.findByIdAndUserId(shoppingListItemDto.getId(), user.getId())).thenReturn(Optional.of(shoppingListItem));
+        shoppingListService.createShoppingListItem(inventoryItem);
 
-        ArgumentCaptor<InventoryItemDto> argumentCaptor = ArgumentCaptor.forClass(InventoryItemDto.class);
+        verify(shoppingListRepository).save(argumentCaptor.capture());
 
-        shoppingListService.purchaseIngredient(shoppingListItemDto);
-
-        verify(shoppingListRepository).delete(shoppingListItem);
-        verify(inventoryService).createInventoryItem(argumentCaptor.capture());
-
-        assertEquals(shoppingListItemDto.getIngredient(), argumentCaptor.getValue().getIngredient());
-        assertEquals(shoppingListItemDto.getQuantity(), argumentCaptor.getValue().getQuantity());
+        assertEquals(inventoryItem.getIngredient(), argumentCaptor.getValue().getIngredient());
+        assertEquals(inventoryItem.getQuantity(), argumentCaptor.getValue().getQuantity());
     }
 }

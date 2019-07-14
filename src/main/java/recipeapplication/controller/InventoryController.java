@@ -9,19 +9,23 @@ import recipeapplication.exception.InventoryItemNotFoundException;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.service.InventoryService;
+import recipeapplication.service.ShoppingListService;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController("/api/inventory")
+@RestController
+@RequestMapping(path = "/api/inventory")
 public class InventoryController
 {
     private InventoryService inventoryService;
+    private ShoppingListService shoppingListService;
 
     @Autowired
-    public InventoryController(InventoryService inventoryService)
+    public InventoryController(InventoryService inventoryService, ShoppingListService shoppingListService)
     {
         this.inventoryService = inventoryService;
+        this.shoppingListService = shoppingListService;
     }
 
     @PostMapping
@@ -63,7 +67,8 @@ public class InventoryController
     {
         try
         {
-            inventoryService.addToShoppingList(inventoryItemDto);
+            InventoryItem inventoryItem = inventoryService.getInventoryItem(inventoryItemDto);
+            shoppingListService.createShoppingListItem(inventoryItem);
         }
         catch (InventoryItemNotFoundException e)
         {
@@ -78,7 +83,8 @@ public class InventoryController
     {
         try
         {
-            inventoryService.removeFromShoppingList(inventoryItemDto);
+            InventoryItem inventoryItem = inventoryService.getInventoryItem(inventoryItemDto);
+            shoppingListService.deleteShoppingListItem(inventoryItem);
         }
         catch (InventoryItemNotFoundException | ShoppingListItemNotFoundException e)
         {

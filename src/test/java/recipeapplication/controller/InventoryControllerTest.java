@@ -8,6 +8,7 @@ import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.exception.InventoryItemNotFoundException;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.service.InventoryService;
+import recipeapplication.service.ShoppingListService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.*;
 public class InventoryControllerTest
 {
     private InventoryService inventoryService;
+    private ShoppingListService shoppingListService;
     private InventoryController inventoryController;
     private Errors noErrors;
     private Errors errors;
@@ -26,13 +28,15 @@ public class InventoryControllerTest
     public void setup()
     {
         inventoryService = mock(InventoryService.class);
+        shoppingListService = mock(ShoppingListService.class);
+
         errors = mock(Errors.class);
         noErrors = mock(Errors.class);
 
         when(errors.hasErrors()).thenReturn(true);
         when(noErrors.hasErrors()).thenReturn(false);
 
-        inventoryController = new InventoryController(inventoryService);
+        inventoryController = new InventoryController(inventoryService, shoppingListService);
     }
 
     @Test
@@ -102,7 +106,7 @@ public class InventoryControllerTest
     {
         InventoryItemDto inventoryItemDto = new InventoryItemDto();
 
-        doThrow(InventoryItemNotFoundException.class).when(inventoryService).addToShoppingList(inventoryItemDto);
+        doThrow(InventoryItemNotFoundException.class).when(inventoryService).getInventoryItem(inventoryItemDto);
 
         ResponseEntity responseEntity = inventoryController.addToShoppingList(inventoryItemDto);
 
@@ -114,10 +118,13 @@ public class InventoryControllerTest
     public void shouldReturnCreatedWhenAddedToShoppingListWithValidInventoryItem() throws Exception
     {
         InventoryItemDto inventoryItemDto = new InventoryItemDto();
+        InventoryItem inventoryItem = new InventoryItem();
+
+        when(inventoryService.getInventoryItem(inventoryItemDto)).thenReturn(inventoryItem);
 
         ResponseEntity responseEntity = inventoryController.addToShoppingList(inventoryItemDto);
 
-        verify(inventoryService).addToShoppingList(inventoryItemDto);
+        verify(shoppingListService).createShoppingListItem(inventoryItem);
 
         assertEquals(201, responseEntity.getStatusCodeValue());
         assertEquals("Created", responseEntity.getBody());
@@ -128,7 +135,7 @@ public class InventoryControllerTest
     {
         InventoryItemDto inventoryItemDto = new InventoryItemDto();
 
-        doThrow(InventoryItemNotFoundException.class).when(inventoryService).removeFromShoppingList(inventoryItemDto);
+        doThrow(InventoryItemNotFoundException.class).when(inventoryService).getInventoryItem(inventoryItemDto);
 
         ResponseEntity responseEntity = inventoryController.removeFromShoppingList(inventoryItemDto);
 
@@ -141,9 +148,13 @@ public class InventoryControllerTest
     {
         InventoryItemDto inventoryItemDto = new InventoryItemDto();
 
+        InventoryItem inventoryItem = new InventoryItem();
+
+        when(inventoryService.getInventoryItem(inventoryItemDto)).thenReturn(inventoryItem);
+
         ResponseEntity responseEntity = inventoryController.removeFromShoppingList(inventoryItemDto);
 
-        verify(inventoryService).removeFromShoppingList(inventoryItemDto);
+        verify(shoppingListService).deleteShoppingListItem(inventoryItem);
 
         assertEquals(202, responseEntity.getStatusCodeValue());
         assertEquals("Deleted successfully", responseEntity.getBody());

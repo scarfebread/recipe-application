@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.InventoryItemNotFoundException;
-import recipeapplication.exception.ShoppingListItemNotFoundException;
 import recipeapplication.model.InventoryItem;
-import recipeapplication.model.ShoppingListItem;
 import recipeapplication.model.User;
 import recipeapplication.repository.InventoryRepository;
 
@@ -18,17 +16,12 @@ import java.util.Optional;
 public class InventoryService
 {
     private InventoryRepository inventoryRepository;
-    private ShoppingListService shoppingListService;
     private AuthService authService;
 
     @Autowired
-    public InventoryService(
-            InventoryRepository inventoryRepository,
-            ShoppingListService shoppingListService,
-            AuthService authService)
+    public InventoryService(InventoryRepository inventoryRepository, AuthService authService)
     {
         this.inventoryRepository = inventoryRepository;
-        this.shoppingListService = shoppingListService;
         this.authService = authService;
     }
 
@@ -59,27 +52,17 @@ public class InventoryService
         return inventoryRepository.save(inventoryItem);
     }
 
-    public void addToShoppingList(InventoryItemDto inventoryItemDto) throws InventoryItemNotFoundException
+    public void createInventoryItem(ShoppingListItemDto shoppingListItemDto)
     {
-        InventoryItem inventoryItem = getInventoryItem(inventoryItemDto);
+        InventoryItemDto inventoryItemDto = new InventoryItemDto();
 
-        ShoppingListItemDto shoppingListItemDto = new ShoppingListItemDto();
+        inventoryItemDto.setIngredient(shoppingListItemDto.getIngredient());
+        inventoryItemDto.setQuantity(shoppingListItemDto.getQuantity());
 
-        shoppingListItemDto.setIngredient(inventoryItem.getIngredient());
-        shoppingListItemDto.setQuantity(inventoryItem.getQuantity());
-        shoppingListItemDto.setInventoryItemId(inventoryItem.getId());
-
-        shoppingListService.createShoppingListItem(shoppingListItemDto);
+        createInventoryItem(inventoryItemDto);
     }
 
-    public void removeFromShoppingList(InventoryItemDto inventoryItemDto) throws InventoryItemNotFoundException, ShoppingListItemNotFoundException
-    {
-        InventoryItem inventoryItem = getInventoryItem(inventoryItemDto);
-
-        shoppingListService.deleteShoppingListItem(inventoryItem);
-    }
-
-    private InventoryItem getInventoryItem(InventoryItemDto inventoryItemDto) throws InventoryItemNotFoundException
+    public InventoryItem getInventoryItem(InventoryItemDto inventoryItemDto) throws InventoryItemNotFoundException
     {
         User user = authService.getLoggedInUser();
 

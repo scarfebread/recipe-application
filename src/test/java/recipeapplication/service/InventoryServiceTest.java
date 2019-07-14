@@ -22,7 +22,6 @@ public class InventoryServiceTest
 {
     private InventoryRepository inventoryRepository;
     private InventoryService inventoryService;
-    private ShoppingListService shoppingListService;
     private User user;
 
     @Before
@@ -36,9 +35,8 @@ public class InventoryServiceTest
         when(authService.getLoggedInUser()).thenReturn(user);
 
         inventoryRepository = mock(InventoryRepository.class);
-        shoppingListService = mock(ShoppingListService.class);
 
-        inventoryService = new InventoryService(inventoryRepository, shoppingListService, authService);
+        inventoryService = new InventoryService(inventoryRepository, authService);
     }
 
     @Test
@@ -96,42 +94,19 @@ public class InventoryServiceTest
     }
 
     @Test
-    public void shouldAddInventoryItemToShoppingList() throws Exception
+    public void shouldCreateRecipeFromShoppingListDto()
     {
-        InventoryItemDto inventoryItemDto = new InventoryItemDto();
-        inventoryItemDto.setId(2L);
+        ShoppingListItemDto shoppingListItemDto = new ShoppingListItemDto();
+        shoppingListItemDto.setIngredient("INGREDIENT");
+        shoppingListItemDto.setQuantity("QUANTITY");
 
-        InventoryItem inventoryItem = new InventoryItem();
+        ArgumentCaptor<InventoryItem> argumentCaptor = ArgumentCaptor.forClass(InventoryItem.class);
 
-        inventoryItem.setIngredient("INGREDIENT");
-        inventoryItem.setQuantity("QUANTITY");
-        inventoryItem.setId(2L);
+        inventoryService.createInventoryItem(shoppingListItemDto);
 
-        when(inventoryRepository.findByIdAndUserId(inventoryItemDto.getId(),user.getId())).thenReturn(Optional.of(inventoryItem));
+        verify(inventoryRepository).save(argumentCaptor.capture());
 
-        inventoryService.addToShoppingList(inventoryItemDto);
-
-        ArgumentCaptor<ShoppingListItemDto> argumentCaptor = ArgumentCaptor.forClass(ShoppingListItemDto.class);
-
-        verify(shoppingListService).createShoppingListItem(argumentCaptor.capture());
-
-        assertEquals(inventoryItem.getIngredient(), argumentCaptor.getValue().getIngredient());
-        assertEquals(inventoryItem.getQuantity(), argumentCaptor.getValue().getQuantity());
-        assertEquals(inventoryItem.getId(), argumentCaptor.getValue().getInventoryItemId());
-    }
-
-    @Test
-    public void shouldRemoveInventoryItemFromShoppingList() throws Exception
-    {
-        InventoryItemDto inventoryItemDto = new InventoryItemDto();
-        inventoryItemDto.setId(2L);
-
-        InventoryItem inventoryItem = new InventoryItem();
-
-        when(inventoryRepository.findByIdAndUserId(inventoryItemDto.getId(),user.getId())).thenReturn(Optional.of(inventoryItem));
-
-        inventoryService.removeFromShoppingList(inventoryItemDto);
-
-        verify(shoppingListService).deleteShoppingListItem(inventoryItem);
+        assertEquals(shoppingListItemDto.getIngredient(), argumentCaptor.getValue().getIngredient());
+        assertEquals(shoppingListItemDto.getQuantity(), argumentCaptor.getValue().getQuantity());
     }
 }

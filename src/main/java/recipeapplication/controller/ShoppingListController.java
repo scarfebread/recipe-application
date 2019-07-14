@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
-import recipeapplication.model.InventoryItem;
 import recipeapplication.model.ShoppingListItem;
 import recipeapplication.service.InventoryService;
 import recipeapplication.service.ShoppingListService;
@@ -15,7 +13,8 @@ import recipeapplication.service.ShoppingListService;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController("/api/shoppingList")
+@RestController
+@RequestMapping(path = "/api/shoppingList")
 public class ShoppingListController
 {
     private ShoppingListService shoppingListService;
@@ -67,7 +66,8 @@ public class ShoppingListController
     {
         try
         {
-            shoppingListService.purchaseIngredient(shoppingListItemDto);
+            shoppingListService.deleteShoppingListItem(shoppingListItemDto);
+            inventoryService.createInventoryItem(shoppingListItemDto);
         }
         catch (ShoppingListItemNotFoundException e)
         {
