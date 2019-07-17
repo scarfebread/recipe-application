@@ -198,7 +198,6 @@ public class RecipeServiceTest
         recipeService.updateRecipe(recipeDto);
 
         verify(recipeRepository).save(argumentCaptor.capture());
-        verify(ingredientRepository).deleteByRecipe(any(Recipe.class));
         verify(stepRepository).deleteByRecipe(any(Recipe.class));
 
         Recipe recipe = argumentCaptor.getValue();
@@ -211,8 +210,10 @@ public class RecipeServiceTest
         assertEquals(RATING, recipe.getRating());
         assertEquals(SERVES, recipe.getServes());
 
+        assertEquals(ingredients.get(0).getDescription(), recipe.getIngredients().get(0).getDescription());
         assertEquals(ingredients.get(0).getQuantity(), recipe.getIngredients().get(0).getImperial());
         assertEquals(ingredients.get(1).getQuantity(), recipe.getIngredients().get(1).getMetric());
+        assertEquals(loggedInUser, recipe.getIngredients().get(0).getUser());
 
         assertEquals(steps.get(0), recipe.getSteps().get(0).getDescription());
         assertEquals(steps.get(1), recipe.getSteps().get(1).getDescription());
@@ -250,7 +251,7 @@ public class RecipeServiceTest
         recipe.setServes(SERVES);
 
         List<Ingredient> ingredients = new ArrayList<>();
-        ingredients.add(new Ingredient(recipe, "Ingredient", "Quantity"));
+        ingredients.add(new Ingredient("Ingredient", "Quantity", loggedInUser));
 
         List<Step> steps = new ArrayList<>();
         steps.add(new Step(recipe, "Step"));
@@ -411,19 +412,19 @@ public class RecipeServiceTest
         ingredientDto.setRecipe(1L);
 
         Recipe recipe = new Recipe();
-        Ingredient ingredient = new Ingredient();
-        ingredient.setRecipe(recipe);
-        ingredient.setMetric("metric");
-        ingredient.setImperial("imperial");
 
         when(recipeRepository.findByIdAndUserId(ingredientDto.getRecipe(), loggedInUser.getId())).thenReturn(Optional.of(recipe));
-        when(ingredientRepository.save(any())).thenReturn(ingredient);
+
+        ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
 
         Ingredient result = recipeService.addIngredient(ingredientDto);
 
-        verify(ingredientRepository).save(any(Ingredient.class));
+        verify(recipeRepository).save(argumentCaptor.capture());
 
-        assertEquals(ingredient.getMetric(), result.getMetric());
-        assertEquals(ingredient.getImperial(), result.getImperial());
+        assertEquals(result, argumentCaptor.getValue().getIngredients().get(0));
+        assertEquals(ingredientDto.getDescription(), result.getDescription());
+        assertEquals(ingredientDto.getQuantity(), result.getMetric());
+        assertEquals(ingredientDto.getQuantity(), result.getImperial());
+        assertEquals(loggedInUser, result.getUser());
     }
 }

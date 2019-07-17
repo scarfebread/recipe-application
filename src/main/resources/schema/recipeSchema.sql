@@ -32,10 +32,16 @@ CREATE TABLE recipe.recipes (
 
 CREATE TABLE recipe.ingredients (
   id SERIAL PRIMARY KEY,
-  recipe INT REFERENCES recipe.recipes(id),
   description VARCHAR NOT NULL,
   metric VARCHAR NOT NULL,
-  imperial VARCHAR NOT NULL
+  imperial VARCHAR NOT NULL,
+  user_id INT REFERENCES recipe.users(id)
+);
+
+CREATE TABLE recipe.recipe_ingredients (
+  id SERIAL PRIMARY KEY,
+  recipe INT REFERENCES recipe.recipes(id),
+  ingredient INT REFERENCES recipe.ingredients(id)
 );
 
 CREATE TABLE recipe.steps (

@@ -3,6 +3,7 @@ package recipeapplication.model;
 import recipeapplication.utility.IngredientConverter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "ingredients")
@@ -12,20 +13,22 @@ public class Ingredient
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "recipe")
-    private Recipe recipe;
-
     private String description;
     private String metric;
     private String imperial;
 
-    public Ingredient(Recipe recipe, String description, String quantity)
+    @OneToOne()
+    private User user;
+
+    @ManyToMany(mappedBy = "ingredients")
+    private List<Recipe> recipe;
+
+    public Ingredient(String description, String quantity, User user)
     {
-        this.recipe = recipe;
         this.description = description;
         this.metric = IngredientConverter.toMetric(quantity);
         this.imperial = IngredientConverter.toImperial(quantity);
+        this.user = user;
     }
 
     public Ingredient() {}
@@ -55,18 +58,13 @@ public class Ingredient
         this.imperial = imperial;
     }
 
-    public void setRecipe(Recipe recipe)
-    {
-        this.recipe = recipe;
-    }
-
     public String getDescription()
     {
         return description;
     }
 
-    public void setDescription(String description)
+    public User getUser()
     {
-        this.description = description;
+        return user;
     }
 }
