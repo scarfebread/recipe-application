@@ -1,6 +1,7 @@
 package recipeapplication.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,6 +14,7 @@ public class Recipe
 
     private String title;
     private String sharedBy;
+    // TODO change to user object
     private Long userId;
     private Long rating;
     private String notes;
@@ -22,7 +24,18 @@ public class Recipe
     private String totalTime;
     private String difficulty;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "recipe_ingredients",
+            joinColumns = @JoinColumn(
+                    name = "recipe",
+                    referencedColumnName = "id"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "ingredient",
+                    referencedColumnName = "id"
+            )
+    )
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
@@ -159,5 +172,15 @@ public class Recipe
     public void setTotalTime(String totalTime)
     {
         this.totalTime = totalTime;
+    }
+
+    public void addIngredient(Ingredient ingredient)
+    {
+        if (ingredients == null)
+        {
+            ingredients = new ArrayList<>();
+        }
+
+        ingredients.add(ingredient);
     }
 }

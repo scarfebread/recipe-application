@@ -95,6 +95,7 @@ public class RecipeService
     public void updateRecipe(RecipeDto recipeDto) throws RecipeDoesNotExistException
     {
         Recipe recipe = getRecipe(recipeDto.getId());
+        User user = authService.getLoggedInUser();
 
         recipe.setNotes(recipeDto.getNotes());
         recipe.setRating(recipeDto.getRating());
@@ -104,12 +105,10 @@ public class RecipeService
         recipe.setTotalTime(RecipeTime.combineCookAndPrepTime(recipeDto.getCookTime(), recipeDto.getPrepTime()));
         recipe.setDifficulty(recipeDto.getDifficulty());
 
-        // TODO this seems a bad way of managing the one to many relationship
-        ingredientRepository.deleteByRecipe(recipe);
         List<Ingredient> ingredients = new ArrayList<>();
         for (IngredientDto ingredient : recipeDto.getIngredients())
         {
-            ingredients.add(new Ingredient(recipe, ingredient.getDescription(), ingredient.getQuantity()));
+            ingredients.add(new Ingredient(ingredient.getDescription(), ingredient.getQuantity(), user));
         }
         recipe.setIngredients(ingredients);
 
@@ -188,9 +187,14 @@ public class RecipeService
     public Ingredient addIngredient(IngredientDto ingredientDto) throws RecipeDoesNotExistException
     {
         Recipe recipe = getRecipe(ingredientDto.getRecipe());
+        User user = authService.getLoggedInUser();
 
-        Ingredient ingredient = new Ingredient(recipe, ingredientDto.getDescription(), ingredientDto.getQuantity());
+        Ingredient ingredient = new Ingredient(ingredientDto.getDescription(), ingredientDto.getQuantity(), user);
 
-        return ingredientRepository.save(ingredient);
+        recipe.addIngredient(ingredient);
+
+        recipeRepository.save(recipe);
+
+        return ingredient;
     }
 }
