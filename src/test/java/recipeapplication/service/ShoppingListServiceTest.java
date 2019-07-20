@@ -6,6 +6,7 @@ import org.mockito.ArgumentCaptor;
 import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
+import recipeapplication.model.Ingredient;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.model.ShoppingListItem;
 import recipeapplication.model.User;
@@ -124,8 +125,7 @@ public class ShoppingListServiceTest
     public void shouldCreateRecipeFromInventoryItem()
     {
         InventoryItem inventoryItem = new InventoryItem();
-        inventoryItem.setIngredient("INGREDIENT");
-        inventoryItem.setQuantity("QUANTITY");
+        inventoryItem.setIngredient(new Ingredient());
 
         ArgumentCaptor<ShoppingListItem> argumentCaptor = ArgumentCaptor.forClass(ShoppingListItem.class);
 
