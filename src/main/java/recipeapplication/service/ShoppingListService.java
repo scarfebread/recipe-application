@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
+import recipeapplication.model.Ingredient;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.model.ShoppingListItem;
 import recipeapplication.model.User;
@@ -64,23 +65,24 @@ public class ShoppingListService
     {
         User user = authService.getLoggedInUser();
 
+        Ingredient ingredient = new Ingredient(shoppingListItemDto.getIngredient(), shoppingListItemDto.getQuantity(), user);
         ShoppingListItem shoppingListItem = new ShoppingListItem();
 
         shoppingListItem.setUserId(user.getId());
-        shoppingListItem.setIngredient(shoppingListItemDto.getIngredient());
-        shoppingListItem.setQuantity(shoppingListItemDto.getQuantity());
+        shoppingListItem.setIngredient(ingredient);
 
         return shoppingListRepository.save(shoppingListItem);
     }
 
     public void createShoppingListItem(InventoryItem inventoryItem)
     {
-        ShoppingListItemDto shoppingListItemDto = new ShoppingListItemDto();
+        User user = authService.getLoggedInUser();
 
-        shoppingListItemDto.setIngredient(inventoryItem.getIngredient());
-        shoppingListItemDto.setQuantity(inventoryItem.getQuantity());
-        shoppingListItemDto.setInventoryItemId(inventoryItem.getId());
+        ShoppingListItem shoppingListItem = new ShoppingListItem();
 
-        createShoppingListItem(shoppingListItemDto);
+        shoppingListItem.setUserId(user.getId());
+        shoppingListItem.setIngredient(inventoryItem.getIngredient());
+
+        shoppingListRepository.save(shoppingListItem);
     }
 }

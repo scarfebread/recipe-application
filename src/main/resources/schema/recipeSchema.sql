@@ -60,14 +60,12 @@ CREATE TABLE recipe.recently_viewed (
 CREATE TABLE recipe.inventory (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES recipe.users(id),
-  ingredient VARCHAR NOT NULL,
-  quantity VARCHAR NOT NULL
+  ingredient_id INT REFERENCES recipe.ingredients(id)
 );
 
 CREATE TABLE recipe.shopping_list (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES recipe.users(id),
-  ingredient VARCHAR NOT NULL,
-  quantity VARCHAR NOT NULL,
+  ingredient_id INT REFERENCES recipe.ingredients(id),
   inventory_id INT REFERENCES recipe.inventory(id)
 );

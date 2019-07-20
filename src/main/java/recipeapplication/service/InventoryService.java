@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.InventoryItemNotFoundException;
+import recipeapplication.model.Ingredient;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.model.User;
 import recipeapplication.repository.InventoryRepository;
@@ -43,11 +44,11 @@ public class InventoryService
     {
         User user = authService.getLoggedInUser();
 
+        Ingredient ingredient = new Ingredient(inventoryItemDto.getIngredient(), inventoryItemDto.getQuantity(), user);
         InventoryItem inventoryItem = new InventoryItem();
 
         inventoryItem.setUserId(user.getId());
-        inventoryItem.setIngredient(inventoryItemDto.getIngredient());
-        inventoryItem.setQuantity(inventoryItemDto.getQuantity());
+        inventoryItem.setIngredient(ingredient);
 
         return inventoryRepository.save(inventoryItem);
     }

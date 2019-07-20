@@ -11,7 +11,7 @@ public class ShoppingListItem
     private Long id;
 
     private Long userId;
-    private String ingredient;
+    private Ingredient ingredient;
     private String quantity;
     private Long inventoryId;
 
@@ -30,12 +30,12 @@ public class ShoppingListItem
         this.userId = userId;
     }
 
-    public String getIngredient()
+    public Ingredient getIngredient()
     {
         return ingredient;
     }
 
-    public void setIngredient(String ingredient)
+    public void setIngredient(Ingredient ingredient)
     {
         this.ingredient = ingredient;
     }
