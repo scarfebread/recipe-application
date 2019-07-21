@@ -11,8 +11,9 @@ public class InventoryItem
     private Long id;
 
     private Long userId;
+
+    @OneToOne
     private Ingredient ingredient;
-    private String quantity;
 
     public Long getId()
     {
@@ -37,16 +38,6 @@ public class InventoryItem
     public void setIngredient(Ingredient ingredient)
     {
         this.ingredient = ingredient;
-    }
-
-    public String getQuantity()
-    {
-        return quantity;
-    }
-
-    public void setQuantity(String quantity)
-    {
-        this.quantity = quantity;
     }
 
     public void setId(Long id)
