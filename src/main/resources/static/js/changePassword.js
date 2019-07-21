@@ -4,14 +4,15 @@ document.addEventListener("DOMContentLoaded", function(event)
 
     changePasswordButton.onclick = function () {
         changePassword();
-    }
+    };
+
+    addEnterKeyEventListener(getElementById('password'));
+    addEnterKeyEventListener(getElementById('retypepassword'));
 });
 
 function changePassword()
 {
     resetErrors();
-
-    console.log(document.getElementById('preChangePasswordDisplay'));
 
     let password = getValueById('password');
     let repeatPassword = getValueById('retypepassword');
@@ -54,4 +55,13 @@ function resetErrors()
     hideElement("passwordsDoNotMatchError");
     hideElement("passwordChangeError");
     hideElement('passwordTooShortError');
+}
+
+function addEnterKeyEventListener(element)
+{
+    element.addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            changePassword();
+        }
+    });
 }
