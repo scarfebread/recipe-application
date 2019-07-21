@@ -4,20 +4,24 @@ document.addEventListener("DOMContentLoaded", function(event)
 {
     let signupButton = getElementById('signupButton');
 
-    signupButton.onclick = function ()
-    {
-        if (!signupEnabled) {
-            return;
-        }
+    addEnterKeyEventListener(getElementById('username'));
+    addEnterKeyEventListener(getElementById('password'));
+    addEnterKeyEventListener(getElementById('retypepassword'));
+    addEnterKeyEventListener(getElementById('email'));
 
-        signupEnabled = false;
-
+    signupButton.onclick = function () {
         signup();
-    }
+    };
 });
 
 function signup()
 {
+    if (!signupEnabled) {
+        return;
+    }
+
+    signupEnabled = false;
+
     resetErrors();
 
     let username = getValueById('username');
@@ -85,4 +89,13 @@ function resetErrors()
     hideElement("signupError");
     hideElement('usernameTooShortError');
     hideElement('passwordTooShortError');
+}
+
+function addEnterKeyEventListener(element)
+{
+    element.addEventListener("keydown keyup", function (event) {
+        if (event.key === "Enter") {
+            signup();
+        }
+    });
 }

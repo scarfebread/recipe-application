@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
                 element.style.width = '28%';
             });
-            
+
             Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
                 element.contentEditable = true;
                 element.style.width = '70%';
@@ -281,45 +281,22 @@ document.addEventListener("DOMContentLoaded", function(event)
 
     addIngredientButton.onclick = function ()
     {
-        let ingredientDescription = getElementById('ingredientDescription');
-        let ingredientQuantity = getElementById('ingredientQuantity');
-
-        if (!validateStringLength(ingredientDescription.value, 1))
-        {
-            return;
-        }
-
-        let ingredient = {
-            recipe: recipeId,
-            description: ingredientDescription.value,
-            quantity: ingredientQuantity.value
-        };
-
-        let success = function(ingredient) {
-            addIngredient(ingredient.description, ingredient.metric, ingredient.imperial);
-            ingredientDescription.value = '';
-            ingredientQuantity.value = '';
-        };
-
-        let failure = function(failure) {};
-
-        callApi("/api/recipe/ingredient", HTTP_PUT, ingredient, true, success, failure);
+        createIngredient();
     };
+
+    addCreateIngredientEnterKeyEventListener(getElementById('ingredientDescription'));
+    addCreateIngredientEnterKeyEventListener(getElementById('ingredientQuantity'));
 
     addStepButton.onclick = function ()
     {
-        let newStep = getElementById('newStep');
-
-        if (!validateStringLength(newStep.value, 1))
-        {
-            return;
-        }
-
-        addStep(newStep.value);
-        updateRecipe();
-
-        newStep.value = '';
+        createStep();
     };
+
+    getElementById('newStep').addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            createStep();
+        }
+    });
 
     addIngredientDeleteListeners();
     addIngredientEditListeners();
@@ -348,9 +325,15 @@ function addStepEditListeners()
 
 function addEditListener(element)
 {
+    element.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            element.blur();
+        }
+    });
+
     element.addEventListener('blur', function () {
-        if (!validateStringLength(element.innerHTML, 1))
-        {
+        if (!validateStringLength(element.innerHTML, 1)) {
             let row = element.parentNode;
             let table = row.parentNode;
 
@@ -517,7 +500,34 @@ function closeModal(modal)
     getElementById('username').value = '';
 }
 
-function addIngredient(description, metric, imperial)
+function createIngredient()
+{
+    let ingredientDescription = getElementById('ingredientDescription');
+    let ingredientQuantity = getElementById('ingredientQuantity');
+
+    if (!validateStringLength(ingredientDescription.value, 1))
+    {
+        return;
+    }
+
+    let ingredient = {
+        recipe: recipeId,
+        description: ingredientDescription.value,
+        quantity: ingredientQuantity.value
+    };
+
+    let success = function(ingredient) {
+        addIngredientToList(ingredient.description, ingredient.metric, ingredient.imperial);
+        ingredientDescription.value = '';
+        ingredientQuantity.value = '';
+    };
+
+    let failure = function(failure) {};
+
+    callApi("/api/recipe/ingredient", HTTP_PUT, ingredient, true, success, failure);
+}
+
+function addIngredientToList(description, metric, imperial)
 {
     let ingredientTable = getElementById('ingredientTable').children[0];
 
@@ -570,7 +580,21 @@ function addIngredient(description, metric, imperial)
     addIngredientDeleteListeners();
 }
 
-function addStep(step)
+function createStep()
+{
+    let newStep = getElementById('newStep');
+
+    if (!validateStringLength(newStep.value, 1)) {
+        return;
+    }
+
+    addStepToList(newStep.value);
+    updateRecipe();
+
+    newStep.value = '';
+}
+
+function addStepToList(step)
 {
     let stepTable = getElementById('stepTable').children[0];
 
@@ -679,5 +703,14 @@ function autocomplete(input, array) {
 
     document.addEventListener("click", function (e) {
         closeAllLists(e.target);
+    });
+}
+
+function addCreateIngredientEnterKeyEventListener(element)
+{
+    element.addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            createIngredient();
+        }
     });
 }
