@@ -219,15 +219,21 @@ document.addEventListener("DOMContentLoaded", function(event)
             getElementById('addStepRow').hidden = false;
 
             Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
-                element.contentEditable = true;
+                if (element.id !== 'addIngredientColumn') {
+                    element.contentEditable = true;
+                }
+
                 element.style.width = '45%';
             });
 
             Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
-                element.contentEditable = true;
+                if (element.id !== 'addQuantityColumn') {
+                    element.contentEditable = true;
+                }
+
                 element.style.width = '28%';
             });
-
+            
             Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
                 element.contentEditable = true;
                 element.style.width = '70%';
