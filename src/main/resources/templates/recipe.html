@@ -9,14 +9,17 @@
     <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="/css/recipe.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
         let recipeId = [[${recipe.id}]];
-        let recipeTitle = "[[${recipe.title}]]";
+        let recipeTitle = [[${recipe.title}]];
         let recipeRating = [[${recipe.rating}]];
         let recipeServes = [[${recipe.serves}]];
-        let recipePrepTime = "[[${recipe.prepTime}]]";
-        let recipeCookTime = "[[${recipe.cookTime}]]";
-        let recipeDifficulty = "[[${recipe.difficulty}]]";
+        let recipePrepTime = [[${recipe.prepTime}]];
+        let recipeCookTime = [[${recipe.cookTime}]];
+        let recipeDifficulty = [[${recipe.difficulty}]];
+        let ingredients = [[${ingredients}]];
+    /*]]>*/
     </script>
     <script type="application/javascript" src="/js/library.js"></script>
     <script type="application/javascript" src="/js/recipe.js"></script>
@@ -145,7 +148,9 @@
                     </tr>
                     <tr hidden id="addIngredientRow">
                         <td class="ingredientColumn">
-                            <input class="input" id="ingredientDescription"><br>
+                            <div class="autocomplete">
+                                <input class="input" id="ingredientDescription"><br>
+                            </div>
                         </td>
                         <td class="quantityColumn">
                             <input class="input " id="ingredientQuantity">

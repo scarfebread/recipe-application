@@ -9,6 +9,7 @@ import recipeapplication.exception.InvalidPasswordTokenException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.Recipe;
 import recipeapplication.service.AuthService;
+import recipeapplication.service.InventoryService;
 import recipeapplication.service.RecipeService;
 import recipeapplication.service.UserService;
 
@@ -17,13 +18,19 @@ public class WebController
 {
     private UserService userService;
     private RecipeService recipeService;
+    private InventoryService inventoryService;
     private AuthService authService;
 
     @Autowired
-    public WebController(UserService userService, RecipeService recipeService, AuthService authService)
+    public WebController(
+            UserService userService,
+            RecipeService recipeService,
+            InventoryService inventoryService,
+            AuthService authService)
     {
         this.userService = userService;
         this.recipeService = recipeService;
+        this.inventoryService = inventoryService;
         this.authService = authService;
     }
 
@@ -60,6 +67,7 @@ public class WebController
             model.addAttribute("recipe", recipe);
             model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
             model.addAttribute("user", authService.getLoggedInUser().getUsername());
+            model.addAttribute("ingredients", inventoryService.getIngredients());
 
             return "recipe.html";
         }

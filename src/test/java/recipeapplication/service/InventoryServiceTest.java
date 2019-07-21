@@ -8,6 +8,7 @@ import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.InventoryItemNotFoundException;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.model.User;
+import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.InventoryRepository;
 
 import java.util.ArrayList;
@@ -22,21 +23,22 @@ public class InventoryServiceTest
 {
     private InventoryRepository inventoryRepository;
     private InventoryService inventoryService;
+    private IngredientRepository ingredientRepository;
     private User user;
 
     @Before
     public void setup()
     {
         AuthService authService = mock(AuthService.class);
+        inventoryRepository = mock(InventoryRepository.class);
+        ingredientRepository = mock(IngredientRepository.class);
 
         user = new User();
         user.setId(12345L);
 
         when(authService.getLoggedInUser()).thenReturn(user);
 
-        inventoryRepository = mock(InventoryRepository.class);
-
-        inventoryService = new InventoryService(inventoryRepository, authService);
+        inventoryService = new InventoryService(inventoryRepository, ingredientRepository, authService);
     }
 
     @Test
@@ -108,5 +110,17 @@ public class InventoryServiceTest
 
         assertEquals(shoppingListItemDto.getIngredient(), argumentCaptor.getValue().getIngredient());
         assertEquals(shoppingListItemDto.getQuantity(), argumentCaptor.getValue().getQuantity());
+    }
+
+    @Test
+    public void shouldReturnIngredientsSuccessfully()
+    {
+        List<String> ingredients = new ArrayList<>();
+        ingredients.add("INGREDIENT1");
+        ingredients.add("INGREDIENT2");
+
+        when(ingredientRepository.getIngredients(user)).thenReturn(ingredients);
+
+        assertEquals(ingredients, inventoryService.getIngredients());
     }
 }
