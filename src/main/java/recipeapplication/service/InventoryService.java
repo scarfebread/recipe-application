@@ -8,6 +8,7 @@ import recipeapplication.exception.InventoryItemNotFoundException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.model.User;
+import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.InventoryRepository;
 
 import java.util.List;
@@ -17,12 +18,14 @@ import java.util.Optional;
 public class InventoryService
 {
     private InventoryRepository inventoryRepository;
+    private IngredientRepository ingredientRepository;
     private AuthService authService;
 
     @Autowired
-    public InventoryService(InventoryRepository inventoryRepository, AuthService authService)
+    public InventoryService(InventoryRepository inventoryRepository, IngredientRepository ingredientRepository, AuthService authService)
     {
         this.inventoryRepository = inventoryRepository;
+        this.ingredientRepository = ingredientRepository;
         this.authService = authService;
     }
 
@@ -75,5 +78,10 @@ public class InventoryService
         }
 
         return inventoryItem.get();
+    }
+
+    public List<String> getIngredients()
+    {
+        return ingredientRepository.getIngredients(authService.getLoggedInUser());
     }
 }

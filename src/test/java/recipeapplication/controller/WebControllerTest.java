@@ -13,6 +13,7 @@ import recipeapplication.model.RecentlyViewed;
 import recipeapplication.model.Recipe;
 import recipeapplication.model.User;
 import recipeapplication.service.AuthService;
+import recipeapplication.service.InventoryService;
 import recipeapplication.service.RecipeService;
 import recipeapplication.service.UserService;
 
@@ -32,6 +33,7 @@ public class WebControllerTest
     private WebController controller;
     private RecipeService recipeService;
     private UserService userService;
+    private InventoryService inventoryService;
     private AuthService authService;
     private List<RecentlyViewed> recentlyViewed;
 
@@ -41,6 +43,7 @@ public class WebControllerTest
         userService = mock(UserService.class);
         recipeService = mock(RecipeService.class);
         authService = mock(AuthService.class);
+        inventoryService = mock(InventoryService.class);
 
         User user = new User();
         user.setUsername(USERNAME);
@@ -53,7 +56,7 @@ public class WebControllerTest
         when(recipeService.getRecentlyViewed()).thenReturn(recentlyViewed);
         when(authService.getLoggedInUser()).thenReturn(user);
 
-        controller = new WebController(userService, recipeService, authService);
+        controller = new WebController(userService, recipeService, inventoryService, authService);
     }
 
     @Test
@@ -121,7 +124,12 @@ public class WebControllerTest
         Recipe recipe = new Recipe();
         recipe.setId(1L);
 
+        List<String> ingredients = new ArrayList<>();
+        ingredients.add("INGREDIENT1");
+        ingredients.add("INGREDIENT2");
+
         when(recipeService.getRecipe(recipe.getId())).thenReturn(recipe);
+        when(inventoryService.getIngredients()).thenReturn(ingredients);
 
         Model model = mock(Model.class);
 
@@ -130,5 +138,6 @@ public class WebControllerTest
         verify(model).addAttribute("recipe", recipe);
         verify(model).addAttribute("recentlyViewed", recentlyViewed);
         verify(model).addAttribute("user", USERNAME);
+        verify(model).addAttribute("ingredients", ingredients);
     }
 }

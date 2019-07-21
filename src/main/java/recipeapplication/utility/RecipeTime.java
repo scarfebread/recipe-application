@@ -71,6 +71,7 @@ public class RecipeTime
             return Integer.parseInt(hoursAsString);
         }
 
+        // TODO this is not covered by unit tests
         return 0;
     }
 
