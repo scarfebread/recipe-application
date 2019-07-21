@@ -117,8 +117,11 @@ public class ShoppingListServiceTest
 
         ShoppingListItem shoppingListItem = shoppingListService.createShoppingListItem(shoppingListItemDto);
 
-        assertEquals(shoppingListItemDto.getIngredient(), shoppingListItem.getIngredient());
-        assertEquals(shoppingListItemDto.getQuantity(), shoppingListItem.getQuantity());
+        Ingredient ingredient = shoppingListItem.getIngredient();
+
+        assertEquals(shoppingListItemDto.getIngredient(), ingredient.getDescription());
+        assertEquals(shoppingListItemDto.getQuantity(), ingredient.getMetric());
+        assertEquals(shoppingListItemDto.getQuantity(), ingredient.getImperial());
     }
 
     @Test
@@ -134,6 +137,5 @@ public class ShoppingListServiceTest
         verify(shoppingListRepository).save(argumentCaptor.capture());
 
         assertEquals(inventoryItem.getIngredient(), argumentCaptor.getValue().getIngredient());
-        assertEquals(inventoryItem.getQuantity(), argumentCaptor.getValue().getQuantity());
     }
 }

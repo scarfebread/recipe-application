@@ -17,7 +17,7 @@ public class Ingredient
     private String metric;
     private String imperial;
 
-    @OneToOne()
+    @OneToOne
     private User user;
 
     @ManyToMany(mappedBy = "ingredients")

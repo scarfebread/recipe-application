@@ -6,6 +6,7 @@ import org.mockito.ArgumentCaptor;
 import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.InventoryItemNotFoundException;
+import recipeapplication.model.Ingredient;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.model.User;
 import recipeapplication.repository.IngredientRepository;
@@ -91,8 +92,11 @@ public class InventoryServiceTest
 
         InventoryItem inventoryItem = inventoryService.createInventoryItem(inventoryItemDto);
 
-        assertEquals(inventoryItemDto.getIngredient(), inventoryItem.getIngredient());
-        assertEquals(inventoryItemDto.getQuantity(), inventoryItem.getQuantity());
+        Ingredient ingredient = inventoryItem.getIngredient();
+
+        assertEquals(inventoryItemDto.getIngredient(), ingredient.getDescription());
+        assertEquals(inventoryItemDto.getQuantity(), ingredient.getImperial());
+        assertEquals(inventoryItemDto.getQuantity(), ingredient.getMetric());
     }
 
     @Test
@@ -108,8 +112,11 @@ public class InventoryServiceTest
 
         verify(inventoryRepository).save(argumentCaptor.capture());
 
-        assertEquals(shoppingListItemDto.getIngredient(), argumentCaptor.getValue().getIngredient());
-        assertEquals(shoppingListItemDto.getQuantity(), argumentCaptor.getValue().getQuantity());
+        Ingredient ingredient = argumentCaptor.getValue().getIngredient();
+
+        assertEquals(shoppingListItemDto.getIngredient(), ingredient.getDescription());
+        assertEquals(shoppingListItemDto.getQuantity(), ingredient.getMetric());
+        assertEquals(shoppingListItemDto.getQuantity(), ingredient.getImperial());
     }
 
     @Test
