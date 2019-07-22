@@ -15,12 +15,10 @@ public class PasswordResetToken
     private Long id;
 
     private String token;
-
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "userId")
-    private User user;
-
     private Date expiryDate;
+
+    @OneToOne
+    private User user;
 
     public PasswordResetToken() {};
 

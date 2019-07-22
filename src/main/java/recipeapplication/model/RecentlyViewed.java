@@ -14,16 +14,17 @@ public class RecentlyViewed
     @JoinColumn(name = "recipe")
     private Recipe recipe;
 
-    private Long userId;
+    @OneToOne
+    private User user;
 
-    public Long getUserId()
+    public User getUser()
     {
-        return userId;
+        return user;
     }
 
-    public void setUserId(Long userId)
+    public void setUser(User user)
     {
-        this.userId = userId;
+        this.user = user;
     }
 
     public Recipe getRecipe()

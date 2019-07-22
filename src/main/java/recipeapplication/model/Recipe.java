@@ -14,8 +14,6 @@ public class Recipe
 
     private String title;
     private String sharedBy;
-    // TODO change to user object
-    private Long userId;
     private Long rating;
     private String notes;
     private Long serves;
@@ -23,6 +21,9 @@ public class Recipe
     private String prepTime;
     private String totalTime;
     private String difficulty;
+
+    @OneToOne
+    private User user;
 
     @JoinTable(
             name = "recipe_ingredients",
@@ -44,9 +45,9 @@ public class Recipe
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecentlyViewed> recentlyViewed;
 
-    public Long getUserId()
+    public User getUser()
     {
-        return userId;
+        return user;
     }
 
     public void setId(Long id)
@@ -64,9 +65,9 @@ public class Recipe
         this.sharedBy = sharedBy;
     }
 
-    public void setUserId(Long userId)
+    public void setUser(User user)
     {
-        this.userId = userId;
+        this.user = user;
     }
 
     public void setIngredients(List<Ingredient> ingredients)

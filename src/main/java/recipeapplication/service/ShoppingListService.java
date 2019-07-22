@@ -68,7 +68,7 @@ public class ShoppingListService
         Ingredient ingredient = new Ingredient(shoppingListItemDto.getIngredient(), shoppingListItemDto.getQuantity(), user);
         ShoppingListItem shoppingListItem = new ShoppingListItem();
 
-        shoppingListItem.setUserId(user.getId());
+        shoppingListItem.setUser(user);
         shoppingListItem.setIngredient(ingredient);
 
         return shoppingListRepository.save(shoppingListItem);
@@ -80,7 +80,7 @@ public class ShoppingListService
 
         ShoppingListItem shoppingListItem = new ShoppingListItem();
 
-        shoppingListItem.setUserId(user.getId());
+        shoppingListItem.setUser(user);
         shoppingListItem.setIngredient(inventoryItem.getIngredient());
 
         shoppingListRepository.save(shoppingListItem);
