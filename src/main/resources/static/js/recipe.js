@@ -41,36 +41,29 @@ document.addEventListener("DOMContentLoaded", function(event)
         });
     };
 
-    shareRecipeButton.onclick = function()
-    {
+    shareRecipeButton.onclick = function() {
         shareRecipeModal.style.display = "block";
     };
 
-    closeShareRecipeModalButton.onclick = function()
-    {
+    closeShareRecipeModalButton.onclick = function() {
         closeModal(shareRecipeModal);
     };
 
-    deleteRecipeButton.onclick = function()
-    {
+    deleteRecipeButton.onclick = function() {
         deleteRecipeLabel.innerText = `Are you sure you want to delete ${recipeTitle}?`;
         deleteRecipeModal.style.display = "block";
     };
 
-    closeDeleteRecipeModalButton.onclick = function()
-    {
+    closeDeleteRecipeModalButton.onclick = function() {
         closeModal(deleteRecipeModal);
     };
 
-    window.onclick = function(event)
-    {
-        if (event.target === shareRecipeModal)
-        {
+    window.onclick = function(event) {
+        if (event.target === shareRecipeModal) {
             closeModal(shareRecipeModal);
         }
 
-        if (event.target === deleteRecipeModal)
-        {
+        if (event.target === deleteRecipeModal) {
             closeModal(deleteRecipeModal);
         }
     };
@@ -106,68 +99,57 @@ document.addEventListener("DOMContentLoaded", function(event)
     cookTime.innerText = recipeCookTime;
     prepTime.innerText = recipePrepTime;
 
-    difficulty.onchange = function ()
-    {
+    difficulty.onchange = function () {
         updateRecipe();
     };
 
-    cookTime.onchange = function ()
-    {
+    cookTime.onchange = function () {
         updateRecipe();
     };
 
-    prepTime.onchange = function ()
-    {
+    prepTime.onchange = function () {
         updateRecipe();
     };
 
-    serves.onchange = function ()
-    {
+    serves.onchange = function () {
         updateRecipe();
     };
 
-    notes.onchange = function ()
-    {
+    notes.onchange = function () {
         updateRecipe();
     };
 
-    rating1.onclick = function ()
-    {
+    rating1.onclick = function () {
         rating = 1;
         displayRating();
         updateRecipe()
     };
 
-    rating2.onclick = function ()
-    {
+    rating2.onclick = function () {
         rating = 2;
         displayRating();
         updateRecipe()
     };
 
-    rating3.onclick = function ()
-    {
+    rating3.onclick = function () {
         rating = 3;
         displayRating();
         updateRecipe()
     };
 
-    rating4.onclick = function ()
-    {
+    rating4.onclick = function () {
         rating = 4;
         displayRating();
         updateRecipe()
     };
 
-    rating5.onclick = function ()
-    {
+    rating5.onclick = function () {
         rating = 5;
         displayRating();
         updateRecipe()
     };
 
-    confirmShareRecipe.onclick = function ()
-    {
+    confirmShareRecipe.onclick = function () {
         confirmShareRecipe.disabled = true;
 
         hideElement('invalidUsernameError');
@@ -175,28 +157,23 @@ document.addEventListener("DOMContentLoaded", function(event)
 
         let username = getValueById('username');
 
-        if (validateStringLength(username, 1))
-        {
+        if (validateStringLength(username, 1)) {
             shareRecipe(username);
-        }
-        else
-        {
+        } else {
             showElement('invalidUsernameError');
         }
 
         confirmShareRecipe.disabled = false;
     };
 
-    confirmDeleteRecipe.onclick = function ()
-    {
+    confirmDeleteRecipe.onclick = function () {
         confirmDeleteRecipe.disabled = true;
 
         hideElement('deleteRecipeError');
 
         deleteRecipe();
 
-        if (!recipeDeleted)
-        {
+        if (!recipeDeleted) {
             confirmDeleteRecipe.disabled = false;
         }
     };
@@ -207,8 +184,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
         editRecipe = !editRecipe;
 
-        if (editRecipe)
-        {
+        if (editRecipe) {
             editRecipeButton.innerText = 'LOCK';
             difficulty.disabled = false;
             cookTime.disabled = false;
@@ -243,9 +219,7 @@ document.addEventListener("DOMContentLoaded", function(event)
                 element.hidden = false;
                 element.style.display = 'inline-block';
             });
-        }
-        else
-        {
+        } else {
             editRecipeButton.innerText = 'EDIT';
             difficulty.disabled = true;
             cookTime.disabled = true;
@@ -279,16 +253,14 @@ document.addEventListener("DOMContentLoaded", function(event)
         editRecipeButton.disabled = false;
     };
 
-    addIngredientButton.onclick = function ()
-    {
+    addIngredientButton.onclick = function () {
         createIngredient();
     };
 
     addCreateIngredientEnterKeyEventListener(getElementById('ingredientDescription'));
     addCreateIngredientEnterKeyEventListener(getElementById('ingredientQuantity'));
 
-    addStepButton.onclick = function ()
-    {
+    addStepButton.onclick = function () {
         createStep();
     };
 
@@ -487,8 +459,7 @@ function displayRating()
 
 function closeModal(modal)
 {
-    if (recipeDeleted)
-    {
+    if (recipeDeleted) {
         return;
     }
 
@@ -505,8 +476,7 @@ function createIngredient()
     let ingredientDescription = getElementById('ingredientDescription');
     let ingredientQuantity = getElementById('ingredientQuantity');
 
-    if (!validateStringLength(ingredientDescription.value, 1))
-    {
+    if (!validateStringLength(ingredientDescription.value, 1)) {
         return;
     }
 
@@ -537,7 +507,6 @@ function addIngredientToList(description, metric, imperial)
     descriptionColumn.innerText = description;
     descriptionColumn.contentEditable = editRecipe;
     descriptionColumn.classList.add('ingredientColumn');
-    descriptionColumn.classList.add('metric');
 
     let metricColumn = createElement('td');
     metricColumn.innerText = metric;
@@ -602,6 +571,7 @@ function addStepToList(step)
 
     let stepHeading = createElement('h3');
     stepHeading.innerText = (getSteps().length + 1) + '.';
+    stepHeading.className = 'stepNumber';
 
     let stepNumberColumn = createElement('td');
     stepNumberColumn.appendChild(stepHeading);
@@ -610,7 +580,6 @@ function addStepToList(step)
     stepColumn.innerText = step;
     stepColumn.contentEditable = editRecipe;
     stepColumn.classList.add('steps');
-    stepColumn.classList.add('recipeTableRow');
     stepColumn.style.width = '78%';
 
     let actionColumn = createElement('td');

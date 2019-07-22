@@ -55,14 +55,6 @@
         width: 86%;
     }
 
-    .form {
-        width: 100%;
-    }
-
-    .formPadding {
-        padding-left: 75px;
-    }
-
     body {
         background: url("../images/carrots.jpg") no-repeat;
         background-size: 1300px auto;

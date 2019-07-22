@@ -133,10 +133,11 @@
         <div class="ingredientAndStepContainer">
             <div class="ingredientContainer">
                 <h2>Ingredients</h2>
-                <table id="ingredientTable">
+                <table id="ingredientTable" class="table">
                     <tr>
                         <td class="ingredientColumn">Description</td>
                         <td class="quantityColumn">Quantity</td>
+                        <td class="buttonColumn"></td>
                     </tr>
                     <tr th:each="ingredient : ${recipe.ingredients}">
                         <td class="ingredientColumn" th:text="${ingredient.description}"></td>
@@ -156,7 +157,7 @@
                             <input class="input " id="ingredientQuantity">
                         </td>
                         <td class="buttonColumn">
-                            <button id="addIngredientButton" class="addIngredientButton">ADD</button>
+                            <button id="addIngredientButton" class="ingredientAndStepButton">ADD</button>
                         </td>
                     </tr>
                 </table>
@@ -174,20 +175,25 @@
 
             <div class="stepContainer">
                 <h2>Method</h2>
-                <table id="stepTable">
+                <table id="stepTable" class="table">
+                    <tr>
+                        <td class="stepNumberColumn"></td>
+                        <td class="steps"></td>
+                        <td class="buttonColumn"></td>
+                    </tr>
                     <tr th:each="step,iter : ${recipe.steps}">
-                        <td><h3 th:text="${iter.index + 1 + '.'}"></h3></td>
-                        <td class="recipeTableRow steps" th:text="${step.description}"></td>
-                        <td class="ingredientActionColumn recipeTableRow">
+                        <td class="stepNumberColumn"><h3 class="stepNumber" th:text="${iter.index + 1 + '.'}"></h3></td>
+                        <td class="steps" th:text="${step.description}"></td>
+                        <td class="ingredientActionColumn">
                             <span hidden class="close ingredientDelete">&times;</span>
                         </td>
                     </tr>
                     <tr hidden id="addStepRow">
                         <td></td>
-                        <td class="addIngredientOrStep">
+                        <td>
                             <input id="newStep" class="input">
                         </td>
-                        <td class="ingredientActionColumn addIngredientOrStep">
+                        <td class="ingredientActionColumn">
                             <button id="addStepButton" class="ingredientAndStepButton">ADD</button>
                         </td>
                     </tr>
