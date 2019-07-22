@@ -269,10 +269,13 @@ input:checked + .slider .off {
     width: 100%;
 }
 
-.steps {
-    cursor: pointer;
+.stepColumn {
     overflow-wrap: break-word;
     word-wrap: break-word;
+    width: 95%;
+}
+
+.stepHeader {
     width: 95%;
 }
 

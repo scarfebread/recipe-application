@@ -200,6 +200,7 @@ document.addEventListener("DOMContentLoaded", function(event)
                 }
 
                 element.style.width = '45%';
+                element.style.cursor = 'pointer';
             });
 
             Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
@@ -208,11 +209,13 @@ document.addEventListener("DOMContentLoaded", function(event)
                 }
 
                 element.style.width = '28%';
+                element.style.cursor = 'pointer';
             });
 
-            Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
+            Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
                 element.contentEditable = true;
                 element.style.width = '70%';
+                element.style.cursor = 'pointer';
             });
 
             Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
@@ -232,16 +235,19 @@ document.addEventListener("DOMContentLoaded", function(event)
             Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
                 element.contentEditable = false;
                 element.style.width = '60%';
+                element.style.cursor = 'auto';
             });
 
             Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
                 element.contentEditable = false;
                 element.style.width = '40%';
+                element.style.cursor = 'auto';
             });
 
-            Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
+            Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
                 element.contentEditable = false;
                 element.style.width = '95%';
+                element.style.cursor = 'auto';
             });
 
             Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
@@ -290,7 +296,7 @@ function addIngredientEditListeners()
 
 function addStepEditListeners()
 {
-    Array.from(document.getElementsByClassName('steps')).forEach(function(element) {
+    Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
         addEditListener(element);
     });
 }
@@ -384,13 +390,13 @@ function getSteps()
 
     let stepTable = getElementById('stepTable');
 
-    for (let i = 0, row; row = stepTable.rows[i]; i++) {
+    for (let i = 1, row; row = stepTable.rows[i]; i++) {
         if (i === stepTable.rows.length -1)
         {
             break;
         }
 
-        row.children[0].children[0].innerHTML = (i + 1) + '.';
+        row.children[0].children[0].innerHTML = (i) + '.';
 
         steps.push(row.children[1].innerHTML)
     }
