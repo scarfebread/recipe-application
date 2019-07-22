@@ -56,7 +56,6 @@ public class RecipeController
     {
         if (recipeDto.getId() == null)
         {
-            // TODO is 400 the right status
             return ResponseEntity.status(400).body("No recipe supplied");
         }
 
@@ -83,6 +82,7 @@ public class RecipeController
         try
         {
             recipeService.updateRecipe(recipeDto);
+            userService.turnOffInstructions();
         }
         catch (RecipeDoesNotExistException e)
         {

@@ -117,4 +117,15 @@ public class UserService
 
         userRepository.delete(user);
     }
+
+    public void turnOffInstructions()
+    {
+        User user = authService.getLoggedInUser();
+
+        if (user.isNewUser())
+        {
+            user.setNewUser(false);
+            userRepository.save(user);
+        }
+    }
 }

@@ -47,6 +47,7 @@ public class WebControllerTest
 
         User user = new User();
         user.setUsername(USERNAME);
+        user.setNewUser(true);
 
         recentlyViewed = new ArrayList<>();
         recentlyViewed.add(new RecentlyViewed());
@@ -139,5 +140,6 @@ public class WebControllerTest
         verify(model).addAttribute("recentlyViewed", recentlyViewed);
         verify(model).addAttribute("user", USERNAME);
         verify(model).addAttribute("ingredients", ingredients);
+        verify(model).addAttribute("displayInstructions", true);
     }
 }

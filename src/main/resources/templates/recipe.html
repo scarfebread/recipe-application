@@ -19,6 +19,7 @@
         let recipeCookTime = [[${recipe.cookTime}]];
         let recipeDifficulty = [[${recipe.difficulty}]];
         let ingredients = [[${ingredients}]];
+        let displayInstructions = [[${displayInstructions}]]
     /*]]>*/
     </script>
     <script type="application/javascript" src="/js/library.js"></script>
@@ -135,12 +136,12 @@
                 <h2>Ingredients</h2>
                 <table id="ingredientTable" class="table">
                     <tr>
-                        <td class="ingredientColumn">Description</td>
-                        <td class="quantityColumn">Quantity</td>
+                        <td id="ingredientHeading" class="ingredientColumn">Description</td>
+                        <td id="quantityHeading" class="quantityColumn">Quantity</td>
                         <td class="buttonColumn"></td>
                     </tr>
                     <tr th:each="ingredient : ${recipe.ingredients}">
-                        <td class="ingredientColumn" th:text="${ingredient.description}"></td>
+                        <td class="ingredientColumn ingredient" th:text="${ingredient.description}"></td>
                         <td class="quantityColumn metric" th:text="${ingredient.metric}">
                         <td class="quantityColumn imperial hidden" th:text="${ingredient.imperial}"></td>
                         <td class="ingredientActionColumn">
@@ -231,6 +232,19 @@
                 <label>Recipe successfully deleted!</label><br>
                 <label>Click <a href="/">here</a> to see your recipes</label>
             </div>
+        </div>
+    </div>
+
+    <div id="instructionsModal" class="modal">
+        <div class="modal-content">
+            <label>It looks like this is your first recipe!</label><br>
+            <label>There's just a few things to tell you before you start.</label><br><br>
+            <label>By default recipes are locked for editing when you visit the page.</label>
+            <label>To unlock press the EDIT button, which will allow you to edit fields and add / remove ingredients and steps.</label><br><br>
+            <label>Once you've created an ingredient or step you can click on the text to edit.</label><br><br>
+            <label>All changes are saved automatically so you can simply edit and we'll record the change.</label>
+            <label>Once you're finished press the LOCK button to prevent any further changes.</label>
+            <button id="closeInstructions" class="modalButton">CLOSE</button>
         </div>
     </div>
 </body>

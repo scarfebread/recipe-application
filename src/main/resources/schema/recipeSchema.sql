@@ -6,7 +6,8 @@ CREATE TABLE recipe.users (
   id SERIAL PRIMARY KEY,
   username VARCHAR,
   password VARCHAR,
-  email VARCHAR
+  email VARCHAR,
+  newUser BOOL
 );
 
 CREATE TABLE recipe.password_reset_tokens (

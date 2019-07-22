@@ -13,6 +13,7 @@ public class User
     private String username;
     private String password;
     private String email;
+    private boolean newUser;
 
     public String getUsername()
     {
@@ -52,5 +53,15 @@ public class User
     public void setId(Long id)
     {
         this.id = id;
+    }
+
+    public boolean isNewUser()
+    {
+        return newUser;
+    }
+
+    public void setNewUser(boolean newUser)
+    {
+        this.newUser = newUser;
     }
 }

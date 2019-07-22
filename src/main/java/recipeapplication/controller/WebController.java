@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import recipeapplication.exception.InvalidPasswordTokenException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.Recipe;
+import recipeapplication.model.User;
 import recipeapplication.service.AuthService;
 import recipeapplication.service.InventoryService;
 import recipeapplication.service.RecipeService;
@@ -61,13 +62,15 @@ public class WebController
         try
         {
             Recipe recipe = recipeService.getRecipe(id);
+            User user = authService.getLoggedInUser();
 
             recipeService.addRecentlyViewed(recipe);
 
             model.addAttribute("recipe", recipe);
             model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
-            model.addAttribute("user", authService.getLoggedInUser().getUsername());
+            model.addAttribute("user", user.getUsername());
             model.addAttribute("ingredients", inventoryService.getIngredients());
+            model.addAttribute("displayInstructions", user.isNewUser());
 
             return "recipe.html";
         }

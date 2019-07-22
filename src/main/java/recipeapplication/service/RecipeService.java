@@ -26,7 +26,6 @@ import javax.transaction.Transactional;
 public class RecipeService
 {
     private RecipeRepository recipeRepository;
-    private IngredientRepository ingredientRepository;
     private StepRepository stepRepository;
     private AuthService authService;
     private RecentlyViewedRepository recentlyViewedRepository;
@@ -35,21 +34,18 @@ public class RecipeService
     @Autowired
     public RecipeService(
             RecipeRepository recipeRepository,
-            IngredientRepository ingredientRepository,
             StepRepository stepRepository,
             AuthService authService,
             RecentlyViewedRepository recentlyViewedRepository,
             EntityManager entityManager)
     {
         this.recipeRepository = recipeRepository;
-        this.ingredientRepository = ingredientRepository;
         this.stepRepository = stepRepository;
         this.authService = authService;
         this.recentlyViewedRepository = recentlyViewedRepository;
         this.entityManager = entityManager;
     }
 
-    // TODO do I need a different DTO for creating a recipe?
     public Recipe createRecipe(CreateRecipeDto createRecipeDto)
     {
         User user = authService.getLoggedInUser();

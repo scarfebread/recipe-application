@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
     let shareRecipeButton = getElementById('shareRecipeButton');
     let shareRecipeModal = getElementById('shareRecipeModal');
+    let instructionsModal = getElementById('instructionsModal');
     let closeShareRecipeModalButton = getElementById('closeShareRecipeModal');
 
     let deleteRecipeButton = getElementById('deleteRecipeButton');
@@ -17,8 +18,7 @@ document.addEventListener("DOMContentLoaded", function(event)
     let deleteRecipeLabel = getElementById('deleteLabel');
     let ingredientFormatButton = getElementById('ingredientFormatButton');
 
-    ingredientFormatButton.onclick = function()
-    {
+    ingredientFormatButton.onclick = function() {
         metric = !metric;
 
         let displayClass;
@@ -58,6 +58,14 @@ document.addEventListener("DOMContentLoaded", function(event)
         closeModal(deleteRecipeModal);
     };
 
+    getElementById('closeInstructions').onclick = function () {
+        closeModal(instructionsModal);
+    };
+
+    if (displayInstructions) {
+        instructionsModal.style.display = "block";
+    }
+
     window.onclick = function(event) {
         if (event.target === shareRecipeModal) {
             closeModal(shareRecipeModal);
@@ -65,6 +73,10 @@ document.addEventListener("DOMContentLoaded", function(event)
 
         if (event.target === deleteRecipeModal) {
             closeModal(deleteRecipeModal);
+        }
+
+        if (event.target === instructionsModal) {
+            closeModal(instructionsModal);
         }
     };
 
@@ -194,22 +206,24 @@ document.addEventListener("DOMContentLoaded", function(event)
             getElementById('addIngredientRow').hidden = false;
             getElementById('addStepRow').hidden = false;
 
+            let nonEditableIds = ['addIngredientColumn', 'ingredientHeading', 'quantityHeading'];
+
             Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
-                if (element.id !== 'addIngredientColumn') {
+                if (!nonEditableIds.includes(element.id)) {
                     element.contentEditable = true;
+                    element.style.cursor = 'pointer';
                 }
 
                 element.style.width = '45%';
-                element.style.cursor = 'pointer';
             });
 
             Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
-                if (element.id !== 'addQuantityColumn') {
+                if (!nonEditableIds.includes(element.id)) {
                     element.contentEditable = true;
+                    element.style.cursor = 'pointer';
                 }
 
                 element.style.width = '28%';
-                element.style.cursor = 'pointer';
             });
 
             Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
