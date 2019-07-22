@@ -215,6 +215,8 @@ input:checked + .slider .off {
 
 #ingredientTable {
     width: 100%;
+    word-wrap:break-word;
+    table-layout: fixed;
 }
 
 #stepTable {
@@ -257,7 +259,7 @@ input:checked + .slider .off {
 .ingredientColumn {
     height: 36px;
     padding-right: 8px;
-    width: 60%
+    width: 60%;
 }
 
 .quantityColumn {
@@ -320,6 +322,7 @@ input:checked + .slider .off {
     cursor: pointer;
     background-color: #fff;
     border-bottom: 1px solid #d4d4d4;
+    overflow-wrap: break-word;
 }
 .autocomplete-items div:hover {
     background-color: #e9e9e9;
