@@ -1,3 +1,31 @@
+body {
+    font-family: 'Didact Gothic';
+    background: url("../images/carrots.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.container {
+    position: absolute;
+    width: 500px;
+    height: auto;
+    top: 15%;
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    background: rgba(221, 221, 221, 0.8);
+    border-radius: 40px;
+}
+
+.form {
+    padding-top: 5px;
+    padding-left: 100px;
+    padding-bottom: 30px;
+}
+
 input {
     width: 75%;
     height: 25px;
@@ -40,34 +68,6 @@ input {
     right: 0;
 }
 
-.form {
-    position: absolute;
-    width: 500px;
-    height: auto;
-    top: 15%;
-    left: 0;
-    right: 0;
-    margin-right: auto;
-    margin-left: auto;
-    background: rgba(221, 221, 221, 0.8);
-    border-radius: 40px;
-}
-
-.formPadding {
-    padding-top: 5px;
-    padding-left: 100px;
-    padding-bottom: 30px;
-}
-
-body {
-    font-family: 'Didact Gothic';
-    background: url("../images/carrots.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
-
 #postSignupDisplay {
     display: none;
 }
@@ -81,12 +81,16 @@ body {
 }
 
 /* Mobile specific styles */
-@media (max-width: 500px) and (orientation: portrait) {
-    .form {
-        width: 100%;
+@media (max-width: 550px) and (orientation: portrait) {
+    .container {
+        position: relative;
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-top: 5%;
     }
 
-    .formPadding {
+    .form {
         padding-left: 75px;
     }
 
@@ -100,5 +104,9 @@ body {
     body {
         background: url("../images/carrots.jpg") no-repeat;
         background-size: 1400px auto;
+    }
+
+    .container {
+        top: 8%;
     }
 }

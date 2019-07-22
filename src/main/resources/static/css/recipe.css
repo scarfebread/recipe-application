@@ -43,6 +43,7 @@
     width: 90%;
 }
 
+/*TODO this is a duplicate*/
 .ingredientContainer {
     float: left;
     width: 48%;
@@ -193,16 +194,6 @@ input:checked + .slider .off {
     text-align: left;
 }
 
-.ingredientAndStepButton {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    height: 30px;
-    width: 100%;
-    margin-left: 3px;
-}
-
 .ingredientActionColumn {
     display: flex;
     justify-content: center;
@@ -213,18 +204,10 @@ input:checked + .slider .off {
     display: none;
 }
 
-#ingredientTable {
+.table {
     width: 100%;
     word-wrap:break-word;
     table-layout: fixed;
-}
-
-#stepTable {
-    width: 100%;
-}
-
-.addIngredientOrStep {
-    padding-top: 10px;
 }
 
 .pointer {
@@ -276,7 +259,7 @@ input:checked + .slider .off {
     margin-top: 3px;
 }
 
-.addIngredientButton {
+.ingredientAndStepButton {
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -293,6 +276,14 @@ input:checked + .slider .off {
     width: 95%;
 }
 
+.stepNumberColumn {
+    width: 20px;
+}
+
+.stepNumber {
+    margin: 0;
+}
+
 #ratingLabel {
     float: left;
     padding-right: 5px;
@@ -305,6 +296,7 @@ input:checked + .slider .off {
 .autocomplete {
     position: relative;
     display: inline-block;
+    width: 100%;
 }
 
 .autocomplete-items {
@@ -355,14 +347,6 @@ input:checked + .slider .off {
     .container {
         margin: 0;
         width: 100%;
-    }
-
-    .form {
-        width: 100%;
-    }
-
-    .formPadding {
-        padding-left: 75px;
     }
 
     .recipeTitle {

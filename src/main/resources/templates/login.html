@@ -10,27 +10,25 @@
     <link rel="stylesheet" href="/css/login.css" media="screen" type="text/css" />
 </head>
 <body>
-    <div class="background">
+    <div class="container">
         <div class="form">
-            <div class="formPadding">
-                <h1>The Cooking Pot</h1>
-                <form th:action="@{/login}" method="post">
-                    <label for="username">Username</label><br>
-                    <input id="username" name="username" class="input"/><br>
-                    <label for="password">Password</label><br>
-                    <input id="password" name="password" class="input" type="password"/>
-                    <div th:if="${param.error}" class="error">
-                        Invalid username and password!
-                    </div>
-                    <button class="button">
-                        <span>LOGIN</span>
-                    </button>
-                    <div>
-                        <a href="/resetPassword">Forgotten password?</a><br>
-                        <a href="/signup">Don't have an account?</a>
-                    </div>
-                </form>
-            </div>
+            <h1>The Cooking Pot</h1>
+            <form th:action="@{/login}" method="post">
+                <label for="username">Username</label><br>
+                <input id="username" name="username" class="input"/><br>
+                <label for="password">Password</label><br>
+                <input id="password" name="password" class="input" type="password"/>
+                <div th:if="${param.error}" class="error">
+                    Invalid username and password!
+                </div>
+                <button class="button">
+                    <span>LOGIN</span>
+                </button>
+                <div>
+                    <a href="/resetPassword">Forgotten password?</a><br>
+                    <a href="/signup">Don't have an account?</a>
+                </div>
+            </form>
         </div>
     </div>
 </body>
