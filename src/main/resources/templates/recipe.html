@@ -178,12 +178,12 @@
                 <table id="stepTable" class="table">
                     <tr>
                         <td class="stepNumberColumn"></td>
-                        <td class="steps"></td>
+                        <td class="stepHeader"></td>
                         <td class="buttonColumn"></td>
                     </tr>
                     <tr th:each="step,iter : ${recipe.steps}">
                         <td class="stepNumberColumn"><h3 class="stepNumber" th:text="${iter.index + 1 + '.'}"></h3></td>
-                        <td class="steps" th:text="${step.description}"></td>
+                        <td class="stepColumn" th:text="${step.description}"></td>
                         <td class="ingredientActionColumn">
                             <span hidden class="close ingredientDelete">&times;</span>
                         </td>
