@@ -61,7 +61,7 @@ public class RecipeServiceTest
 
         when(authService.getLoggedInUser()).thenReturn(loggedInUser);
 
-        recipeService = new RecipeService(recipeRepository, ingredientRepository, stepRepository, authService, recentlyViewedRepository, entityManager);
+        recipeService = new RecipeService(recipeRepository, stepRepository, authService, recentlyViewedRepository, entityManager);
     }
 
     @Test

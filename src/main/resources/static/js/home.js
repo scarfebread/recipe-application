@@ -79,13 +79,6 @@ function displayRecipe(recipe)
     link.appendChild(title);
     listItem.appendChild(link);
 
-    if (recipe.image != null) {
-        let image = createElement('img');
-        image.className = 'recipeThumbnail';
-        image.src = recipe.image;
-        listItem.appendChild(image);
-    }
-
     let cookTime = createElement('label');
     cookTime.innerText = `Total time: ${recipe.totalTime}`;
 

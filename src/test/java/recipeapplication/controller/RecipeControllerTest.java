@@ -148,6 +148,7 @@ public class RecipeControllerTest
         ResponseEntity response = recipeController.updateRecipe(recipeDto);
 
         verify(recipeService).updateRecipe(recipeDto);
+        verify(userService).turnOffInstructions();
 
         assertEquals("Updated", response.getBody());
         assertEquals(202, response.getStatusCodeValue());

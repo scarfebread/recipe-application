@@ -233,6 +233,10 @@ input:checked + .slider .off {
     margin-bottom: 10px;
 }
 
+#closeInstructions {
+    margin-top: 10px;
+}
+
 .ingredients {
     cursor: pointer;
     height: 36px;
@@ -355,10 +359,5 @@ input:checked + .slider .off {
     .recipeTitle {
         padding-left: 0;
         padding-top: 10px;
-    }
-
-    body {
-        background: url("../images/carrots.jpg") no-repeat;
-        background-size: 1300px auto;
     }
 }

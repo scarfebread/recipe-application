@@ -17,9 +17,7 @@ import recipeapplication.security.Role;
 import java.util.Calendar;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTest
@@ -34,7 +32,6 @@ public class UserServiceTest
     private static final String EXPIRED_TOKEN = "EXPIRED_TOKEN";
     private static final String PASSWORD = "PASSWORD";
     private static final String ENCODED_PASSWORD = "ENCODED_PASSWORD";
-
 
     private UserRepository userRepository;
     private PasswordTokenRepository passwordTokenRepository;
@@ -232,5 +229,35 @@ public class UserServiceTest
         userService.deleteAccount();
 
         verify(userRepository).delete(user);
+    }
+
+    @Test
+    public void shouldTurnOffInstructionsIfTheUserIsNew()
+    {
+        User user = new User();
+        user.setNewUser(true);
+
+        when(authService.getLoggedInUser()).thenReturn(user);
+
+        userService.turnOffInstructions();
+
+        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
+
+        verify(userRepository).save(argumentCaptor.capture());
+
+        assertFalse(argumentCaptor.getValue().isNewUser());
+    }
+
+    @Test
+    public void shouldNotTurnOffInstructionsIfTheUserIsNotNew()
+    {
+        User user = new User();
+        user.setNewUser(false);
+
+        when(authService.getLoggedInUser()).thenReturn(user);
+
+        userService.turnOffInstructions();
+
+        verify(userRepository, never()).save(any());
     }
 }

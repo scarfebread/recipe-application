@@ -29,12 +29,6 @@
     padding-left: 10px;
 }
 
-.recipeThumbnail {
-    height: 50px;
-    float: left;
-    padding-right: 5px;
-}
-
 #postRecipeCreated {
     display: none;
 }
