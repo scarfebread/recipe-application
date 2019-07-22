@@ -70,9 +70,15 @@
 
         <div class="recipeContainer">
             <div class="buttonContainer">
-                <button id="shareRecipeButton" class="button">SHARE</button>
-                <button id="editRecipeButton" class="button">EDIT</button>
-                <button id="deleteRecipeButton" class="button">DELETE</button>
+                <button id="shareRecipeButton" class="headerButton button">
+                    <span>SHARE</span>
+                </button>
+                <button id="editRecipeButton" class="headerButton button">
+                    <span>EDIT</span>
+                </button>
+                <button id="deleteRecipeButton" class="headerButton button">
+                    <span>DELETE</span>
+                </button>
             </div>
             <div class="subRecipeContainer">
                 <div class="recipeDetailsContainer">
@@ -139,7 +145,7 @@
                     <tr>
                         <td id="ingredientHeading" class="ingredientColumn">Description</td>
                         <td id="quantityHeading" class="quantityColumn">Quantity</td>
-                        <td class="buttonColumn"></td>
+                        <td hidden class="buttonColumn"></td>
                     </tr>
                     <tr th:each="ingredient : ${recipe.ingredients}">
                         <td class="ingredientColumn ingredient" th:text="${ingredient.description}"></td>
@@ -158,8 +164,10 @@
                         <td id="addQuantityColumn" class="quantityColumn">
                             <input class="input " id="ingredientQuantity">
                         </td>
-                        <td class="buttonColumn">
-                            <button id="addIngredientButton" class="ingredientAndStepButton">ADD</button>
+                        <td hidden class="buttonColumn">
+                            <button id="addIngredientButton" class="ingredientAndStepButton button">
+                                <span>ADD</span>
+                            </button>
                         </td>
                     </tr>
                 </table>
@@ -181,7 +189,7 @@
                     <tr>
                         <td class="stepNumberColumn"></td>
                         <td class="stepHeader"></td>
-                        <td class="buttonColumn"></td>
+                        <td hidden class="buttonColumn"></td>
                     </tr>
                     <tr th:each="step,iter : ${recipe.steps}">
                         <td class="stepNumberColumn"><h3 class="stepNumber" th:text="${iter.index + 1 + '.'}"></h3></td>
@@ -196,7 +204,9 @@
                             <input id="newStep" class="input">
                         </td>
                         <td class="ingredientActionColumn">
-                            <button id="addStepButton" class="ingredientAndStepButton">ADD</button>
+                            <button id="addStepButton" class="ingredientAndStepButton button">
+                                <span>ADD</span>
+                            </button>
                         </td>
                     </tr>
                 </table>
@@ -213,7 +223,9 @@
                 <input id="username" class="modalInput">
                 <label id="invalidUsernameError" class="hidden error">Invalid username!</label>
                 <label id="shareRecipeError" class="hidden error"></label>
-                <button id="confirmShareButton" class="modalButton">SHARE</button>
+                <button id="confirmShareButton" class="modalButton button">
+                    <span>SHARE</span>
+                </button>
             </div>
             <div id="postShare" class="hidden">
                 <label>Recipe successfully shared!</label><br>
@@ -227,7 +239,9 @@
             <div id="preDelete">
                 <label id="deleteLabel"></label><br>
                 <label id="deleteRecipeError" class="hidden error"></label>
-                <button id="confirmDeleteButton" class="modalButton">DELETE</button>
+                <button id="confirmDeleteButton" class="modalButton button">
+                    <span>DELETE</span>
+                </button>
             </div>
             <div id="postDelete" class="hidden">
                 <label>Recipe successfully deleted!</label><br>
