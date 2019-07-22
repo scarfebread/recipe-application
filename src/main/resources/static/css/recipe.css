@@ -176,7 +176,7 @@ input:checked + .slider .off {
     padding-left: 5%;
 }
 
-.button {
+.headerButton {
     float: left;
     background-color: #4CAF50;
     color: white;

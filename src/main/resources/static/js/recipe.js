@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function(event)
             getElementById('addIngredientRow').hidden = false;
             getElementById('addStepRow').hidden = false;
 
-            let nonEditableIds = ['addIngredientColumn', 'ingredientHeading', 'quantityHeading'];
+            let nonEditableIds = ['addIngredientColumn', 'addQuantityColumn', 'ingredientHeading', 'quantityHeading'];
 
             Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
                 if (!nonEditableIds.includes(element.id)) {
@@ -235,6 +235,14 @@ document.addEventListener("DOMContentLoaded", function(event)
             Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
                 element.hidden = false;
                 element.style.display = 'inline-block';
+            });
+
+            Array.from(document.getElementsByClassName('buttonColumn')).forEach(function(element) {
+                element.hidden = false;
+            });
+
+            Array.from(document.getElementsByClassName('stepHeader')).forEach(function(element) {
+                element.style.width = '65%';
             });
         } else {
             editRecipeButton.innerText = 'EDIT';
@@ -267,6 +275,14 @@ document.addEventListener("DOMContentLoaded", function(event)
             Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
                 element.hidden = true;
                 element.style.display = 'none';
+            });
+
+            Array.from(document.getElementsByClassName('buttonColumn')).forEach(function(element) {
+                element.hidden = true;
+            });
+
+            Array.from(document.getElementsByClassName('stepHeader')).forEach(function(element) {
+                element.style.width = '95%';
             });
         }
 
