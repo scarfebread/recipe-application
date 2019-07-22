@@ -50,7 +50,7 @@ public class InventoryService
         Ingredient ingredient = new Ingredient(inventoryItemDto.getIngredient(), inventoryItemDto.getQuantity(), user);
         InventoryItem inventoryItem = new InventoryItem();
 
-        inventoryItem.setUserId(user.getId());
+        inventoryItem.setUser(user);
         inventoryItem.setIngredient(ingredient);
 
         return inventoryRepository.save(inventoryItem);

@@ -10,7 +10,8 @@ public class ShoppingListItem
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    @OneToOne
+    private User user;
 
     @OneToOne
     private Ingredient ingredient;
@@ -22,14 +23,14 @@ public class ShoppingListItem
         return id;
     }
 
-    public Long getUserId()
+    public User getUser()
     {
-        return userId;
+        return user;
     }
 
-    public void setUserId(Long userId)
+    public void setUser(User user)
     {
-        this.userId = userId;
+        this.user = user;
     }
 
     public Ingredient getIngredient()

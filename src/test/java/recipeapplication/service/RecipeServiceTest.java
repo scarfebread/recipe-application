@@ -80,7 +80,7 @@ public class RecipeServiceTest
         Recipe recipe = argumentCaptor.getValue();
 
         assertEquals(recipeDto.getTitle(), recipe.getTitle());
-        assertEquals(loggedInUser.getId(), recipe.getUserId());
+        assertEquals(loggedInUser, recipe.getUser());
         assertEquals(Long.valueOf(0L), recipe.getRating());
         assertEquals(Long.valueOf(1L), recipe.getServes());
         assertEquals("Medium", recipe.getDifficulty());
@@ -282,7 +282,7 @@ public class RecipeServiceTest
         assertEquals(RATING, sharedRecipe.getRating());
         assertEquals(SERVES, sharedRecipe.getServes());
         assertEquals(loggedInUser.getUsername() , sharedRecipe.getSharedBy());
-        assertEquals(userToShareWith.getId(), sharedRecipe.getUserId());
+        assertEquals(userToShareWith, sharedRecipe.getUser());
         assertEquals(ingredients, sharedRecipe.getIngredients());
         assertEquals(steps, sharedRecipe.getSteps());
     }
@@ -295,14 +295,14 @@ public class RecipeServiceTest
 
         RecentlyViewed recentlyViewed1 = new RecentlyViewed();
         recentlyViewed1.setRecipe(mostRecentRecipe);
-        recentlyViewed1.setUserId(loggedInUser.getId());
+        recentlyViewed1.setUser(loggedInUser);
 
         Recipe aRecentRecipe = new Recipe();
         aRecentRecipe.setId(2L);
 
         RecentlyViewed recentlyViewed2 = new RecentlyViewed();
         recentlyViewed2.setRecipe(aRecentRecipe);
-        recentlyViewed2.setUserId(loggedInUser.getId());
+        recentlyViewed2.setUser(loggedInUser);
 
         List<RecentlyViewed> recentlyViewed = new ArrayList<>();
         recentlyViewed.add(recentlyViewed1);
@@ -312,7 +312,7 @@ public class RecipeServiceTest
 
         Recipe viewedRecipe =  new Recipe();
         viewedRecipe.setId(2L);
-        viewedRecipe.setUserId(loggedInUser.getId());
+        viewedRecipe.setUser(loggedInUser);
 
         ArgumentCaptor<RecentlyViewed> argumentCaptor = ArgumentCaptor.forClass(RecentlyViewed.class);
 
@@ -323,7 +323,7 @@ public class RecipeServiceTest
         RecentlyViewed result = argumentCaptor.getValue();
 
         assertEquals(viewedRecipe, result.getRecipe());
-        assertEquals(loggedInUser.getId(), result.getUserId());
+        assertEquals(loggedInUser, result.getUser());
     }
 
     @Test
@@ -336,7 +336,7 @@ public class RecipeServiceTest
 
         Recipe viewedRecipe =  new Recipe();
         viewedRecipe.setId(2L);
-        viewedRecipe.setUserId(loggedInUser.getId());
+        viewedRecipe.setUser(loggedInUser);
 
         ArgumentCaptor<RecentlyViewed> argumentCaptor = ArgumentCaptor.forClass(RecentlyViewed.class);
 
@@ -347,7 +347,7 @@ public class RecipeServiceTest
         RecentlyViewed result = argumentCaptor.getValue();
 
         assertEquals(viewedRecipe, result.getRecipe());
-        assertEquals(loggedInUser.getId(), result.getUserId());
+        assertEquals(loggedInUser, result.getUser());
     }
 
     @Test
@@ -358,14 +358,14 @@ public class RecipeServiceTest
 
         RecentlyViewed recentlyViewed1 = new RecentlyViewed();
         recentlyViewed1.setRecipe(mostRecentRecipe);
-        recentlyViewed1.setUserId(loggedInUser.getId());
+        recentlyViewed1.setUser(loggedInUser);
 
         Recipe aRecentRecipe = new Recipe();
         aRecentRecipe.setId(1L);
 
         RecentlyViewed recentlyViewed2 = new RecentlyViewed();
         recentlyViewed2.setRecipe(aRecentRecipe);
-        recentlyViewed2.setUserId(loggedInUser.getId());
+        recentlyViewed2.setUser(loggedInUser);
 
         List<RecentlyViewed> recentlyViewed = new ArrayList<>();
         recentlyViewed.add(recentlyViewed1);
@@ -375,7 +375,7 @@ public class RecipeServiceTest
 
         Recipe viewedRecipe =  new Recipe();
         viewedRecipe.setId(2L);
-        viewedRecipe.setUserId(loggedInUser.getId());
+        viewedRecipe.setUser(loggedInUser);
 
         recipeService.addRecentlyViewed(viewedRecipe);
 

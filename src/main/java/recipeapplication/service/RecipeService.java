@@ -57,7 +57,7 @@ public class RecipeService
         Recipe recipe = new Recipe();
 
         recipe.setTitle(createRecipeDto.getTitle());
-        recipe.setUserId(user.getId());
+        recipe.setUser(user);
         recipe.setRating(0L);
         recipe.setServes(1L);
         recipe.setDifficulty("Medium");
@@ -134,7 +134,7 @@ public class RecipeService
         recipe.setId(null);
 
         recipe.setSharedBy(authService.getLoggedInUser().getUsername());
-        recipe.setUserId(user.getId());
+        recipe.setUser(user);
 
         for (Ingredient ingredient : recipe.getIngredients())
         {
@@ -165,7 +165,7 @@ public class RecipeService
         {
             RecentlyViewed recentlyViewed = new RecentlyViewed();
             recentlyViewed.setRecipe(recipe);
-            recentlyViewed.setUserId(recipe.getUserId());
+            recentlyViewed.setUser(recipe.getUser());
             recentlyViewedRepository.save(recentlyViewed);
         }
     }
