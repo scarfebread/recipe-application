@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
             .authorizeRequests()
                 .antMatchers("/signup", "/resetPassword", "/changePassword", "/api/signup", "/css/**", "/images/**", "/js/**")
                 .permitAll()
-                .antMatchers("/", "/recipe", "/deleteAccount", "/changePasswordLoggedIn").hasAuthority(Role.USER.toString())
+                .antMatchers("/", "/recipe", "/shoppingList", "/inventory", "/deleteAccount", "/changePasswordLoggedIn").hasAuthority(Role.USER.toString())
                 .antMatchers("/api/change_password").hasAnyAuthority(Role.CHANGE_PASSWORD.toString(), Role.USER.toString())
                 .and()
             .formLogin()

@@ -8,8 +8,8 @@
     <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
     <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="/css/inventory.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="/css/font-awesome">
     <script type="application/javascript" src="/js/library.js"></script>
+    <script type="application/javascript" src="/js/inventory.js"></script>
     <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon'/>
 </head>
 <body>
@@ -40,8 +40,8 @@
                     </a>
                 </div>
             </div>
-            <a href="inventory.html">Inventory</a>
-            <a class="active" href="shopping_list.html">Shopping List</a>
+            <a href="/inventory">Inventory</a>
+            <a class="active" href="/shopping_list">Shopping List</a>
             <div class="dropdown">
                 <button class="dropbtn">Account
                     <i class="fa fa-caret-down"></i>
@@ -56,115 +56,15 @@
         </div>
     </div>
 
-    <div class="inventoryContainer">
-        <div class="inventoryItem">
+    <div class="inventoryContainer" id="inventoryContainer">
+        <div class="inventoryItem" th:each="item,iter : ${shoppingList}">
             <div class="itemAndQuantity">
-                <label>Chicken</label>
-                <label>500g</label>
+                <label th:text="${item.ingredient.description}"></label>
+                <label th:text="${item.ingredient.metric}"></label>
             </div>
             <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Fresh rocket</label>
-                <label>1 bag</label>
-            </div>
-            <div class="symbols">
-                <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Beans</label>
-                <label>4 pack</label>
-            </div>
-            <div class="symbols">
-                <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Mature cheddar</label>
-                <label>1 block</label>
-            </div>
-            <div class="symbols">
-                <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Salmon</label>
-                <label>2 pieces</label>
-            </div>
-            <div class="symbols">
-                <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Eggs</label>
-                <label>6</label>
-            </div>
-            <div class="symbols">
-                <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Filo pastry</label>
-                <label>1 pack</label>
-            </div>
-            <div class="symbols">
-                <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Vinegar</label>
-                <label></label>
-            </div>
-            <div class="symbols">
-                <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Bacon</label>
-                <label></label>
-            </div>
-            <div class="symbols">
-                <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Fresh rocket</label>
-                <label>1 bag</label>
-            </div>
-            <div class="symbols">
-                <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label><b>Chicken</b></label>
-                <label>500g</label>
-            </div>
-            <div class="symbols">
-                <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
             </div>
         </div>
     </div>
@@ -180,7 +80,7 @@
                 <input class="input " id="quantity">
             </div>
             <div>
-                <button class="button">ADD</button>
+                <button id="addShoppingListItem" class="button">ADD</button>
             </div>
         </div>
         <div class="instructionsContainer">

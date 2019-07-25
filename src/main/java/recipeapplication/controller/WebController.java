@@ -12,6 +12,7 @@ import recipeapplication.model.User;
 import recipeapplication.service.AuthService;
 import recipeapplication.service.InventoryService;
 import recipeapplication.service.RecipeService;
+import recipeapplication.service.ShoppingListService;
 import recipeapplication.service.UserService;
 
 @Controller
@@ -20,6 +21,7 @@ public class WebController
     private UserService userService;
     private RecipeService recipeService;
     private InventoryService inventoryService;
+    private ShoppingListService shoppingListService;
     private AuthService authService;
 
     @Autowired
@@ -27,11 +29,13 @@ public class WebController
             UserService userService,
             RecipeService recipeService,
             InventoryService inventoryService,
+            ShoppingListService shoppingListService,
             AuthService authService)
     {
         this.userService = userService;
         this.recipeService = recipeService;
         this.inventoryService = inventoryService;
+        this.shoppingListService = shoppingListService;
         this.authService = authService;
     }
 
@@ -118,5 +122,14 @@ public class WebController
         model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
 
         return "delete_account.html";
+    }
+
+    @GetMapping("/shoppingList")
+    public String shoppingList(Model model)
+    {
+        model.addAttribute("user", authService.getLoggedInUser().getUsername());
+        model.addAttribute("shoppingList", shoppingListService.getShoppingList());
+
+        return "shopping_list.html";
     }
 }
