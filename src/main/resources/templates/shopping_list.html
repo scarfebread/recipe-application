@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Cooking Pot - Inventory</title>
+    <title>The Cooking Pot - Shopping List</title>
     <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
-    <link rel="stylesheet" href="../static/css/library.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="../static/css/inventory.css" media="screen" type="text/css"/>
-    <script type="application/javascript" src="../static/js/library.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/inventory.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/font-awesome">
+    <script type="application/javascript" src="/js/library.js"></script>
     <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon'/>
 </head>
 <body>
@@ -19,8 +19,7 @@
             <h1 class="title">The Cooking Pot</h1>
             <div class="loggedInUserContainer">
                 <div class="loggedInUser">
-<!--                    <label th:text="${user}"></label>-->
-                    <label>username</label>
+                    <label th:text="${user}"></label>
                     <a href="/logout">Logout</a>
                 </div>
             </div>
@@ -63,9 +62,9 @@
                 <label>Chicken</label>
                 <label>500g</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
-                <span class="close deleteSymbol">&times;</span>
+                <span class="deleteSymbol">&times;</span>
             </div>
         </div>
         <div class="inventoryItem">
@@ -73,7 +72,7 @@
                 <label>Fresh rocket</label>
                 <label>1 bag</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="close deleteSymbol">&times;</span>
             </div>
@@ -83,7 +82,7 @@
                 <label>Beans</label>
                 <label>4 pack</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="close deleteSymbol">&times;</span>
             </div>
@@ -93,7 +92,7 @@
                 <label>Mature cheddar</label>
                 <label>1 block</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="close deleteSymbol">&times;</span>
             </div>
@@ -103,7 +102,7 @@
                 <label>Salmon</label>
                 <label>2 pieces</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="close deleteSymbol">&times;</span>
             </div>
@@ -113,7 +112,7 @@
                 <label>Eggs</label>
                 <label>6</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="close deleteSymbol">&times;</span>
             </div>
@@ -123,7 +122,7 @@
                 <label>Filo pastry</label>
                 <label>1 pack</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="close deleteSymbol">&times;</span>
             </div>
@@ -133,7 +132,7 @@
                 <label>Vinegar</label>
                 <label></label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="close deleteSymbol">&times;</span>
             </div>
@@ -143,7 +142,7 @@
                 <label>Bacon</label>
                 <label></label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="close deleteSymbol">&times;</span>
             </div>
@@ -153,7 +152,7 @@
                 <label>Fresh rocket</label>
                 <label>1 bag</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="close deleteSymbol">&times;</span>
             </div>
@@ -163,31 +162,31 @@
                 <label><b>Chicken</b></label>
                 <label>500g</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <span class="plusSymbol">+</span>
                 <span class="close deleteSymbol">&times;</span>
             </div>
         </div>
     </div>
 
-    <div style="display: table; width: 100%">
-        <div class="instructionsContainer">
-            <label>Add ingredients to your shopping list.</label>
-            <label>The quantity is optional.</label>
-            <label>Once there, you can move to your inventory using the <b>+</b> button, or remove by pressing the <b>x</b> button.</label>
-        </div>
+    <div class="footerContainer">
         <div class="addIngredientContainer">
-            <div style="float: left; padding-right: 8px">
+            <div class="addIngredientLabels">
                 <label class="addIngredientLabel" for="item">Item</label>
                 <label class="addIngredientLabel" for="quantity">Quantity</label>
             </div>
-            <div style="float: left;">
+            <div class="addIngredientInputs">
                 <input class="input" id="item"><br>
                 <input class="input " id="quantity">
             </div>
             <div>
                 <button class="button">ADD</button>
             </div>
+        </div>
+        <div class="instructionsContainer">
+            <label>Add ingredients to your shopping list.</label>
+            <label>The quantity is optional.</label>
+            <label>Once there, you can move to your inventory using the <span class="plusSymbol">+</span> button, or remove by pressing the <span class="deleteSymbol">&times;</span> button.</label>
         </div>
     </div>
 </div>

@@ -7,7 +7,7 @@ CREATE TABLE recipe.users (
   username VARCHAR,
   password VARCHAR,
   email VARCHAR,
-  newUser BOOL
+  new_user BOOL
 );
 
 CREATE TABLE recipe.password_reset_tokens (

@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Cooking Pot - Inventory</title>
     <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
-    <link rel="stylesheet" href="../static/css/library.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="../static/css/inventory.css" media="screen" type="text/css"/>
-    <script type="application/javascript" src="../static/js/library.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/inventory.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/font-awesome">
     <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon'/>
+    <script type="application/javascript" src="/js/library.js"></script>
 </head>
 <body>
 <div class="baseContainer container">
@@ -19,8 +19,7 @@
             <h1 class="title">The Cooking Pot</h1>
             <div class="loggedInUserContainer">
                 <div class="loggedInUser">
-<!--                    <label th:text="${user}"></label>-->
-                    <label>username</label>
+                    <label th:text="${user}"></label>
                     <a href="/logout">Logout</a>
                 </div>
             </div>
@@ -66,116 +65,135 @@
     <div class="inventoryContainer">
         <div class="inventoryItem">
             <div class="itemAndQuantity">
-                <label>Item: Chicken</label><br>
-                <label>Quantity: 500g</label>
+                <label>Chicken</label>
+                <label>500g</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close">&times;</span>
+                <span class="deleteSymbol">&times;</span>
             </div>
         </div>
         <div class="inventoryItem">
             <div class="itemAndQuantity">
-                <label>Item: Fresh rocket</label><br>
-                <label>Quantity: 1 bag</label>
+                <label>Fresh rocket</label>
+                <label>1 bag</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
                 <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close">&times;</span>
+                <span class="close deleteSymbol">&times;</span>
             </div>
         </div>
         <div class="inventoryItem">
             <div class="itemAndQuantity">
-                <label>Item: Onions</label><br>
-                <label>Quantity: 3</label>
+                <label>Beans</label>
+                <label>4 pack</label>
             </div>
-            <div class="cartAndDelete">
-                <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Item: Natural yoghurt</label><br>
-                <label>Quantity: 150ml</label>
-            </div>
-            <div class="cartAndDelete">
-                <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close">&times;</span>
+            <div class="symbols">
+               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
+                <span class="close deleteSymbol">&times;</span>
             </div>
         </div>
         <div class="inventoryItem">
             <div class="itemAndQuantity">
-                <label>Item: Feta cheese</label><br>
-                <label>Quantity: 200g</label>
+                <label>Mature cheddar</label>
+                <label>1 block</label>
             </div>
-            <div class="cartAndDelete">
-                <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Item: Chicken</label><br>
-                <label>Quantity: 500g</label>
-            </div>
-            <div class="cartAndDelete">
-                <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close">&times;</span>
+            <div class="symbols">
+               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
+                <span class="close deleteSymbol">&times;</span>
             </div>
         </div>
         <div class="inventoryItem">
             <div class="itemAndQuantity">
-                <label>Item: Fresh rocket</label><br>
-                <label>Quantity: 1 bag</label>
+                <label>Salmon</label>
+                <label>2 pieces</label>
             </div>
-            <div class="cartAndDelete">
-                <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Item: Onions</label><br>
-                <label>Quantity: 3</label>
-            </div>
-            <div class="cartAndDelete">
-                <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close">&times;</span>
+            <div class="symbols">
+               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
+                <span class="close deleteSymbol">&times;</span>
             </div>
         </div>
         <div class="inventoryItem">
             <div class="itemAndQuantity">
-                <label>Item: Natural yoghurt</label><br>
-                <label>Quantity: 150ml</label>
+                <label>Eggs</label>
+                <label>6</label>
             </div>
-            <div class="cartAndDelete">
-                <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close">&times;</span>
+            <div class="symbols">
+               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
+                <span class="close deleteSymbol">&times;</span>
             </div>
         </div>
         <div class="inventoryItem">
             <div class="itemAndQuantity">
-                <label>Item: Feta cheese</label><br>
-                <label>Quantity: 200g</label>
+                <label>Filo pastry</label>
+                <label>1 pack</label>
             </div>
-            <div class="cartAndDelete">
+            <div class="symbols">
+               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
+                <span class="close deleteSymbol">&times;</span>
+            </div>
+        </div>
+        <div class="inventoryItem">
+            <div class="itemAndQuantity">
+                <label>Vinegar</label>
+                <label></label>
+            </div>
+            <div class="symbols">
+               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
+                <span class="close deleteSymbol">&times;</span>
+            </div>
+        </div>
+        <div class="inventoryItem">
+            <div class="itemAndQuantity">
+                <label>Bacon</label>
+                <label></label>
+            </div>
+            <div class="symbols">
+               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
+                <span class="close deleteSymbol">&times;</span>
+            </div>
+        </div>
+        <div class="inventoryItem">
+            <div class="itemAndQuantity">
+                <label>Fresh rocket</label>
+                <label>1 bag</label>
+            </div>
+            <div class="symbols">
+               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
+                <span class="close deleteSymbol">&times;</span>
+            </div>
+        </div>
+        <div class="inventoryItem">
+            <div class="itemAndQuantity">
+                <label><b>Chicken</b></label>
+                <label>500g</label>
+            </div>
+            <div class="symbols">
                 <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close">&times;</span>
+                <span class="close deleteSymbol">&times;</span>
             </div>
         </div>
     </div>
 
-    <div class="addIngredientContainer">
-        <div style="float: left; padding-right: 8px">
-            <label class="addIngredientLabel" for="item">Item</label>
-            <label class="addIngredientLabel" for="quantity">Quantity</label>
+    <div class="footerContainer">
+        <div class="addIngredientContainer">
+            <div class="addIngredientLabels">
+                <label class="addIngredientLabel" for="item">Item</label>
+                <label class="addIngredientLabel" for="quantity">Quantity</label>
+            </div>
+            <div class="addIngredientInputs">
+                <input class="input" id="item"><br>
+                <input class="input " id="quantity">
+            </div>
+            <div>
+                <button class="button">ADD</button>
+            </div>
         </div>
-        <div style="float: left;">
-            <input class="input" id="item"><br>
-            <input class="input " id="quantity">
+        <div class="instructionsContainer">
+            <label>Add ingredients to your ingredient inventory.</label>
+            <label>The quantity is optional.</label>
+            <label>Once there, you can add your inventory item to your shopping list using the <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i> button, or remove by pressing the <span class="close deleteSymbol">&times;</span> button.</label>
         </div>
-        <button class="button">ADD</button>
     </div>
 </div>
 
