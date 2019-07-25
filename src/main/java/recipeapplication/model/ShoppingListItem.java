@@ -13,7 +13,7 @@ public class ShoppingListItem
     @OneToOne
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Ingredient ingredient;
 
     private Long inventoryId;

@@ -57,7 +57,7 @@ public class WebControllerTest
         when(recipeService.getRecentlyViewed()).thenReturn(recentlyViewed);
         when(authService.getLoggedInUser()).thenReturn(user);
 
-        controller = new WebController(userService, recipeService, inventoryService, authService);
+        controller = new WebController(userService, recipeService, inventoryService, null, authService);
     }
 
     @Test
