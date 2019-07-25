@@ -9,6 +9,7 @@
 .inventoryContainer {
     margin-top: 20px;
     float: left;
+    /*width: 50%;*/
 }
 
 #newIngredient {
@@ -29,8 +30,20 @@
     font-weight: bold;
 }
 
-.shoppingCartIcon:hover,
-.shoppingCartIcon:focus {
+.plusSymbol {
+    font-size:35px;
+    color: #aaaaaa;;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.deleteSymbol {
+    font-size: 35px;
+    line-height: 20px;
+}
+
+.plusSymbol:hover,
+.plusSymbol:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
@@ -48,19 +61,23 @@
 .addIngredientContainer {
     padding-top: 15px;
     width: 330px;
-    clear: both;
-    margin:auto;
+    display:table-cell;
+}
+
+.instructionsContainer {
+    padding-right: 20px;
+    display:table-cell;
+    width: auto;
 }
 
 .itemAndQuantity {
     float: left;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .cartAndDelete {
     float: left;
 }
-
 
 .button {
     background-color: #4CAF50;
