@@ -128,8 +128,18 @@ public class WebController
     public String shoppingList(Model model)
     {
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
+        model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
         model.addAttribute("shoppingList", shoppingListService.getShoppingList());
 
         return "shopping_list.html";
+    }
+
+    @GetMapping("/inventory")
+    public String inventory(Model model)
+    {
+        model.addAttribute("user", authService.getLoggedInUser().getUsername());
+        model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
+
+        return "inventory.html";
     }
 }

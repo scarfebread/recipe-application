@@ -11,11 +11,9 @@ import recipeapplication.exception.InvalidPasswordTokenException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.RecentlyViewed;
 import recipeapplication.model.Recipe;
+import recipeapplication.model.ShoppingListItem;
 import recipeapplication.model.User;
-import recipeapplication.service.AuthService;
-import recipeapplication.service.InventoryService;
-import recipeapplication.service.RecipeService;
-import recipeapplication.service.UserService;
+import recipeapplication.service.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,6 +32,7 @@ public class WebControllerTest
     private RecipeService recipeService;
     private UserService userService;
     private InventoryService inventoryService;
+    private ShoppingListService shoppingListService;
     private AuthService authService;
     private List<RecentlyViewed> recentlyViewed;
 
@@ -44,6 +43,7 @@ public class WebControllerTest
         recipeService = mock(RecipeService.class);
         authService = mock(AuthService.class);
         inventoryService = mock(InventoryService.class);
+        shoppingListService = mock(ShoppingListService.class);
 
         User user = new User();
         user.setUsername(USERNAME);
@@ -57,7 +57,7 @@ public class WebControllerTest
         when(recipeService.getRecentlyViewed()).thenReturn(recentlyViewed);
         when(authService.getLoggedInUser()).thenReturn(user);
 
-        controller = new WebController(userService, recipeService, inventoryService, null, authService);
+        controller = new WebController(userService, recipeService, inventoryService, shoppingListService, authService);
     }
 
     @Test
@@ -141,5 +141,23 @@ public class WebControllerTest
         verify(model).addAttribute("user", USERNAME);
         verify(model).addAttribute("ingredients", ingredients);
         verify(model).addAttribute("displayInstructions", true);
+    }
+
+    @Test
+    public void shouldReturnShoppingListTemplateWithModelAttributes()
+    {
+        List<ShoppingListItem> shoppingList = new ArrayList<>();
+        shoppingList.add(new ShoppingListItem());
+        shoppingList.add(new ShoppingListItem());
+
+        when(shoppingListService.getShoppingList()).thenReturn(shoppingList);
+
+        Model model = mock(Model.class);
+
+        assertEquals("shopping_list.html", controller.shoppingList(model));
+
+        verify(model).addAttribute("recentlyViewed", recentlyViewed);
+        verify(model).addAttribute("user", USERNAME);
+        verify(model).addAttribute("shoppingList", shoppingList);
     }
 }

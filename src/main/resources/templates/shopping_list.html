@@ -8,8 +8,10 @@
     <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
     <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="/css/inventory.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/ingredient-format-slider.css" media="screen" type="text/css"/>
     <script type="application/javascript" src="/js/library.js"></script>
     <script type="application/javascript" src="/js/inventory.js"></script>
+    <script type="application/javascript" src="/js/ingredient-format-slider.js"></script>
     <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon'/>
 </head>
 <body>
@@ -60,7 +62,8 @@
         <div class="inventoryItem" th:each="item,iter : ${shoppingList}" th:id="${item.id}">
             <div class="itemAndQuantity">
                 <label th:text="${item.ingredient.description}"></label>
-                <label th:text="${item.ingredient.metric}"></label>
+                <label th:text="${item.ingredient.metric}" class="metric"></label>
+                <label th:text="${item.ingredient.imperial}" class="imperial" hidden></label>
             </div>
             <div class="symbols">
                 <span class="plusSymbol">+</span>
@@ -81,6 +84,18 @@
             </div>
             <div>
                 <button id="addShoppingListItem" class="button">ADD</button>
+            </div>
+            <div class="ingredientFormatContainer">
+                <div class="ingredientFormatSubContainer">
+                    <label class="ingredientFormatLabel">Ingredient format:</label>
+                    <label class="switch">
+                        <input type="checkbox" id="ingredientFormatButton">
+                        <div class="slider round">
+                            <span class="off">METRIC</span>
+                            <span class="on">IMPERIAL</span>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="instructionsContainer">
