@@ -251,7 +251,7 @@ public class RecipeServiceTest
         recipe.setServes(SERVES);
 
         List<Ingredient> ingredients = new ArrayList<>();
-        ingredients.add(new Ingredient("Ingredient", "Quantity", loggedInUser));
+        ingredients.add(new Ingredient("ShoppingListItemDto", "Quantity", loggedInUser));
 
         List<Step> steps = new ArrayList<>();
         steps.add(new Step(recipe, "Step"));
@@ -407,7 +407,7 @@ public class RecipeServiceTest
     public void shouldAddIngredientSuccessfully() throws Exception
     {
         IngredientDto ingredientDto = new IngredientDto();
-        ingredientDto.setDescription("Ingredient");
+        ingredientDto.setDescription("ShoppingListItemDto");
         ingredientDto.setQuantity("Quantity");
         ingredientDto.setRecipe(1L);
 

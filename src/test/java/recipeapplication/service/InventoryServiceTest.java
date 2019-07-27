@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import recipeapplication.dto.InventoryItemDto;
-import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.InventoryItemNotFoundException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.InventoryItem;
@@ -100,23 +99,20 @@ public class InventoryServiceTest
     }
 
     @Test
-    public void shouldCreateRecipeFromShoppingListDto()
+    public void shouldCreateInventoryItemFromIngredient()
     {
-        ShoppingListItemDto shoppingListItemDto = new ShoppingListItemDto();
-        shoppingListItemDto.setIngredient("INGREDIENT");
-        shoppingListItemDto.setQuantity("QUANTITY");
+        Ingredient ingredient = new Ingredient("INGREDIENT", "QUANTITY", user);
 
         ArgumentCaptor<InventoryItem> argumentCaptor = ArgumentCaptor.forClass(InventoryItem.class);
 
-        inventoryService.createInventoryItem(shoppingListItemDto);
+        inventoryService.createInventoryItem(ingredient);
 
         verify(inventoryRepository).save(argumentCaptor.capture());
 
-        Ingredient ingredient = argumentCaptor.getValue().getIngredient();
+        InventoryItem result = argumentCaptor.getValue();
 
-        assertEquals(shoppingListItemDto.getIngredient(), ingredient.getDescription());
-        assertEquals(shoppingListItemDto.getQuantity(), ingredient.getMetric());
-        assertEquals(shoppingListItemDto.getQuantity(), ingredient.getImperial());
+        assertEquals(ingredient, result.getIngredient());
+        assertEquals(user, result.getUser());
     }
 
     @Test
