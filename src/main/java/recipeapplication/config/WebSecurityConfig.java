@@ -34,10 +34,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         // TODO enable the CSRF token
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/signup", "/resetPassword", "/changePassword", "/api/signup", "/css/**", "/images/**", "/js/**")
+                .antMatchers("/signup", "/reset-password", "/change-password", "/api/signup", "/css/**", "/images/**", "/js/**")
                 .permitAll()
-                .antMatchers("/", "/recipe", "/shoppingList", "/inventory", "/deleteAccount", "/changePasswordLoggedIn").hasAuthority(Role.USER.toString())
-                .antMatchers("/api/change_password").hasAnyAuthority(Role.CHANGE_PASSWORD.toString(), Role.USER.toString())
+                .antMatchers("/", "/recipe", "/shopping-list", "/inventory", "/delete-account", "/change-password-logged-in").hasAuthority(Role.USER.toString())
+                .antMatchers("/api/change-password").hasAnyAuthority(Role.CHANGE_PASSWORD.toString(), Role.USER.toString())
                 .and()
             .formLogin()
                 .loginPage("/login")
@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     public void configure(WebSecurity web)
     {
         // TODO there might be a better way to do this
-        web.ignoring().antMatchers("/api/signup", "/api/password_reset");
+        web.ignoring().antMatchers("/api/signup", "/api/password-reset");
     }
 
     @Override

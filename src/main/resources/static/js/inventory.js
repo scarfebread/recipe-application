@@ -47,7 +47,7 @@ function deleteShoppingListItem(id)
     let success = function () {};
     let failure = function () {};
 
-    callApi('/api/shoppingList', HTTP_DELETE, body, false, success, failure)
+    callApi('/api/shopping-list', HTTP_DELETE, body, false, success, failure)
 }
 
 function purchaseIngredient(id)
@@ -57,7 +57,7 @@ function purchaseIngredient(id)
     let success = function () {};
     let failure = function () {};
 
-    callApi('/api/shoppingList/purchase', HTTP_POST, body, false, success, failure)
+    callApi('/api/shopping-list/purchase', HTTP_POST, body, false, success, failure)
 }
 
 function createShoppingListItem()
@@ -84,7 +84,7 @@ function createShoppingListItem()
 
     let failure = function (error) {};
 
-    callApi('/api/shoppingList', HTTP_POST, shoppingListItem, true, success, failure);
+    callApi('/api/shopping-list', HTTP_POST, shoppingListItem, true, success, failure);
 }
 
 function addCreateShoppingListItemEnterKeyEventListener(element)

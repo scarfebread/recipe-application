@@ -28,7 +28,7 @@ public class PasswordController
         this.authService = authService;
     }
 
-    @PostMapping("/password_reset")
+    @PostMapping("/password-reset")
     public ResponseEntity createPasswordReset(HttpServletRequest request, @RequestBody UserDto userDto)
     {
         String serverName = String.format("%s:%s", request.getServerName(), request.getServerPort());
@@ -45,7 +45,7 @@ public class PasswordController
         return ResponseEntity.status(201).body("Created");
     }
 
-    @PostMapping("/change_password")
+    @PostMapping("/change-password")
     public ResponseEntity changePassword(@Valid @RequestBody PasswordDto passwordDto, Errors errors)
     {
         User user = authService.getLoggedInUser();

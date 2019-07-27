@@ -47,7 +47,7 @@ function changePassword()
         showElement('passwordChangeError');
     };
 
-    callApi("/api/change_password", HTTP_POST, passwordDto, false, success, failure);
+    callApi("/api/change-password", HTTP_POST, passwordDto, false, success, failure);
 }
 
 function resetErrors()

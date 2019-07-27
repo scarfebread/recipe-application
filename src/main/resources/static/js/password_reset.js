@@ -34,5 +34,5 @@ function passwordReset()
         showElement('postPasswordResetDisplay');
     };
 
-    callApi("/api/password_reset", HTTP_POST, user, false, success, failure);
+    callApi("/api/password-reset", HTTP_POST, user, false, success, failure);
 }
