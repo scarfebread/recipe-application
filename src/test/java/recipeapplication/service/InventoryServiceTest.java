@@ -51,7 +51,7 @@ public class InventoryServiceTest
 
         when(inventoryRepository.findByUserId(user.getId())).thenReturn(inventoryItems);
 
-        assertEquals(inventoryItems, inventoryService.getInventoryItems());
+        assertEquals(inventoryItems, inventoryService.getInventory());
     }
 
     @Test(expected = InventoryItemNotFoundException.class)

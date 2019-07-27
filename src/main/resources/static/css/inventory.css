@@ -36,7 +36,7 @@
     white-space: nowrap;
 }
 
-.shoppingCartIcon {
+.shoppingCartSymbol {
     font-size:24px;
     color: #aaaaaa;;
     font-weight: bold;
@@ -63,8 +63,8 @@
     cursor: pointer;
 }
 
-.shoppingCartIcon:hover,
-.shoppingCartIcon:focus {
+.shoppingCartSymbol:hover,
+.shoppingCartSymbol:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
@@ -77,8 +77,12 @@
     cursor: pointer;
 }
 
-#shoppingCartIcon {
-    font-size:24px;
+.shoppingCartSymbol {
+    font-size:24px !important;
+}
+
+.ingredientInShoppingList {
+    color: #000 !important;
 }
 
 .inventoryItem {

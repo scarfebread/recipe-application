@@ -70,7 +70,7 @@ public class InventoryControllerTest
         inventoryItems.add(new InventoryItem());
         inventoryItems.add(new InventoryItem());
 
-        when(inventoryService.getInventoryItems()).thenReturn(inventoryItems);
+        when(inventoryService.getInventory()).thenReturn(inventoryItems);
 
         assertEquals(inventoryItems, inventoryController.getInventoryItems());
     }

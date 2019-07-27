@@ -67,6 +67,5 @@ CREATE TABLE recipe.inventory (
 CREATE TABLE recipe.shopping_list (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES recipe.users(id),
-  ingredient_id INT REFERENCES recipe.ingredients(id),
-  inventory_id INT REFERENCES recipe.inventory(id)
+  ingredient_id INT REFERENCES recipe.ingredients(id)
 );

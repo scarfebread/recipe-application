@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Cooking Pot - Inventory</title>
     <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
-    <link rel="stylesheet" href="../static/css/library.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="../static/css/inventory.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="../static/css/ingredient-format-slider.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="../static/css/font-awesome.css">
-    <link rel='shortcut icon' href='../static/images/favicon.ico' type='image/x-icon'/>
-    <script type="application/javascript" src="../static/js/library.js"></script>
-    <script type="application/javascript" src="../static/js/ingredient-format-slider.js"></script>
+    <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/inventory.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/ingredient-format-slider.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon'/>
+    <script type="application/javascript" src="/js/library.js"></script>
+    <script type="application/javascript" src="/js/inventory.js"></script>
+    <script type="application/javascript" src="/js/ingredient-format-slider.js"></script>
 </head>
 <body>
 <div class="baseContainer container">
@@ -64,115 +65,16 @@
             <input id="searchForIngredient" class="searchBar"/>
         </div>
     </div>
-    <div class="inventoryContainer">
-        <div class="inventoryItem">
+    <div class="inventoryContainer" id="inventoryContainer">
+        <div class="inventoryItem" th:each="item,iter : ${inventory}" th:id="${item.id}">
             <div class="itemAndQuantity">
-                <label>Chicken</label>
-                <label>500g</label>
+                <label th:text="${item.ingredient.description}"></label>
+                <label th:text="${item.ingredient.metric}" class="metric"></label>
+                <label th:text="${item.ingredient.imperial}" class="imperial" hidden></label>
             </div>
             <div class="symbols">
-                <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
+                <i class="fa fa-shopping-cart shoppingCartSymbol" th:id="${item.id}"></i>
                 <span class="deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Fresh rocket</label>
-                <label>1 bag</label>
-            </div>
-            <div class="symbols">
-                <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Beans</label>
-                <label>4 pack</label>
-            </div>
-            <div class="symbols">
-               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Mature cheddar</label>
-                <label>1 block</label>
-            </div>
-            <div class="symbols">
-               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Salmon</label>
-                <label>2 pieces</label>
-            </div>
-            <div class="symbols">
-               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Eggs</label>
-                <label>6</label>
-            </div>
-            <div class="symbols">
-               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Filo pastry</label>
-                <label>1 pack</label>
-            </div>
-            <div class="symbols">
-               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Vinegar</label>
-                <label></label>
-            </div>
-            <div class="symbols">
-               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Bacon</label>
-                <label></label>
-            </div>
-            <div class="symbols">
-               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label>Fresh rocket</label>
-                <label>1 bag</label>
-            </div>
-            <div class="symbols">
-               <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close deleteSymbol">&times;</span>
-            </div>
-        </div>
-        <div class="inventoryItem">
-            <div class="itemAndQuantity">
-                <label><b>Chicken</b></label>
-                <label>500g</label>
-            </div>
-            <div class="symbols">
-                <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i>
-                <span class="close deleteSymbol">&times;</span>
             </div>
         </div>
     </div>
@@ -185,10 +87,10 @@
             </div>
             <div class="addIngredientInputs">
                 <input class="input" id="item"><br>
-                <input class="input " id="quantity">
+                <input class="input" id="quantity">
             </div>
             <div>
-                <button class="button">ADD</button>
+                <button id="addInventoryItem" class="button">ADD</button>
             </div>
             <div class="ingredientFormatContainer">
                 <div class="ingredientFormatSubContainer">
@@ -206,7 +108,8 @@
         <div class="instructionsContainer">
             <label>Add ingredients to your ingredient inventory.</label>
             <label>The quantity is optional.</label>
-            <label>Once there, you can add your inventory item to your shopping list using the <i class="fa fa-shopping-cart shoppingCartIcon" id="shoppingCartIcon"></i> button, or remove by pressing the <span class="close deleteSymbol">&times;</span> button.</label>
+            <label>Once there, you can add or remove the inventory item from your shopping list using the <i class="fa fa-shopping-cart shoppingCartSymbol"></i> button.</label>
+            <label>You can remove by pressing the <span class="close deleteSymbol">&times;</span> button.</label>
         </div>
     </div>
 </div>

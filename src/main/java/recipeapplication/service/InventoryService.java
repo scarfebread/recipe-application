@@ -29,7 +29,7 @@ public class InventoryService
         this.authService = authService;
     }
 
-    public List<InventoryItem> getInventoryItems()
+    public List<InventoryItem> getInventory()
     {
         User user = authService.getLoggedInUser();
 
