@@ -82,10 +82,11 @@ public class ShoppingListServiceTest
     @Test(expected = ShoppingListItemNotFoundException.class)
     public void shouldThrowShoppingListItemNotFoundExceptionWhenDeletingUsingInventoryItem() throws Exception
     {
+        Ingredient ingredient = new Ingredient();
         InventoryItem inventoryItem = new InventoryItem();
-        inventoryItem.setId(124452L);
+        inventoryItem.setIngredient(ingredient);
 
-        when(shoppingListRepository.findByInventoryIdAndUserId(inventoryItem.getId(), user.getId())).thenReturn(Optional.empty());
+        when(shoppingListRepository.findByIngredientAndUserId(ingredient, user.getId())).thenReturn(Optional.empty());
 
         shoppingListService.deleteShoppingListItem(inventoryItem);
     }
@@ -93,12 +94,13 @@ public class ShoppingListServiceTest
     @Test
     public void shouldDeleteShoppingListItemWhenUsingExistingInventoryItem() throws Exception
     {
+        Ingredient ingredient = new Ingredient();
         InventoryItem inventoryItem = new InventoryItem();
-        inventoryItem.setId(124452L);
+        inventoryItem.setIngredient(ingredient);
 
         ShoppingListItem shoppingListItem = new ShoppingListItem();
 
-        when(shoppingListRepository.findByInventoryIdAndUserId(inventoryItem.getId(), user.getId())).thenReturn(Optional.of(shoppingListItem));
+        when(shoppingListRepository.findByIngredientAndUserId(ingredient, user.getId())).thenReturn(Optional.of(shoppingListItem));
 
         shoppingListService.deleteShoppingListItem(inventoryItem);
 

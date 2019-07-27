@@ -44,11 +44,11 @@ public class InventoryController
     @GetMapping
     public List<InventoryItem> getInventoryItems()
     {
-        return inventoryService.getInventoryItems();
+        return inventoryService.getInventory();
     }
 
     @DeleteMapping
-    public ResponseEntity deleteInventoryItem(InventoryItemDto inventoryItemDto)
+    public ResponseEntity deleteInventoryItem(@RequestBody InventoryItemDto inventoryItemDto)
     {
         try
         {
@@ -63,7 +63,7 @@ public class InventoryController
     }
 
     @PostMapping("/shopping-list")
-    public ResponseEntity addToShoppingList(InventoryItemDto inventoryItemDto)
+    public ResponseEntity addToShoppingList(@RequestBody InventoryItemDto inventoryItemDto)
     {
         try
         {
@@ -79,7 +79,7 @@ public class InventoryController
     }
 
     @DeleteMapping("/shopping-list")
-    public ResponseEntity removeFromShoppingList(InventoryItemDto inventoryItemDto)
+    public ResponseEntity removeFromShoppingList(@RequestBody InventoryItemDto inventoryItemDto)
     {
         try
         {

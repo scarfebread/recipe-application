@@ -44,7 +44,7 @@ public class ShoppingListService
     {
         User user = authService.getLoggedInUser();
 
-        Optional<ShoppingListItem> shoppingListItem = shoppingListRepository.findByInventoryIdAndUserId(inventoryItem.getId(), user.getId());
+        Optional<ShoppingListItem> shoppingListItem = shoppingListRepository.findByIngredientAndUserId(inventoryItem.getIngredient(), user.getId());
 
         if (!shoppingListItem.isPresent())
         {

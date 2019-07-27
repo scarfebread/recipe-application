@@ -1,33 +1,30 @@
 document.addEventListener("DOMContentLoaded", function(event)
 {
-    getElementById('addInventoryItem').onclick = function() {
-        createInventoryItem();
+    getElementById('addShoppingListItem').onclick = function() {
+        createShoppingListItem();
     };
 
-    addCreateInventoryItemEnterKeyEventListener(getElementById('item'));
-    addCreateInventoryItemEnterKeyEventListener(getElementById('quantity'));
+    addCreateShoppingListItemEnterKeyEventListener(getElementById('item'));
+    addCreateShoppingListItemEnterKeyEventListener(getElementById('quantity'));
 
     Array.from(document.getElementsByClassName('deleteSymbol')).forEach(function (element) {
         addDeleteEventListener(element);
     });
 
-    Array.from(document.getElementsByClassName('shoppingCartSymbol')).forEach(function (element) {
-        addShoppingListEventListener(element);
+    Array.from(document.getElementsByClassName('plusSymbol')).forEach(function (element) {
+        addPurchaseEventListener(element);
     });
 });
 
-function addShoppingListEventListener(element)
+function addPurchaseEventListener(element)
 {
     element.addEventListener('click', function () {
         let inventoryItem = element.parentNode.parentNode;
+        let container = inventoryItem.parentNode;
 
-        if (element.classList.contains('ingredientInShoppingList')) {
-            remoteFromShoppingList(inventoryItem.id);
-            element.classList.remove('ingredientInShoppingList');
-        } else {
-            addToShoppingList(inventoryItem.id);
-            element.classList.add('ingredientInShoppingList');
-        }
+        container.removeChild(inventoryItem);
+
+        purchaseIngredient(inventoryItem.id);
     });
 }
 
@@ -39,41 +36,31 @@ function addDeleteEventListener(element)
 
         container.removeChild(inventoryItem);
 
-        deleteInventoryItem(inventoryItem.id);
+        deleteShoppingListItem(inventoryItem.id);
     });
 }
 
-function deleteInventoryItem(id)
+function deleteShoppingListItem(id)
 {
     let body = {'id': id};
 
     let success = function () {};
     let failure = function () {};
 
-    callApi('/api/inventory', HTTP_DELETE, body, false, success, failure)
+    callApi('/api/shopping-list', HTTP_DELETE, body, false, success, failure)
 }
 
-function addToShoppingList(id)
+function purchaseIngredient(id)
 {
     let body = {'id': id};
 
     let success = function () {};
     let failure = function () {};
 
-    callApi('/api/inventory/shopping-list', HTTP_POST, body, false, success, failure)
+    callApi('/api/shopping-list/purchase', HTTP_POST, body, false, success, failure)
 }
 
-function remoteFromShoppingList(id)
-{
-    let body = {'id': id};
-
-    let success = function () {};
-    let failure = function () {};
-
-    callApi('/api/inventory/shopping-list', HTTP_DELETE, body, false, success, failure)
-}
-
-function createInventoryItem()
+function createShoppingListItem()
 {
     // TODO inconsistent naming
     let ingredient = getValueById('item');
@@ -83,13 +70,13 @@ function createInventoryItem()
         return;
     }
 
-    let inventoryItem = {
+    let shoppingListItem = {
         'ingredient': ingredient,
         'quantity': quantity
     };
 
     let success = function(data) {
-        displayInventoryItem(data);
+        displayShoppingListItem(data);
 
         getElementById('item').value = '';
         getElementById('quantity').value = '';
@@ -97,19 +84,19 @@ function createInventoryItem()
 
     let failure = function (error) {};
 
-    callApi('/api/inventory', HTTP_POST, inventoryItem, true, success, failure);
+    callApi('/api/shopping-list', HTTP_POST, shoppingListItem, true, success, failure);
 }
 
-function addCreateInventoryItemEnterKeyEventListener(element)
+function addCreateShoppingListItemEnterKeyEventListener(element)
 {
     element.addEventListener("keyup", function (event) {
         if (event.key === "Enter") {
-            createInventoryItem();
+            createShoppingListItem();
         }
     });
 }
 
-function displayInventoryItem(item)
+function displayShoppingListItem(item)
 {
     let ingredientLabel = createElement('label');
     ingredientLabel.innerHTML = item.ingredient.description;
@@ -138,10 +125,10 @@ function displayInventoryItem(item)
         itemAndQuantity.appendChild(imperialLabel);
     }
 
-    let shoppingCartSymbol = createElement('span');
-    shoppingCartSymbol.classList.add('shoppingCartSymbol');
-    shoppingCartSymbol.classList.add('insertedElement');
-    shoppingCartSymbol.innerHTML = '+';
+    let plusSymbol = createElement('span');
+    plusSymbol.classList.add('plusSymbol');
+    plusSymbol.classList.add('insertedElement');
+    plusSymbol.innerHTML = '+';
 
     let deleteSymbol = createElement('span');
     deleteSymbol.className = 'deleteSymbol';
@@ -149,7 +136,7 @@ function displayInventoryItem(item)
 
     let symbols = createElement('div');
     symbols.className = 'symbols';
-    symbols.appendChild(shoppingCartSymbol);
+    symbols.appendChild(plusSymbol);
     symbols.appendChild(deleteSymbol);
 
     let inventoryItem = createElement('div');
@@ -162,5 +149,5 @@ function displayInventoryItem(item)
     inventoryContainer.appendChild(inventoryItem);
 
     addDeleteEventListener(deleteSymbol);
-    addShoppingListEventListener(shoppingCartSymbol);
+    addPurchaseEventListener(plusSymbol);
 }

@@ -139,6 +139,7 @@ public class WebController
     {
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
         model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
+        model.addAttribute("inventory", inventoryService.getInventory());
 
         return "inventory.html";
     }

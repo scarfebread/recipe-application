@@ -9,10 +9,7 @@ import org.springframework.ui.Model;
 
 import recipeapplication.exception.InvalidPasswordTokenException;
 import recipeapplication.exception.RecipeDoesNotExistException;
-import recipeapplication.model.RecentlyViewed;
-import recipeapplication.model.Recipe;
-import recipeapplication.model.ShoppingListItem;
-import recipeapplication.model.User;
+import recipeapplication.model.*;
 import recipeapplication.service.*;
 
 import static org.junit.Assert.assertEquals;
@@ -159,5 +156,23 @@ public class WebControllerTest
         verify(model).addAttribute("recentlyViewed", recentlyViewed);
         verify(model).addAttribute("user", USERNAME);
         verify(model).addAttribute("shoppingList", shoppingList);
+    }
+
+    @Test
+    public void shouldReturnInventoryTemplateWithModelAttributes()
+    {
+        List<InventoryItem> inventory = new ArrayList<>();
+        inventory.add(new InventoryItem());
+        inventory.add(new InventoryItem());
+
+        when(inventoryService.getInventory()).thenReturn(inventory);
+
+        Model model = mock(Model.class);
+
+        assertEquals("inventory.html", controller.inventory(model));
+
+        verify(model).addAttribute("recentlyViewed", recentlyViewed);
+        verify(model).addAttribute("user", USERNAME);
+        verify(model).addAttribute("inventory", inventory);
     }
 }
