@@ -11,8 +11,6 @@ public class InventoryItemDto
     @NotEmpty
     private String ingredient;
 
-    @NotNull
-    @NotEmpty
     private String quantity;
 
     public Long getId()

@@ -107,9 +107,22 @@ function displayShoppingListItem(item)
 
     if (item.ingredient.metric) {
         ingredientLabel.className = 'insertedElement';
-        let quantityLabel = createElement('label');
-        quantityLabel.innerHTML = item.ingredient.metric;
-        itemAndQuantity.appendChild(quantityLabel);
+        let metricLabel = createElement('label');
+        metricLabel.className = 'metric';
+        metricLabel.innerHTML = item.ingredient.metric;
+
+        let imperialLabel = createElement('label');
+        imperialLabel.className = 'imperial';
+        imperialLabel.innerHTML = item.ingredient.imperial;
+
+        if (metric) {
+            imperialLabel.style.display = 'none';
+        } else {
+            metricLabel.style.display = 'none';
+        }
+
+        itemAndQuantity.appendChild(metricLabel);
+        itemAndQuantity.appendChild(imperialLabel);
     }
 
     let plusSymbol = createElement('span');

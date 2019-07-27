@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Cooking Pot - Inventory</title>
     <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
-    <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="/css/inventory.css" media="screen" type="text/css"/>
-    <link rel="stylesheet" href="/css/font-awesome.css">
-    <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon'/>
-    <script type="application/javascript" src="/js/library.js"></script>
+    <link rel="stylesheet" href="../static/css/library.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="../static/css/inventory.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="../static/css/ingredient-format-slider.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="../static/css/font-awesome.css">
+    <link rel='shortcut icon' href='../static/images/favicon.ico' type='image/x-icon'/>
+    <script type="application/javascript" src="../static/js/library.js"></script>
+    <script type="application/javascript" src="../static/js/ingredient-format-slider.js"></script>
 </head>
 <body>
 <div class="baseContainer container">
@@ -41,7 +43,7 @@
                 </div>
             </div>
             <a class="active" href="inventory.html">Inventory</a>
-            <a href="shopping_list">Shopping List</a>
+            <a href="shopping-list">Shopping List</a>
             <div class="dropdown">
                 <button class="dropbtn">Account
                     <i class="fa fa-caret-down"></i>
@@ -187,6 +189,18 @@
             </div>
             <div>
                 <button class="button">ADD</button>
+            </div>
+            <div class="ingredientFormatContainer">
+                <div class="ingredientFormatSubContainer">
+                    <label class="ingredientFormatLabel">Ingredient format:</label>
+                    <label class="switch">
+                        <input type="checkbox" id="ingredientFormatButton">
+                        <div class="slider round">
+                            <span class="off">METRIC</span>
+                            <span class="on">IMPERIAL</span>
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="instructionsContainer">
