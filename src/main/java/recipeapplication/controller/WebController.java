@@ -84,13 +84,13 @@ public class WebController
         }
     }
 
-    @GetMapping("/resetPassword")
+    @GetMapping("/reset-password")
     public String resetPassword()
     {
         return "reset_password.html";
     }
 
-    @GetMapping("/changePassword")
+    @GetMapping("/change-password")
     public String changePassword(@RequestParam String token)
     {
         try
@@ -106,7 +106,7 @@ public class WebController
     }
 
     // TODO this could have a better name
-    @GetMapping("/changePasswordLoggedIn")
+    @GetMapping("/change-password-logged-in")
     public String changePasswordLoggedIn(Model model)
     {
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
@@ -115,7 +115,7 @@ public class WebController
         return "change_password_logged_in.html";
     }
 
-    @GetMapping("/deleteAccount")
+    @GetMapping("/delete-account")
     public String deleteAccount(Model model)
     {
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
@@ -124,7 +124,7 @@ public class WebController
         return "delete_account.html";
     }
 
-    @GetMapping("/shoppingList")
+    @GetMapping("/shopping-list")
     public String shoppingList(Model model)
     {
         model.addAttribute("user", authService.getLoggedInUser().getUsername());

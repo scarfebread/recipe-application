@@ -62,7 +62,7 @@ public class InventoryController
         return ResponseEntity.status(202).body("Deleted successfully");
     }
 
-    @PostMapping("/shoppingList")
+    @PostMapping("/shopping-list")
     public ResponseEntity addToShoppingList(InventoryItemDto inventoryItemDto)
     {
         try
@@ -78,7 +78,7 @@ public class InventoryController
         return ResponseEntity.status(201).body("Created");
     }
 
-    @DeleteMapping("/shoppingList")
+    @DeleteMapping("/shopping-list")
     public ResponseEntity removeFromShoppingList(InventoryItemDto inventoryItemDto)
     {
         try

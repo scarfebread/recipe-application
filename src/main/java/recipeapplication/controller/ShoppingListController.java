@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/shoppingList")
+@RequestMapping(path = "/api/shopping-list")
 public class ShoppingListController
 {
     private ShoppingListService shoppingListService;
