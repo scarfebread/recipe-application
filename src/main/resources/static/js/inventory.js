@@ -6,7 +6,59 @@ document.addEventListener("DOMContentLoaded", function(event)
 
     addCreateShoppingListItemEnterKeyEventListener(getElementById('item'));
     addCreateShoppingListItemEnterKeyEventListener(getElementById('quantity'));
+
+    Array.from(document.getElementsByClassName('deleteSymbol')).forEach(function (element) {
+        addDeleteEventListener(element);
+    });
+
+    Array.from(document.getElementsByClassName('plusSymbol')).forEach(function (element) {
+        addPurchaseEventListener(element);
+    });
 });
+
+function addPurchaseEventListener(element)
+{
+    element.addEventListener('click', function () {
+        let inventoryItem = element.parentNode.parentNode;
+        let container = inventoryItem.parentNode;
+
+        container.removeChild(inventoryItem);
+
+        purchaseIngredient(inventoryItem.id);
+    });
+}
+
+function addDeleteEventListener(element)
+{
+    element.addEventListener('click', function () {
+        let inventoryItem = element.parentNode.parentNode;
+        let container = inventoryItem.parentNode;
+
+        container.removeChild(inventoryItem);
+
+        deleteShoppingListItem(inventoryItem.id);
+    });
+}
+
+function deleteShoppingListItem(id)
+{
+    let body = {'id': id};
+
+    let success = function () {};
+    let failure = function () {};
+
+    callApi('/api/shoppingList', HTTP_DELETE, body, false, success, failure)
+}
+
+function purchaseIngredient(id)
+{
+    let body = {'id': id};
+
+    let success = function () {};
+    let failure = function () {};
+
+    callApi('/api/shoppingList/purchase', HTTP_POST, body, false, success, failure)
+}
 
 function createShoppingListItem()
 {
@@ -24,7 +76,10 @@ function createShoppingListItem()
     };
 
     let success = function(data) {
-        displayShoppingListItem(data)
+        displayShoppingListItem(data);
+
+        getElementById('item').value = '';
+        getElementById('quantity').value = '';
     };
 
     let failure = function (error) {};
@@ -44,19 +99,23 @@ function addCreateShoppingListItemEnterKeyEventListener(element)
 function displayShoppingListItem(item)
 {
     let ingredientLabel = createElement('label');
-    ingredientLabel.innerHTML = item.ingredient.description + ' ';
-
-    let quantityLabel = createElement('label');
-    quantityLabel.innerHTML = item.ingredient.metric;
+    ingredientLabel.innerHTML = item.ingredient.description;
 
     let itemAndQuantity = createElement('div');
     itemAndQuantity.className = 'itemAndQuantity';
     itemAndQuantity.appendChild(ingredientLabel);
-    itemAndQuantity.appendChild(quantityLabel);
+
+    if (item.ingredient.metric) {
+        ingredientLabel.className = 'insertedElement';
+        let quantityLabel = createElement('label');
+        quantityLabel.innerHTML = item.ingredient.metric;
+        itemAndQuantity.appendChild(quantityLabel);
+    }
 
     let plusSymbol = createElement('span');
-    plusSymbol.className = 'plusSymbol';
-    plusSymbol.innerHTML = '+ ';
+    plusSymbol.classList.add('plusSymbol');
+    plusSymbol.classList.add('insertedElement');
+    plusSymbol.innerHTML = '+';
 
     let deleteSymbol = createElement('span');
     deleteSymbol.className = 'deleteSymbol';
@@ -69,9 +128,12 @@ function displayShoppingListItem(item)
 
     let inventoryItem = createElement('div');
     inventoryItem.className = 'inventoryItem';
+    inventoryItem.id = item.id;
     inventoryItem.appendChild(itemAndQuantity);
     inventoryItem.appendChild(symbols);
 
     let inventoryContainer = getElementById('inventoryContainer');
     inventoryContainer.appendChild(inventoryItem);
+
+    addDeleteEventListener(deleteSymbol);
 }

@@ -11,8 +11,6 @@ public class ShoppingListItemDto
     @NotEmpty
     private String ingredient;
 
-    @NotNull
-    @NotEmpty
     private String quantity;
 
     private Long inventoryItemId;

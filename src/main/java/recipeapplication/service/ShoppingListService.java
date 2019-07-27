@@ -35,16 +35,9 @@ public class ShoppingListService
 
     public void deleteShoppingListItem(ShoppingListItemDto shoppingListItemDto) throws ShoppingListItemNotFoundException
     {
-        User user = authService.getLoggedInUser();
+        ShoppingListItem shoppingListItem = getShoppingListItem(shoppingListItemDto);
 
-        Optional<ShoppingListItem> shoppingListItem = shoppingListRepository.findByIdAndUserId(shoppingListItemDto.getId(), user.getId());
-
-        if (!shoppingListItem.isPresent())
-        {
-            throw new ShoppingListItemNotFoundException();
-        }
-
-        shoppingListRepository.delete(shoppingListItem.get());
+        shoppingListRepository.delete(shoppingListItem);
     }
 
     public void deleteShoppingListItem(InventoryItem inventoryItem) throws ShoppingListItemNotFoundException
@@ -59,6 +52,20 @@ public class ShoppingListService
         }
 
         shoppingListRepository.delete(shoppingListItem.get());
+    }
+
+    public ShoppingListItem getShoppingListItem(ShoppingListItemDto shoppingListItemDto) throws ShoppingListItemNotFoundException
+    {
+        User user = authService.getLoggedInUser();
+
+        Optional<ShoppingListItem> shoppingListItem = shoppingListRepository.findByIdAndUserId(shoppingListItemDto.getId(), user.getId());
+
+        if (!shoppingListItem.isPresent())
+        {
+            throw new ShoppingListItemNotFoundException();
+        }
+
+        return shoppingListItem.get();
     }
 
     public ShoppingListItem createShoppingListItem(ShoppingListItemDto shoppingListItemDto)

@@ -3,7 +3,6 @@ package recipeapplication.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
 import recipeapplication.model.Ingredient;

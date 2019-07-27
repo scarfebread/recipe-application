@@ -57,7 +57,7 @@
     </div>
 
     <div class="inventoryContainer" id="inventoryContainer">
-        <div class="inventoryItem" th:each="item,iter : ${shoppingList}">
+        <div class="inventoryItem" th:each="item,iter : ${shoppingList}" th:id="${item.id}">
             <div class="itemAndQuantity">
                 <label th:text="${item.ingredient.description}"></label>
                 <label th:text="${item.ingredient.metric}"></label>

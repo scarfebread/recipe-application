@@ -56,14 +56,16 @@ public class InventoryService
         return inventoryRepository.save(inventoryItem);
     }
 
-    public void createInventoryItem(ShoppingListItemDto shoppingListItemDto)
+    public void createInventoryItem(Ingredient ingredient)
     {
-        InventoryItemDto inventoryItemDto = new InventoryItemDto();
+        User user = authService.getLoggedInUser();
 
-        inventoryItemDto.setIngredient(shoppingListItemDto.getIngredient());
-        inventoryItemDto.setQuantity(shoppingListItemDto.getQuantity());
+        InventoryItem inventoryItem = new InventoryItem();
 
-        createInventoryItem(inventoryItemDto);
+        inventoryItem.setUser(user);
+        inventoryItem.setIngredient(ingredient);
+
+        inventoryRepository.save(inventoryItem);
     }
 
     public InventoryItem getInventoryItem(InventoryItemDto inventoryItemDto) throws InventoryItemNotFoundException

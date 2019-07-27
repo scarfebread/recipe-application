@@ -47,7 +47,7 @@ public class ShoppingListController
     }
 
     @DeleteMapping
-    public ResponseEntity deleteShoppingListItem(ShoppingListItemDto shoppingListItemDto)
+    public ResponseEntity deleteShoppingListItem(@RequestBody ShoppingListItemDto shoppingListItemDto)
     {
         try
         {
@@ -62,12 +62,13 @@ public class ShoppingListController
     }
 
     @PostMapping("/purchase")
-    public ResponseEntity purchaseIngredient(ShoppingListItemDto shoppingListItemDto)
+    public ResponseEntity purchaseIngredient(@RequestBody ShoppingListItemDto shoppingListItemDto)
     {
         try
         {
+            ShoppingListItem shoppingListItem = shoppingListService.getShoppingListItem(shoppingListItemDto);
+            inventoryService.createInventoryItem(shoppingListItem.getIngredient());
             shoppingListService.deleteShoppingListItem(shoppingListItemDto);
-            inventoryService.createInventoryItem(shoppingListItemDto);
         }
         catch (ShoppingListItemNotFoundException e)
         {

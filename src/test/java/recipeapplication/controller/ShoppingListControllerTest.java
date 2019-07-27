@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
+import recipeapplication.model.Ingredient;
 import recipeapplication.model.ShoppingListItem;
 import recipeapplication.service.InventoryService;
 import recipeapplication.service.ShoppingListService;
@@ -105,7 +106,7 @@ public class ShoppingListControllerTest
     {
         ShoppingListItemDto shoppingListItemDto = new ShoppingListItemDto();
 
-        doThrow(ShoppingListItemNotFoundException.class).when(shoppingListService).deleteShoppingListItem(shoppingListItemDto);
+        doThrow(ShoppingListItemNotFoundException.class).when(shoppingListService).getShoppingListItem(shoppingListItemDto);
 
         ResponseEntity responseEntity = shoppingListController.purchaseIngredient(shoppingListItemDto);
 
@@ -117,11 +118,16 @@ public class ShoppingListControllerTest
     public void shouldPurchaseShoppingListItemSuccessfullyForValidShoppingListItem() throws Exception
     {
         ShoppingListItemDto shoppingListItemDto = new ShoppingListItemDto();
+        Ingredient ingredient = new recipeapplication.model.Ingredient();
+        ShoppingListItem shoppingListItem = new ShoppingListItem();
+        shoppingListItem.setIngredient(ingredient);
+
+        when(shoppingListService.getShoppingListItem(shoppingListItemDto)).thenReturn(shoppingListItem);
 
         ResponseEntity responseEntity = shoppingListController.purchaseIngredient(shoppingListItemDto);
 
         verify(shoppingListService).deleteShoppingListItem(shoppingListItemDto);
-        verify(inventoryService).createInventoryItem(shoppingListItemDto);
+        verify(inventoryService).createInventoryItem(ingredient);
 
         assertEquals(201, responseEntity.getStatusCodeValue());
         assertEquals("Created", responseEntity.getBody());
