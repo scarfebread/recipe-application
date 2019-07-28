@@ -73,7 +73,8 @@
                 <label th:text="${item.ingredient.imperial}" class="imperial" hidden></label>
             </div>
             <div class="symbols">
-                <i class="fa fa-shopping-cart shoppingCartSymbol" th:id="${item.id}"></i>
+                <i th:if="${item.shoppingListItem}" class="fa fa-shopping-cart shoppingCartSymbol ingredientInShoppingList"></i>
+                <i th:unless="${item.shoppingListItem}" class="fa fa-shopping-cart shoppingCartSymbol"></i>
                 <span class="deleteSymbol">&times;</span>
             </div>
         </div>

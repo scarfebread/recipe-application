@@ -1,5 +1,7 @@
 package recipeapplication.model;
 
+import org.hibernate.annotations.WhereJoinTable;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,6 +17,10 @@ public class InventoryItem
 
     @OneToOne(cascade = CascadeType.ALL)
     private Ingredient ingredient;
+
+    @JoinColumn(name = "ingredient_id", referencedColumnName = "ingredient_id",insertable = false, updatable = false)
+    @OneToOne
+    private ShoppingListItem shoppingListItem;
 
     public Long getId()
     {
@@ -44,5 +50,10 @@ public class InventoryItem
     public void setId(Long id)
     {
         this.id = id;
+    }
+
+    public ShoppingListItem getShoppingListItem()
+    {
+        return shoppingListItem;
     }
 }
