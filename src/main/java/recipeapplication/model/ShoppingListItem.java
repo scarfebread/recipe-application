@@ -1,10 +1,11 @@
 package recipeapplication.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "shopping_list")
-public class ShoppingListItem
+public class ShoppingListItem implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

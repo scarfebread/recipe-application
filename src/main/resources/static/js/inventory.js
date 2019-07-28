@@ -22,7 +22,7 @@ function addShoppingListEventListener(element)
         let inventoryItem = element.parentNode.parentNode;
 
         if (element.classList.contains('ingredientInShoppingList')) {
-            remoteFromShoppingList(inventoryItem.id);
+            removeFromShoppingList(inventoryItem.id);
             element.classList.remove('ingredientInShoppingList');
         } else {
             addToShoppingList(inventoryItem.id);
@@ -63,7 +63,7 @@ function addToShoppingList(id)
     callApi('/api/inventory/shopping-list', HTTP_POST, body, false, success, failure)
 }
 
-function remoteFromShoppingList(id)
+function removeFromShoppingList(id)
 {
     let body = {'id': id};
 
@@ -138,10 +138,11 @@ function displayInventoryItem(item)
         itemAndQuantity.appendChild(imperialLabel);
     }
 
-    let shoppingCartSymbol = createElement('span');
+    let shoppingCartSymbol = createElement('i');
+    shoppingCartSymbol.classList.add('fa');
     shoppingCartSymbol.classList.add('shoppingCartSymbol');
+    shoppingCartSymbol.classList.add('fa-shopping-cart');
     shoppingCartSymbol.classList.add('insertedElement');
-    shoppingCartSymbol.innerHTML = '+';
 
     let deleteSymbol = createElement('span');
     deleteSymbol.className = 'deleteSymbol';
