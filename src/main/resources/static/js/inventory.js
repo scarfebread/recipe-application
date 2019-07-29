@@ -15,7 +15,8 @@ document.addEventListener("DOMContentLoaded", function(event)
         addShoppingListEventListener(element);
     });
 
-    enableAutoComplete();
+    enableSearchAutoComplete();
+    autocomplete(getElementById('item'), ingredients);
 });
 
 function addShoppingListEventListener(element)
@@ -168,7 +169,7 @@ function displayInventoryItem(item)
     addShoppingListEventListener(shoppingCartSymbol);
 }
 
-function enableAutoComplete()
+function enableSearchAutoComplete()
 {
     let searchBar = getElementById('searchForIngredient');
 
