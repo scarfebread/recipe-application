@@ -3,13 +3,14 @@ package recipeapplication.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.ShoppingListItem;
+import recipeapplication.model.User;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ShoppingListRepository extends JpaRepository<ShoppingListItem, Long>
 {
-    List<ShoppingListItem> findByUserId(Long userId);
-    Optional<ShoppingListItem> findByIdAndUserId(Long id, Long userId);
-    Optional<ShoppingListItem> findByIngredientAndUserId(Ingredient ingredient, Long userId);
+    List<ShoppingListItem> findByUser(User user);
+    Optional<ShoppingListItem> findByIdAndUser(Long id, User user);
+    Optional<ShoppingListItem> findByIngredientAndUser(Ingredient ingredient, User user);
 }

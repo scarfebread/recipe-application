@@ -15,7 +15,6 @@ public class Step
     private Recipe recipe;
 
     private String description;
-    private int step;
 
     public Step() {}
 

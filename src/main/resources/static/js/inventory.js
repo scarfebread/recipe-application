@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function(event)
     Array.from(document.getElementsByClassName('shoppingCartSymbol')).forEach(function (element) {
         addShoppingListEventListener(element);
     });
+
+    enableAutoComplete();
 });
 
 function addShoppingListEventListener(element)
@@ -164,4 +166,23 @@ function displayInventoryItem(item)
 
     addDeleteEventListener(deleteSymbol);
     addShoppingListEventListener(shoppingCartSymbol);
+}
+
+function enableAutoComplete()
+{
+    let searchBar = getElementById('searchForIngredient');
+
+    searchBar.addEventListener("input", function() {
+        let searchText = this.value;
+        let inventoryItems = document.getElementsByClassName('inventoryItem');
+        Array.from(inventoryItems).forEach(function (element) {
+            let description = element.querySelector("*").querySelector("*").innerHTML;
+
+            if (description.substr(0, searchText.length).toUpperCase() === searchText.toUpperCase()) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        });
+    });
 }
