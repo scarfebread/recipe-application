@@ -68,7 +68,7 @@
                         <a href="/delete-account">Delete account</a>
                     </div>
                 </div>
-                <label class="recipeTitle" th:text="${recipe.title}"></label>
+                <label class="pageTitle" th:text="${recipe.title}"></label>
             </div>
         </div>
 
@@ -80,6 +80,9 @@
                 <button id="editRecipeButton" class="headerButton button">
                     <span>EDIT</span>
                 </button>
+                <button id="lockRecipeButton" class="headerButton button">
+                    <span>LOCK</span>
+                </button>
                 <button id="deleteRecipeButton" class="headerButton button">
                     <span>DELETE</span>
                 </button>
@@ -88,11 +91,13 @@
                 <div class="recipeDetailsContainer">
                     <div class="label">
                         <label class="cookAndPrepTimeLabel" for="cookTime">Cook time:</label>
-                        <input disabled id="cookTime" class="timeInput" type="time" th:value="${recipe.cookTime}"/>
+                        <input th:if="${recipe.cookTime != ''}" disabled id="cookTime" class="timeInput" type="time" th:value="${recipe.cookTime}"/>
+                        <input th:if="${recipe.cookTime == ''}" disabled id="cookTime" class="timeInput" type="time" value="00:00"/>
                     </div>
                     <div class="label">
                         <label class="cookAndPrepTimeLabel" for="prepTime">Prep time:</label>
-                        <input disabled id="prepTime" class="timeInput" type="time" th:value="${recipe.prepTime}"/>
+                        <input th:if="${recipe.prepTime != ''}" disabled id="prepTime" class="timeInput" type="time" th:value="${recipe.prepTime}"/>
+                        <input th:if="${recipe.prepTime == ''}" disabled id="prepTime" class="timeInput" type="time" value="00:00"/>
                     </div>
                     <div class="label">
                         <label for="serves">Serves:</label>
