@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function(event)
         addPurchaseEventListener(element);
     });
 
-    // autocomplete(getElementById('item'), ingredients);
+    autocomplete(getElementById('item'), ingredients);
 });
 
 function addPurchaseEventListener(element)
