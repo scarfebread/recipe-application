@@ -30,7 +30,7 @@
 }
 
 .shoppingCartSymbol {
-    font-size:24px;
+    font-size:24px !important;
     color: #aaaaaa;;
     font-weight: bold;
 }
@@ -68,10 +68,6 @@
     color: #000;
     text-decoration: none;
     cursor: pointer;
-}
-
-.shoppingCartSymbol {
-    font-size:24px !important;
 }
 
 .ingredientInShoppingList {

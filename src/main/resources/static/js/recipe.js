@@ -204,9 +204,8 @@ document.addEventListener("DOMContentLoaded", function(event)
             element.style.cursor = 'pointer';
         });
 
-        Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function (element) {
-            element.hidden = false;
-            element.style.display = 'inline-block';
+        Array.from(document.getElementsByClassName('ingredientActionColumn')).forEach(function(element) {
+            element.style.display = 'flex';
         });
 
         Array.from(document.getElementsByClassName('buttonColumn')).forEach(function (element) {
@@ -248,8 +247,7 @@ document.addEventListener("DOMContentLoaded", function(event)
             element.style.cursor = 'auto';
         });
 
-        Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
-            element.hidden = true;
+        Array.from(document.getElementsByClassName('ingredientActionColumn')).forEach(function(element) {
             element.style.display = 'none';
         });
 
@@ -328,14 +326,19 @@ function addEditListener(element)
 function addIngredientDeleteListeners()
 {
     Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
-        element.addEventListener('click', function () {
-            let row = element.parentNode.parentNode;
-            let table = row.parentNode;
+        addIngredientDeleteListener(element);
+    });
+}
 
-            table.removeChild(row);
+function addIngredientDeleteListener(element)
+{
+    element.addEventListener('click', function () {
+        let row = element.parentNode.parentNode;
+        let table = row.parentNode;
 
-            updateRecipe();
-        });
+        table.removeChild(row);
+
+        updateRecipe();
     });
 }
 
@@ -508,54 +511,32 @@ function createIngredient()
 
 function addIngredientToList(description, metric, imperial)
 {
-    let ingredientTable = getElementById('ingredientTable').children[0];
+    let template = getTemplate('ingredientTemplate');
 
-    let row = createElement('tr');
+    let descriptionColumn = template.querySelector('.ingredientColumn');
+    let metricColumn = template.querySelector('.metric');
+    let imperialColumn = template.querySelector('.imperial');
+    let ingredientDelete = template.querySelector('.ingredientDelete');
+    let ingredientActionColumn = template.querySelector('.ingredientActionColumn');
 
-    let descriptionColumn = createElement('td');
     descriptionColumn.innerText = description;
-    descriptionColumn.contentEditable = editRecipe;
-    descriptionColumn.classList.add('ingredientColumn');
-
-    let metricColumn = createElement('td');
     metricColumn.innerText = metric;
-    metricColumn.contentEditable = editRecipe;
-    metricColumn.classList.add('quantityColumn');
-    metricColumn.classList.add('metric');
-
-    let imperialColumn = createElement('td');
     imperialColumn.innerText = imperial;
-    imperialColumn.contentEditable = editRecipe;
-    imperialColumn.classList.add('quantityColumn');
-    imperialColumn.classList.add('imperial');
+    ingredientActionColumn.style.display = 'flex';
 
-    if (metric) {
-        imperialColumn.style.display = "none";
+    if (window.metric) {
+        imperialColumn.style.display = 'none';
     } else {
-        metricColumn.style.display = "none";
+        metricColumn.style.display = 'none';
     }
 
-    let actionColumn = createElement('td');
-    actionColumn.className = 'ingredientActionColumn';
-
-    let deleteButton = createElement('span');
-    deleteButton.classList.add('close');
-    deleteButton.classList.add('ingredientDelete');
-    deleteButton.innerText = '×';
-    deleteButton.style.display = 'inline-block';
-
-    actionColumn.appendChild(deleteButton);
-    row.appendChild(descriptionColumn);
-    row.appendChild(metricColumn);
-    row.appendChild(imperialColumn);
-    row.appendChild(actionColumn);
-
-    ingredientTable.insertBefore(row, ingredientTable.children[ingredientTable.children.length -1]);
+    let ingredientTable = getElementById('ingredientTable').children[0];
+    ingredientTable.insertBefore(template, ingredientTable.children[ingredientTable.children.length -1]);
 
     addEditListener(descriptionColumn);
     addEditListener(metricColumn);
     addEditListener(imperialColumn);
-    addIngredientDeleteListeners();
+    addIngredientDeleteListener(ingredientDelete);
 }
 
 function createStep()
@@ -576,112 +557,21 @@ function addStepToList(step)
 {
     let stepTable = getElementById('stepTable').children[0];
 
-    let row = createElement('tr');
+    let template = getTemplate('stepTemplate');
 
-    let stepHeading = createElement('h3');
-    stepHeading.innerText = (getSteps().length + 1) + '.';
-    stepHeading.className = 'stepNumber';
+    let stepNumber = template.querySelector('.stepNumber');
+    let stepColumn = template.querySelector('.stepColumn');
+    let ingredientActionColumn = template.querySelector('.ingredientActionColumn');
+    let stepDelete = template.querySelector('.ingredientDelete');
 
-    let stepNumberColumn = createElement('td');
-    stepNumberColumn.appendChild(stepHeading);
-
-    let stepColumn = createElement('td');
+    stepNumber.innerText = (getSteps().length + 1) + '.';
     stepColumn.innerText = step;
-    stepColumn.contentEditable = editRecipe;
-    stepColumn.classList.add('steps');
-    stepColumn.style.width = '78%';
+    ingredientActionColumn.style.display = 'flex';
 
-    let actionColumn = createElement('td');
-    actionColumn.className = 'ingredientActionColumn';
-
-    let deleteButton = createElement('span');
-    deleteButton.classList.add('close');
-    deleteButton.classList.add('ingredientDelete');
-    deleteButton.innerText = '×';
-    deleteButton.style.display = 'inline-block';
-
-    actionColumn.appendChild(deleteButton);
-    row.appendChild(stepNumberColumn);
-    row.appendChild(stepColumn);
-    row.appendChild(actionColumn);
-
-    stepTable.insertBefore(row, stepTable.children[stepTable.children.length -1]);
+    stepTable.insertBefore(template, stepTable.children[stepTable.children.length -1]);
 
     addEditListener(stepColumn);
-    addIngredientDeleteListeners();
-}
-
-function autocomplete(input, array) {
-    let currentFocus;
-
-    input.addEventListener("input", function(e) {
-        let a, b, i, val = this.value;
-        closeAllLists();
-
-        if (!val) {
-            return false;
-        }
-        currentFocus = -1;
-
-        a = document.createElement("DIV");
-        a.setAttribute("id", this.id + "autocomplete-list");
-        a.setAttribute("class", "autocomplete-items");
-
-        this.parentNode.appendChild(a);
-        for (i = 0; i < array.length; i++) {
-            if (array[i].substr(0, val.length).toUpperCase() === val.toUpperCase()) {
-                b = document.createElement("DIV");
-                b.innerHTML = "<strong>" + array[i].substr(0, val.length) + "</strong>";
-                b.innerHTML += array[i].substr(val.length);
-                b.innerHTML += "<input type='hidden' value='" + array[i] + "'>";
-                b.addEventListener("click", function(e) {
-                    input.value = this.getElementsByTagName("input")[0].value;
-                    closeAllLists();
-                });
-                a.appendChild(b);
-            }
-        }
-    });
-    input.addEventListener("keydown", function(e) {
-        let x = document.getElementById(this.id + "autocomplete-list");
-        if (x) x = x.getElementsByTagName("div");
-        if (e.keyCode === 40) {
-            currentFocus++;
-            addActive(x);
-        } else if (e.keyCode === 38) {
-            currentFocus--;
-            addActive(x);
-        } else if (e.keyCode === 13) {
-            e.preventDefault();
-            if (currentFocus > -1) {
-                if (x) x[currentFocus].click();
-            }
-        }
-    });
-    function addActive(x) {
-        if (!x) return false;
-        removeActive(x);
-        if (currentFocus >= x.length) currentFocus = 0;
-        if (currentFocus < 0) currentFocus = (x.length - 1);
-        x[currentFocus].classList.add("autocomplete-active");
-    }
-    function removeActive(x) {
-        for (let i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete-active");
-        }
-    }
-    function closeAllLists(elmnt) {
-        let x = document.getElementsByClassName("autocomplete-items");
-        for (let i = 0; i < x.length; i++) {
-            if (elmnt !== x[i] && elmnt !== input) {
-                x[i].parentNode.removeChild(x[i]);
-            }
-        }
-    }
-
-    document.addEventListener("click", function (e) {
-        closeAllLists(e.target);
-    });
+    addIngredientDeleteListener(stepDelete);
 }
 
 function addCreateIngredientEnterKeyEventListener(element)

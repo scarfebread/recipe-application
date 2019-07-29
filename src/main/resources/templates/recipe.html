@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="/css/recipe.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="/css/ingredient-format-slider.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="/css/ingredient-auto-complete.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon'/>
     <script th:inline="javascript">
@@ -161,6 +162,7 @@
                         <td class="quantityColumn metric" th:text="${ingredient.metric}">
                         <td class="quantityColumn imperial hidden" th:text="${ingredient.imperial}"></td>
                         <td class="ingredientActionColumn">
+                            <i class="fa fa-shopping-cart shoppingCartSymbol"></i>
                             <span class="close ingredientDelete">&times;</span>
                         </td>
                     </tr>
@@ -206,7 +208,7 @@
                         <td class="stepNumberColumn"><h3 class="stepNumber" th:text="${iter.index + 1 + '.'}"></h3></td>
                         <td class="stepColumn" th:text="${step.description}"></td>
                         <td class="ingredientActionColumn">
-                            <span hidden class="close ingredientDelete">&times;</span>
+                            <span class="close ingredientDelete">&times;</span>
                         </td>
                     </tr>
                     <tr hidden id="addStepRow">
@@ -274,5 +276,29 @@
         </div>
     </div>
 </body>
+
+<template id="ingredientTemplate">
+    <tr>
+        <td class="ingredientColumn ingredient"></td>
+        <td class="quantityColumn metric">
+        <td class="quantityColumn imperial"></td>
+        <td class="ingredientActionColumn">
+            <i class="fa fa-shopping-cart shoppingCartSymbol"></i>
+            <span class="close ingredientDelete">&times;</span>
+        </td>
+    </tr>
+</template>
+
+<template id="stepTemplate">
+    <tr>
+        <td class="stepNumberColumn">
+            <h3 class="stepNumber"></h3>
+        </td>
+        <td class="stepColumn"></td>
+        <td class="ingredientActionColumn">
+            <span class="close ingredientDelete">&times;</span>
+        </td>
+    </tr>
+</template>
 
 </html>

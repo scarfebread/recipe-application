@@ -130,6 +130,7 @@ public class WebController
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
         model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
         model.addAttribute("shoppingList", shoppingListService.getShoppingList());
+        model.addAttribute("ingredients", inventoryService.getIngredients());
 
         return "shopping_list.html";
     }
@@ -140,6 +141,7 @@ public class WebController
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
         model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
         model.addAttribute("inventory", inventoryService.getInventory());
+        model.addAttribute("ingredients", inventoryService.getIngredients());
 
         return "inventory.html";
     }

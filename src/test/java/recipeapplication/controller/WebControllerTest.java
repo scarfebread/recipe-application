@@ -32,6 +32,7 @@ public class WebControllerTest
     private ShoppingListService shoppingListService;
     private AuthService authService;
     private List<RecentlyViewed> recentlyViewed;
+    private List<String> autoCompleteIngredients;
 
     @Before
     public void setup() throws InvalidPasswordTokenException
@@ -49,6 +50,10 @@ public class WebControllerTest
         recentlyViewed = new ArrayList<>();
         recentlyViewed.add(new RecentlyViewed());
         recentlyViewed.add(new RecentlyViewed());
+
+        autoCompleteIngredients = new ArrayList<>();
+        autoCompleteIngredients.add("INGREDIENT1");
+        autoCompleteIngredients.add("INGREDIENT2");
 
         doThrow(InvalidPasswordTokenException.class).when(userService).processPasswordResetToken(INVALID_TOKEN);
         when(recipeService.getRecentlyViewed()).thenReturn(recentlyViewed);
@@ -122,12 +127,8 @@ public class WebControllerTest
         Recipe recipe = new Recipe();
         recipe.setId(1L);
 
-        List<String> ingredients = new ArrayList<>();
-        ingredients.add("INGREDIENT1");
-        ingredients.add("INGREDIENT2");
-
         when(recipeService.getRecipe(recipe.getId())).thenReturn(recipe);
-        when(inventoryService.getIngredients()).thenReturn(ingredients);
+        when(inventoryService.getIngredients()).thenReturn(autoCompleteIngredients);
 
         Model model = mock(Model.class);
 
@@ -136,7 +137,7 @@ public class WebControllerTest
         verify(model).addAttribute("recipe", recipe);
         verify(model).addAttribute("recentlyViewed", recentlyViewed);
         verify(model).addAttribute("user", USERNAME);
-        verify(model).addAttribute("ingredients", ingredients);
+        verify(model).addAttribute("ingredients", autoCompleteIngredients);
         verify(model).addAttribute("displayInstructions", true);
     }
 
@@ -148,6 +149,7 @@ public class WebControllerTest
         shoppingList.add(new ShoppingListItem());
 
         when(shoppingListService.getShoppingList()).thenReturn(shoppingList);
+        when(inventoryService.getIngredients()).thenReturn(autoCompleteIngredients);
 
         Model model = mock(Model.class);
 
@@ -156,6 +158,7 @@ public class WebControllerTest
         verify(model).addAttribute("recentlyViewed", recentlyViewed);
         verify(model).addAttribute("user", USERNAME);
         verify(model).addAttribute("shoppingList", shoppingList);
+        verify(model).addAttribute("ingredients", autoCompleteIngredients);
     }
 
     @Test
@@ -166,6 +169,7 @@ public class WebControllerTest
         inventory.add(new InventoryItem());
 
         when(inventoryService.getInventory()).thenReturn(inventory);
+        when(inventoryService.getIngredients()).thenReturn(autoCompleteIngredients);
 
         Model model = mock(Model.class);
 
@@ -174,5 +178,6 @@ public class WebControllerTest
         verify(model).addAttribute("recentlyViewed", recentlyViewed);
         verify(model).addAttribute("user", USERNAME);
         verify(model).addAttribute("inventory", inventory);
+        verify(model).addAttribute("ingredients", autoCompleteIngredients);
     }
 }

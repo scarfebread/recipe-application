@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function(event)
     Array.from(document.getElementsByClassName('plusSymbol')).forEach(function (element) {
         addPurchaseEventListener(element);
     });
+
+    // autocomplete(getElementById('item'), ingredients);
 });
 
 function addPurchaseEventListener(element)
