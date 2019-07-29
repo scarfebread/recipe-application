@@ -41,6 +41,7 @@ public class SignupService
         user.setPassword(
                 passwordEncoder.encode(userDto.getPassword())
         );
+        user.setNewUser(true);
 
         userRepository.save(user);
     }

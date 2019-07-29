@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function(event)
     let rating4 = getElementById('rating4');
     let rating5 = getElementById('rating5');
     let editRecipeButton = getElementById('editRecipeButton');
+    let lockRecipeButton = getElementById('lockRecipeButton');
     let addIngredientButton = getElementById('addIngredientButton');
     let addStepButton = getElementById('addStepButton');
 
@@ -165,103 +166,100 @@ document.addEventListener("DOMContentLoaded", function(event)
         }
     };
 
-    editRecipeButton.onclick = function ()
-    {
-        editRecipeButton.disabled = true;
+    editRecipeButton.onclick = function () {
+        editRecipe = true;
+        editRecipeButton.style.display = 'none';
+        lockRecipeButton.style.display = 'inline-block';
+        difficulty.disabled = false;
+        cookTime.disabled = false;
+        prepTime.disabled = false;
+        serves.disabled = false;
+        notes.disabled = false;
+        getElementById('addIngredientRow').hidden = false;
+        getElementById('addStepRow').hidden = false;
 
-        editRecipe = !editRecipe;
+        let nonEditableIds = ['addIngredientColumn', 'addQuantityColumn', 'ingredientHeading', 'quantityHeading'];
 
-        if (editRecipe) {
-            editRecipeButton.innerText = 'LOCK';
-            difficulty.disabled = false;
-            cookTime.disabled = false;
-            prepTime.disabled = false;
-            serves.disabled = false;
-            notes.disabled = false;
-            getElementById('addIngredientRow').hidden = false;
-            getElementById('addStepRow').hidden = false;
-
-            let nonEditableIds = ['addIngredientColumn', 'addQuantityColumn', 'ingredientHeading', 'quantityHeading'];
-
-            Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
-                if (!nonEditableIds.includes(element.id)) {
-                    element.contentEditable = true;
-                    element.style.cursor = 'pointer';
-                }
-
-                element.style.width = '45%';
-            });
-
-            Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
-                if (!nonEditableIds.includes(element.id)) {
-                    element.contentEditable = true;
-                    element.style.cursor = 'pointer';
-                }
-
-                element.style.width = '28%';
-            });
-
-            Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
+        Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function (element) {
+            if (!nonEditableIds.includes(element.id)) {
                 element.contentEditable = true;
-                element.style.width = '70%';
                 element.style.cursor = 'pointer';
-            });
+            }
 
-            Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
-                element.hidden = false;
-                element.style.display = 'inline-block';
-            });
+            element.style.width = '45%';
+        });
 
-            Array.from(document.getElementsByClassName('buttonColumn')).forEach(function(element) {
-                element.hidden = false;
-            });
+        Array.from(document.getElementsByClassName('quantityColumn')).forEach(function (element) {
+            if (!nonEditableIds.includes(element.id)) {
+                element.contentEditable = true;
+                element.style.cursor = 'pointer';
+            }
 
-            Array.from(document.getElementsByClassName('stepHeader')).forEach(function(element) {
-                element.style.width = '65%';
-            });
-        } else {
-            editRecipeButton.innerText = 'EDIT';
-            difficulty.disabled = true;
-            cookTime.disabled = true;
-            prepTime.disabled = true;
-            serves.disabled = true;
-            notes.disabled = true;
-            getElementById('addIngredientRow').hidden = true;
-            getElementById('addStepRow').hidden = true;
+            element.style.width = '28%';
+        });
 
-            Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
-                element.contentEditable = false;
-                element.style.width = '60%';
-                element.style.cursor = 'auto';
-            });
+        Array.from(document.getElementsByClassName('stepColumn')).forEach(function (element) {
+            element.contentEditable = true;
+            element.style.width = '70%';
+            element.style.cursor = 'pointer';
+        });
 
-            Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
-                element.contentEditable = false;
-                element.style.width = '40%';
-                element.style.cursor = 'auto';
-            });
+        Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function (element) {
+            element.hidden = false;
+            element.style.display = 'inline-block';
+        });
 
-            Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
-                element.contentEditable = false;
-                element.style.width = '95%';
-                element.style.cursor = 'auto';
-            });
+        Array.from(document.getElementsByClassName('buttonColumn')).forEach(function (element) {
+            element.hidden = false;
+        });
 
-            Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
-                element.hidden = true;
-                element.style.display = 'none';
-            });
+        Array.from(document.getElementsByClassName('stepHeader')).forEach(function (element) {
+            element.style.width = '65%';
+        });
+    };
 
-            Array.from(document.getElementsByClassName('buttonColumn')).forEach(function(element) {
-                element.hidden = true;
-            });
+    lockRecipeButton.onclick = function() {
+        editRecipe = false;
+        editRecipeButton.style.display = 'inline-block';
+        lockRecipeButton.style.display = 'none';
+        difficulty.disabled = true;
+        cookTime.disabled = true;
+        prepTime.disabled = true;
+        serves.disabled = true;
+        notes.disabled = true;
+        getElementById('addIngredientRow').hidden = true;
+        getElementById('addStepRow').hidden = true;
 
-            Array.from(document.getElementsByClassName('stepHeader')).forEach(function(element) {
-                element.style.width = '95%';
-            });
-        }
+        Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
+            element.contentEditable = false;
+            element.style.width = '60%';
+            element.style.cursor = 'auto';
+        });
 
-        editRecipeButton.disabled = false;
+        Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
+            element.contentEditable = false;
+            element.style.width = '40%';
+            element.style.cursor = 'auto';
+        });
+
+        Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
+            element.contentEditable = false;
+            element.style.width = '95%';
+            element.style.cursor = 'auto';
+        });
+
+        Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
+            element.hidden = true;
+            element.style.display = 'none';
+        });
+
+        Array.from(document.getElementsByClassName('buttonColumn')).forEach(function(element) {
+            element.hidden = true;
+        });
+
+        Array.from(document.getElementsByClassName('stepHeader')).forEach(function(element) {
+            element.style.width = '95%';
+        });
     };
 
     addIngredientButton.onclick = function () {
@@ -645,7 +643,7 @@ function autocomplete(input, array) {
         }
     });
     input.addEventListener("keydown", function(e) {
-        var x = document.getElementById(this.id + "autocomplete-list");
+        let x = document.getElementById(this.id + "autocomplete-list");
         if (x) x = x.getElementsByTagName("div");
         if (e.keyCode === 40) {
             currentFocus++;
@@ -668,13 +666,13 @@ function autocomplete(input, array) {
         x[currentFocus].classList.add("autocomplete-active");
     }
     function removeActive(x) {
-        for (var i = 0; i < x.length; i++) {
+        for (let i = 0; i < x.length; i++) {
             x[i].classList.remove("autocomplete-active");
         }
     }
     function closeAllLists(elmnt) {
-        var x = document.getElementsByClassName("autocomplete-items");
-        for (var i = 0; i < x.length; i++) {
+        let x = document.getElementsByClassName("autocomplete-items");
+        for (let i = 0; i < x.length; i++) {
             if (elmnt !== x[i] && elmnt !== input) {
                 x[i].parentNode.removeChild(x[i]);
             }
