@@ -48,7 +48,7 @@ public class ShoppingListServiceTest
         shoppingListItems.add(new ShoppingListItem());
         shoppingListItems.add(new ShoppingListItem());
 
-        when(shoppingListRepository.findByUserId(user.getId())).thenReturn(shoppingListItems);
+        when(shoppingListRepository.findByUser(user)).thenReturn(shoppingListItems);
 
         assertEquals(shoppingListItems, shoppingListService.getShoppingList());
     }
@@ -59,7 +59,7 @@ public class ShoppingListServiceTest
         ShoppingListItemDto shoppingListItemDto = new ShoppingListItemDto();
         shoppingListItemDto.setId(54321L);
 
-        when(shoppingListRepository.findByIdAndUserId(shoppingListItemDto.getId(), user.getId())).thenReturn(Optional.empty());
+        when(shoppingListRepository.findByIdAndUser(shoppingListItemDto.getId(), user)).thenReturn(Optional.empty());
 
         shoppingListService.deleteShoppingListItem(shoppingListItemDto);
     }
@@ -72,7 +72,7 @@ public class ShoppingListServiceTest
 
         ShoppingListItem shoppingListItem = new ShoppingListItem();
 
-        when(shoppingListRepository.findByIdAndUserId(shoppingListItemDto.getId(), user.getId())).thenReturn(Optional.of(shoppingListItem));
+        when(shoppingListRepository.findByIdAndUser(shoppingListItemDto.getId(), user)).thenReturn(Optional.of(shoppingListItem));
 
         shoppingListService.deleteShoppingListItem(shoppingListItemDto);
 
@@ -86,7 +86,7 @@ public class ShoppingListServiceTest
         InventoryItem inventoryItem = new InventoryItem();
         inventoryItem.setIngredient(ingredient);
 
-        when(shoppingListRepository.findByIngredientAndUserId(ingredient, user.getId())).thenReturn(Optional.empty());
+        when(shoppingListRepository.findByIngredientAndUser(ingredient, user)).thenReturn(Optional.empty());
 
         shoppingListService.deleteShoppingListItem(inventoryItem);
     }
@@ -100,7 +100,7 @@ public class ShoppingListServiceTest
 
         ShoppingListItem shoppingListItem = new ShoppingListItem();
 
-        when(shoppingListRepository.findByIngredientAndUserId(ingredient, user.getId())).thenReturn(Optional.of(shoppingListItem));
+        when(shoppingListRepository.findByIngredientAndUser(ingredient, user)).thenReturn(Optional.of(shoppingListItem));
 
         shoppingListService.deleteShoppingListItem(inventoryItem);
 

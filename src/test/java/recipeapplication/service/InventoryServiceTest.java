@@ -49,7 +49,7 @@ public class InventoryServiceTest
         inventoryItems.add(new InventoryItem());
         inventoryItems.add(new InventoryItem());
 
-        when(inventoryRepository.findByUserId(user.getId())).thenReturn(inventoryItems);
+        when(inventoryRepository.findByUser(user)).thenReturn(inventoryItems);
 
         assertEquals(inventoryItems, inventoryService.getInventory());
     }
@@ -60,7 +60,7 @@ public class InventoryServiceTest
         InventoryItemDto inventoryItemDto = new InventoryItemDto();
         inventoryItemDto.setId(54321L);
 
-        when(inventoryRepository.findByIdAndUserId(inventoryItemDto.getId(), user.getId())).thenReturn(Optional.empty());
+        when(inventoryRepository.findByIdAndUser(inventoryItemDto.getId(), user)).thenReturn(Optional.empty());
 
         inventoryService.deleteInventoryItem(inventoryItemDto);
     }
@@ -73,7 +73,7 @@ public class InventoryServiceTest
 
         InventoryItem inventoryItem = new InventoryItem();
 
-        when(inventoryRepository.findByIdAndUserId(inventoryItemDto.getId(), user.getId())).thenReturn(Optional.of(inventoryItem));
+        when(inventoryRepository.findByIdAndUser(inventoryItemDto.getId(), user)).thenReturn(Optional.of(inventoryItem));
 
         inventoryService.deleteInventoryItem(inventoryItemDto);
 
@@ -96,6 +96,18 @@ public class InventoryServiceTest
         assertEquals(inventoryItemDto.getIngredient(), ingredient.getDescription());
         assertEquals(inventoryItemDto.getQuantity(), ingredient.getImperial());
         assertEquals(inventoryItemDto.getQuantity(), ingredient.getMetric());
+    }
+
+    @Test
+    public void shouldNotCreateInventoryItemFromIngredientIfAlreadyExists()
+    {
+        Ingredient ingredient = new Ingredient("INGREDIENT", "QUANTITY", user);
+
+        when(inventoryRepository.findByIngredientAndUser(ingredient, user)).thenReturn(Optional.of(new InventoryItem()));
+
+        inventoryService.createInventoryItem(ingredient);
+
+        verify(inventoryRepository, never()).save(any());
     }
 
     @Test

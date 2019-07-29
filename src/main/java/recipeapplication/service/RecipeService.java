@@ -8,7 +8,6 @@ import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.*;
-import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecentlyViewedRepository;
 import recipeapplication.repository.RecipeRepository;
 import recipeapplication.repository.StepRepository;
@@ -66,7 +65,7 @@ public class RecipeService
     {
         User user = authService.getLoggedInUser();
 
-        return recipeRepository.findByUserId(user.getId());
+        return recipeRepository.findByUser(user);
     }
 
     public Recipe getRecipe(Long id) throws RecipeDoesNotExistException
@@ -170,7 +169,7 @@ public class RecipeService
     {
         User user = authService.getLoggedInUser();
 
-        return recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(user.getId());
+        return recentlyViewedRepository.findTop5ByUserOrderByIdDesc(user);
     }
 
     public void deleteAllRecipes()

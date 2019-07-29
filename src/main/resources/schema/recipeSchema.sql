@@ -48,8 +48,7 @@ CREATE TABLE recipe.recipe_ingredients (
 CREATE TABLE recipe.steps (
   id SERIAL PRIMARY KEY,
   recipe INT REFERENCES recipe.recipes(id),
-  description VARCHAR NOT NULL,
-  step INT NOT NULL
+  description VARCHAR NOT NULL
 );
 
 CREATE TABLE recipe.recently_viewed (

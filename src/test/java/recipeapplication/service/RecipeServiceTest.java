@@ -97,7 +97,7 @@ public class RecipeServiceTest
         recipes.add(recipe1);
         recipes.add(recipe2);
 
-        when(recipeRepository.findByUserId(loggedInUser.getId())).thenReturn(recipes);
+        when(recipeRepository.findByUser(loggedInUser)).thenReturn(recipes);
 
         assertEquals(recipes, recipeService.getRecipes());
     }
@@ -308,7 +308,7 @@ public class RecipeServiceTest
         recentlyViewed.add(recentlyViewed1);
         recentlyViewed.add(recentlyViewed2);
 
-        when(recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(loggedInUser.getId())).thenReturn(recentlyViewed);
+        when(recentlyViewedRepository.findTop5ByUserOrderByIdDesc(loggedInUser)).thenReturn(recentlyViewed);
 
         Recipe viewedRecipe =  new Recipe();
         viewedRecipe.setId(2L);
@@ -332,7 +332,7 @@ public class RecipeServiceTest
         Recipe mostRecentRecipe = new Recipe();
         mostRecentRecipe.setId(1L);
 
-        when(recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(loggedInUser.getId())).thenReturn(new ArrayList<>());
+        when(recentlyViewedRepository.findTop5ByUserOrderByIdDesc(loggedInUser)).thenReturn(new ArrayList<>());
 
         Recipe viewedRecipe =  new Recipe();
         viewedRecipe.setId(2L);
@@ -371,7 +371,7 @@ public class RecipeServiceTest
         recentlyViewed.add(recentlyViewed1);
         recentlyViewed.add(recentlyViewed2);
 
-        when(recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(loggedInUser.getId())).thenReturn(recentlyViewed);
+        when(recentlyViewedRepository.findTop5ByUserOrderByIdDesc(loggedInUser)).thenReturn(recentlyViewed);
 
         Recipe viewedRecipe =  new Recipe();
         viewedRecipe.setId(2L);
@@ -390,7 +390,7 @@ public class RecipeServiceTest
         recentlyViewed.add(new RecentlyViewed());
         recentlyViewed.add(new RecentlyViewed());
 
-        when(recentlyViewedRepository.findTop5ByUserIdOrderByIdDesc(loggedInUser.getId())).thenReturn(recentlyViewed);
+        when(recentlyViewedRepository.findTop5ByUserOrderByIdDesc(loggedInUser)).thenReturn(recentlyViewed);
 
         assertEquals(recentlyViewed, recipeService.getRecentlyViewed());
     }

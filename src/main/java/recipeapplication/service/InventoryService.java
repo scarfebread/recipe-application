@@ -33,7 +33,7 @@ public class InventoryService
     {
         User user = authService.getLoggedInUser();
 
-        return inventoryRepository.findByUserId(user.getId());
+        return inventoryRepository.findByUser(user);
     }
 
     public void deleteInventoryItem(InventoryItemDto inventoryItemDto) throws InventoryItemNotFoundException
@@ -60,6 +60,12 @@ public class InventoryService
     {
         User user = authService.getLoggedInUser();
 
+        // If a inventory item already exists for the same ingredient we will ignore the request to avoid duplicates
+        if (inventoryRepository.findByIngredientAndUser(ingredient, user).isPresent())
+        {
+            return;
+        }
+
         InventoryItem inventoryItem = new InventoryItem();
 
         inventoryItem.setUser(user);
@@ -72,7 +78,7 @@ public class InventoryService
     {
         User user = authService.getLoggedInUser();
 
-        Optional<InventoryItem> inventoryItem = inventoryRepository.findByIdAndUserId(inventoryItemDto.getId(), user.getId());
+        Optional<InventoryItem> inventoryItem = inventoryRepository.findByIdAndUser(inventoryItemDto.getId(), user);
 
         if (!inventoryItem.isPresent())
         {
