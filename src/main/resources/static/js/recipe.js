@@ -280,6 +280,7 @@ document.addEventListener("DOMContentLoaded", function(event)
     addIngredientDeleteListeners();
     addIngredientEditListeners();
     addStepEditListeners();
+    addShoppingListEventListeners();
 
     autocomplete(getElementById("ingredientDescription"), ingredients);
 });
@@ -499,7 +500,7 @@ function createIngredient()
     };
 
     let success = function(ingredient) {
-        addIngredientToList(ingredient.description, ingredient.metric, ingredient.imperial);
+        addIngredientToList(ingredient);
         ingredientDescription.value = '';
         ingredientQuantity.value = '';
     };
@@ -509,7 +510,7 @@ function createIngredient()
     callApi("/api/recipe/ingredient", HTTP_PUT, ingredient, true, success, failure);
 }
 
-function addIngredientToList(description, metric, imperial)
+function addIngredientToList(ingredient)
 {
     let template = getTemplate('ingredientTemplate');
 
@@ -518,13 +519,15 @@ function addIngredientToList(description, metric, imperial)
     let imperialColumn = template.querySelector('.imperial');
     let ingredientDelete = template.querySelector('.ingredientDelete');
     let ingredientActionColumn = template.querySelector('.ingredientActionColumn');
+    let shoppingCartSymbol = template.querySelector('.shoppingCartSymbol');
 
-    descriptionColumn.innerText = description;
-    metricColumn.innerText = metric;
-    imperialColumn.innerText = imperial;
+    descriptionColumn.innerText = ingredient.description;
+    metricColumn.innerText = ingredient.metric;
+    imperialColumn.innerText = ingredient.imperial;
     ingredientActionColumn.style.display = 'flex';
+    shoppingCartSymbol.setAttribute('data-ingredientId', ingredient.id);
 
-    if (window.metric) {
+    if (metric) {
         imperialColumn.style.display = 'none';
     } else {
         metricColumn.style.display = 'none';
@@ -537,6 +540,7 @@ function addIngredientToList(description, metric, imperial)
     addEditListener(metricColumn);
     addEditListener(imperialColumn);
     addIngredientDeleteListener(ingredientDelete);
+    addShoppingListEventListener(shoppingCartSymbol);
 }
 
 function createStep()

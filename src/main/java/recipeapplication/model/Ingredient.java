@@ -1,9 +1,9 @@
 package recipeapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import recipeapplication.utility.IngredientConverter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "ingredients")
@@ -17,11 +17,12 @@ public class Ingredient
     private String metric;
     private String imperial;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Transient
+    private boolean inShoppingList;
+
     @OneToOne
     private User user;
-
-    @ManyToMany(mappedBy = "ingredients")
-    private List<Recipe> recipe;
 
     public Ingredient(String description, String quantity, User user)
     {
@@ -48,6 +49,11 @@ public class Ingredient
         this.id = id;
     }
 
+    public Long getId()
+    {
+        return id;
+    }
+
     public void setMetric(String metric)
     {
         this.metric = metric;
@@ -66,5 +72,15 @@ public class Ingredient
     public User getUser()
     {
         return user;
+    }
+
+    public boolean isInShoppingList()
+    {
+        return inShoppingList;
+    }
+
+    public void setInShoppingList(boolean inShoppingList)
+    {
+        this.inShoppingList = inShoppingList;
     }
 }

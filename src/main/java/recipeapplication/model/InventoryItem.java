@@ -1,7 +1,5 @@
 package recipeapplication.model;
 
-import org.hibernate.annotations.WhereJoinTable;
-
 import javax.persistence.*;
 
 @Entity

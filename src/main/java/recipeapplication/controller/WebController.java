@@ -7,13 +7,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import recipeapplication.exception.InvalidPasswordTokenException;
 import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
+import recipeapplication.model.ShoppingListItem;
 import recipeapplication.model.User;
 import recipeapplication.service.AuthService;
 import recipeapplication.service.InventoryService;
 import recipeapplication.service.RecipeService;
 import recipeapplication.service.ShoppingListService;
 import recipeapplication.service.UserService;
+
+import java.util.List;
 
 @Controller
 public class WebController
@@ -69,6 +73,15 @@ public class WebController
             User user = authService.getLoggedInUser();
 
             recipeService.addRecentlyViewed(recipe);
+
+            List<ShoppingListItem> shoppingListItemList = shoppingListService.getShoppingList();
+            List<Ingredient> ingredients = recipe.getIngredients();
+            for (ShoppingListItem shoppingListItem : shoppingListItemList)
+            {
+                shoppingListItem.getIngredient().setInShoppingList(
+                        ingredients.contains(shoppingListItem.getIngredient())
+                );
+            }
 
             model.addAttribute("recipe", recipe);
             model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());

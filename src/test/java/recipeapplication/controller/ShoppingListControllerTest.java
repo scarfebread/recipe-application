@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import recipeapplication.dto.ShoppingListItemDto;
+import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.ShoppingListItem;
@@ -131,5 +132,57 @@ public class ShoppingListControllerTest
 
         assertEquals(201, responseEntity.getStatusCodeValue());
         assertEquals("Created", responseEntity.getBody());
+    }
+
+    @Test
+    public void shouldReturn404WhenRemovingShoppingListItemByIngredientIdThatDoesNotExist() throws Exception
+    {
+        Long ingredientId = 12345L;
+
+        doThrow(ShoppingListItemNotFoundException.class).when(shoppingListService).removeFromShoppingList(ingredientId);
+
+        ResponseEntity response = shoppingListController.removeFromShoppingList(ingredientId);
+
+        assertEquals(404, response.getStatusCodeValue());
+        assertEquals("Shopping list entry not found", response.getBody());
+    }
+
+    @Test
+    public void shouldRemoveShoppingListItemByIngredientId() throws Exception
+    {
+        Long ingredientId = 12345L;
+
+        ResponseEntity response = shoppingListController.removeFromShoppingList(ingredientId);
+
+        verify(shoppingListService).removeFromShoppingList(ingredientId);
+
+        assertEquals(202, response.getStatusCodeValue());
+        assertEquals("Removed successfully", response.getBody());
+    }
+
+    @Test
+    public void shouldReturn404WhenAddingIngredientThatDoesNotExist() throws Exception
+    {
+        Long ingredientId = 12345L;
+
+        doThrow(IngredientDoesNotExistException.class).when(shoppingListService).addToShoppingList(ingredientId);
+
+        ResponseEntity response = shoppingListController.addToShoppingList(ingredientId);
+
+        assertEquals(404, response.getStatusCodeValue());
+        assertEquals("Ingredient not found", response.getBody());
+    }
+
+    @Test
+    public void shouldAddShoppingListItemByIngredientId() throws Exception
+    {
+        Long ingredientId = 12345L;
+
+        ResponseEntity response = shoppingListController.addToShoppingList(ingredientId);
+
+        verify(shoppingListService).addToShoppingList(ingredientId);
+
+        assertEquals(201, response.getStatusCodeValue());
+        assertEquals("Added successfully", response.getBody());
     }
 }

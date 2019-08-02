@@ -28,6 +28,7 @@
     <script type="application/javascript" src="/js/library.js"></script>
     <script type="application/javascript" src="/js/recipe.js"></script>
     <script type="application/javascript" src="/js/ingredient-format-slider.js"></script>
+    <script type="application/javascript" src="/js/shopping-list-integration.js"></script>
 </head>
 <body>
     <div class="baseContainer container">
@@ -162,7 +163,12 @@
                         <td class="quantityColumn metric" th:text="${ingredient.metric}">
                         <td class="quantityColumn imperial hidden" th:text="${ingredient.imperial}"></td>
                         <td class="ingredientActionColumn">
-                            <i class="fa fa-shopping-cart shoppingCartSymbol"></i>
+                            <i th:if="${ingredient.inShoppingList}"
+                               class="fa fa-shopping-cart shoppingCartSymbol ingredientInShoppingList"
+                               th:data-ingredientId="${ingredient.id}"></i>
+                            <i th:unless="${ingredient.inShoppingList}"
+                               class="fa fa-shopping-cart shoppingCartSymbol"
+                               th:data-ingredientId="${ingredient.id}"></i>
                             <span class="close ingredientDelete">&times;</span>
                         </td>
                     </tr>

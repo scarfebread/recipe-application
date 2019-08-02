@@ -11,28 +11,10 @@ document.addEventListener("DOMContentLoaded", function(event)
         addDeleteEventListener(element);
     });
 
-    Array.from(document.getElementsByClassName('shoppingCartSymbol')).forEach(function (element) {
-        addShoppingListEventListener(element);
-    });
-
+    addShoppingListEventListeners();
     enableSearchAutoComplete();
     autocomplete(getElementById('item'), ingredients);
 });
-
-function addShoppingListEventListener(element)
-{
-    element.addEventListener('click', function () {
-        let inventoryItem = element.parentNode.parentNode;
-
-        if (element.classList.contains('ingredientInShoppingList')) {
-            removeFromShoppingList(inventoryItem.id);
-            element.classList.remove('ingredientInShoppingList');
-        } else {
-            addToShoppingList(inventoryItem.id);
-            element.classList.add('ingredientInShoppingList');
-        }
-    });
-}
 
 function addDeleteEventListener(element)
 {
@@ -54,26 +36,6 @@ function deleteInventoryItem(id)
     let failure = function () {};
 
     callApi('/api/inventory', HTTP_DELETE, body, false, success, failure)
-}
-
-function addToShoppingList(id)
-{
-    let body = {'id': id};
-
-    let success = function () {};
-    let failure = function () {};
-
-    callApi('/api/inventory/shopping-list', HTTP_POST, body, false, success, failure)
-}
-
-function removeFromShoppingList(id)
-{
-    let body = {'id': id};
-
-    let success = function () {};
-    let failure = function () {};
-
-    callApi('/api/inventory/shopping-list', HTTP_DELETE, body, false, success, failure)
 }
 
 function createInventoryItem()
@@ -146,6 +108,7 @@ function displayInventoryItem(item)
     shoppingCartSymbol.classList.add('shoppingCartSymbol');
     shoppingCartSymbol.classList.add('fa-shopping-cart');
     shoppingCartSymbol.classList.add('insertedElement');
+    shoppingCartSymbol.setAttribute('data-ingredientId', item.ingredient.id);
 
     let deleteSymbol = createElement('span');
     deleteSymbol.className = 'deleteSymbol';

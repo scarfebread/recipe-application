@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.ui.Model;
 
 import recipeapplication.exception.InvalidPasswordTokenException;
@@ -12,8 +13,9 @@ import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.*;
 import recipeapplication.service.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -124,21 +126,39 @@ public class WebControllerTest
     @Test
     public void shouldReturnRecipePageWithModelAttributesForValidRecipe() throws Exception
     {
+        Ingredient ingredient1 = new Ingredient();
+        Ingredient ingredient2 = new Ingredient();
+
+        ShoppingListItem shoppingListItem = new ShoppingListItem();
+        shoppingListItem.setIngredient(ingredient2);
+        List<ShoppingListItem> shoppingListItems = new ArrayList<>();
+        shoppingListItems.add(shoppingListItem);
+
         Recipe recipe = new Recipe();
         recipe.setId(1L);
+        recipe.addIngredient(ingredient1);
+        recipe.addIngredient(ingredient2);
 
         when(recipeService.getRecipe(recipe.getId())).thenReturn(recipe);
         when(inventoryService.getIngredients()).thenReturn(autoCompleteIngredients);
+        when(shoppingListService.getShoppingList()).thenReturn(shoppingListItems);
 
         Model model = mock(Model.class);
 
         assertEquals("recipe.html", controller.recipe(recipe.getId(), model));
 
-        verify(model).addAttribute("recipe", recipe);
+        ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+
+        verify(model).addAttribute(eq("recipe"), argumentCaptor.capture());
         verify(model).addAttribute("recentlyViewed", recentlyViewed);
         verify(model).addAttribute("user", USERNAME);
         verify(model).addAttribute("ingredients", autoCompleteIngredients);
         verify(model).addAttribute("displayInstructions", true);
+
+        List<Ingredient> resultIngredients = argumentCaptor.getValue().getIngredients();
+
+        assertFalse(resultIngredients.get(0).isInShoppingList());
+        assertTrue(resultIngredients.get(1).isInShoppingList());
     }
 
     @Test
