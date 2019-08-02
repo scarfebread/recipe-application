@@ -8,7 +8,6 @@ import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.exception.InventoryItemNotFoundException;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.service.InventoryService;
-import recipeapplication.service.ShoppingListService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import static org.mockito.Mockito.*;
 public class InventoryControllerTest
 {
     private InventoryService inventoryService;
-    private ShoppingListService shoppingListService;
     private InventoryController inventoryController;
     private Errors noErrors;
     private Errors errors;
@@ -28,7 +26,6 @@ public class InventoryControllerTest
     public void setup()
     {
         inventoryService = mock(InventoryService.class);
-        shoppingListService = mock(ShoppingListService.class);
 
         errors = mock(Errors.class);
         noErrors = mock(Errors.class);
@@ -36,7 +33,7 @@ public class InventoryControllerTest
         when(errors.hasErrors()).thenReturn(true);
         when(noErrors.hasErrors()).thenReturn(false);
 
-        inventoryController = new InventoryController(inventoryService, shoppingListService);
+        inventoryController = new InventoryController(inventoryService);
     }
 
     @Test
@@ -96,65 +93,6 @@ public class InventoryControllerTest
         ResponseEntity responseEntity = inventoryController.deleteInventoryItem(inventoryItemDto);
 
         verify(inventoryService).deleteInventoryItem(inventoryItemDto);
-
-        assertEquals(202, responseEntity.getStatusCodeValue());
-        assertEquals("Deleted successfully", responseEntity.getBody());
-    }
-
-    @Test
-    public void shouldReturnInventoryItemNotFoundWhenDoesNotExistWhenAddingToShoppingList() throws Exception
-    {
-        InventoryItemDto inventoryItemDto = new InventoryItemDto();
-
-        doThrow(InventoryItemNotFoundException.class).when(inventoryService).getInventoryItem(inventoryItemDto);
-
-        ResponseEntity responseEntity = inventoryController.addToShoppingList(inventoryItemDto);
-
-        assertEquals(404, responseEntity.getStatusCodeValue());
-        assertEquals("Inventory item not found", responseEntity.getBody());
-    }
-
-    @Test
-    public void shouldReturnCreatedWhenAddedToShoppingListWithValidInventoryItem() throws Exception
-    {
-        InventoryItemDto inventoryItemDto = new InventoryItemDto();
-        InventoryItem inventoryItem = new InventoryItem();
-
-        when(inventoryService.getInventoryItem(inventoryItemDto)).thenReturn(inventoryItem);
-
-        ResponseEntity responseEntity = inventoryController.addToShoppingList(inventoryItemDto);
-
-        verify(shoppingListService).createShoppingListItem(inventoryItem);
-
-        assertEquals(201, responseEntity.getStatusCodeValue());
-        assertEquals("Created", responseEntity.getBody());
-    }
-
-    @Test
-    public void shouldReturnInventoryItemNotFoundWhenDoesNotExistWhenRemovingFromShoppingList() throws Exception
-    {
-        InventoryItemDto inventoryItemDto = new InventoryItemDto();
-
-        doThrow(InventoryItemNotFoundException.class).when(inventoryService).getInventoryItem(inventoryItemDto);
-
-        ResponseEntity responseEntity = inventoryController.removeFromShoppingList(inventoryItemDto);
-
-        assertEquals(404, responseEntity.getStatusCodeValue());
-        assertEquals("Not found", responseEntity.getBody());
-    }
-
-    @Test
-    public void shouldReturnCreatedWhenRemovingFromShoppingListWithValidInventoryItem() throws Exception
-    {
-        InventoryItemDto inventoryItemDto = new InventoryItemDto();
-
-        InventoryItem inventoryItem = new InventoryItem();
-
-        when(inventoryService.getInventoryItem(inventoryItemDto)).thenReturn(inventoryItem);
-
-        ResponseEntity responseEntity = inventoryController.removeFromShoppingList(inventoryItemDto);
-
-        verify(shoppingListService).deleteShoppingListItem(inventoryItem);
 
         assertEquals(202, responseEntity.getStatusCodeValue());
         assertEquals("Deleted successfully", responseEntity.getBody());

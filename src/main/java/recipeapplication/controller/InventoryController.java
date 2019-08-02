@@ -6,10 +6,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import recipeapplication.dto.InventoryItemDto;
 import recipeapplication.exception.InventoryItemNotFoundException;
-import recipeapplication.exception.ShoppingListItemNotFoundException;
 import recipeapplication.model.InventoryItem;
 import recipeapplication.service.InventoryService;
-import recipeapplication.service.ShoppingListService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -19,13 +17,11 @@ import java.util.List;
 public class InventoryController
 {
     private InventoryService inventoryService;
-    private ShoppingListService shoppingListService;
 
     @Autowired
-    public InventoryController(InventoryService inventoryService, ShoppingListService shoppingListService)
+    public InventoryController(InventoryService inventoryService)
     {
         this.inventoryService = inventoryService;
-        this.shoppingListService = shoppingListService;
     }
 
     @PostMapping
@@ -57,38 +53,6 @@ public class InventoryController
         catch (InventoryItemNotFoundException e)
         {
             return ResponseEntity.status(404).body("Inventory item not found");
-        }
-
-        return ResponseEntity.status(202).body("Deleted successfully");
-    }
-
-    @PostMapping("/shopping-list")
-    public ResponseEntity addToShoppingList(@RequestBody InventoryItemDto inventoryItemDto)
-    {
-        try
-        {
-            InventoryItem inventoryItem = inventoryService.getInventoryItem(inventoryItemDto);
-            shoppingListService.createShoppingListItem(inventoryItem);
-        }
-        catch (InventoryItemNotFoundException e)
-        {
-            return ResponseEntity.status(404).body("Inventory item not found");
-        }
-
-        return ResponseEntity.status(201).body("Created");
-    }
-
-    @DeleteMapping("/shopping-list")
-    public ResponseEntity removeFromShoppingList(@RequestBody InventoryItemDto inventoryItemDto)
-    {
-        try
-        {
-            InventoryItem inventoryItem = inventoryService.getInventoryItem(inventoryItemDto);
-            shoppingListService.deleteShoppingListItem(inventoryItem);
-        }
-        catch (InventoryItemNotFoundException | ShoppingListItemNotFoundException e)
-        {
-            return ResponseEntity.status(404).body("Not found");
         }
 
         return ResponseEntity.status(202).body("Deleted successfully");

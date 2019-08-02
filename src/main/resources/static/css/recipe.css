@@ -231,6 +231,10 @@ input[type="time"]::-webkit-clear-button {
     cursor: pointer;
 }
 
+.ingredientInShoppingList {
+    color: #000 !important;
+}
+
 @media screen and (max-width: 925px) {
     .subRecipeContainer {
         width: 380px;

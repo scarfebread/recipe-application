@@ -4,11 +4,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import recipeapplication.dto.ShoppingListItemDto;
+import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
 import recipeapplication.model.Ingredient;
-import recipeapplication.model.InventoryItem;
 import recipeapplication.model.ShoppingListItem;
 import recipeapplication.model.User;
+import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.ShoppingListRepository;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class ShoppingListServiceTest
 {
     private ShoppingListRepository shoppingListRepository;
     private ShoppingListService shoppingListService;
+    private IngredientRepository ingredientRepository;
     private User user;
 
     @Before
@@ -36,8 +38,9 @@ public class ShoppingListServiceTest
         when(authService.getLoggedInUser()).thenReturn(user);
 
         shoppingListRepository = mock(ShoppingListRepository.class);
+        ingredientRepository = mock(IngredientRepository.class);
 
-        shoppingListService = new ShoppingListService(shoppingListRepository, authService);
+        shoppingListService = new ShoppingListService(shoppingListRepository, ingredientRepository, authService);
     }
 
     @Test
@@ -79,34 +82,6 @@ public class ShoppingListServiceTest
         verify(shoppingListRepository).delete(shoppingListItem);
     }
 
-    @Test(expected = ShoppingListItemNotFoundException.class)
-    public void shouldThrowShoppingListItemNotFoundExceptionWhenDeletingUsingInventoryItem() throws Exception
-    {
-        Ingredient ingredient = new Ingredient();
-        InventoryItem inventoryItem = new InventoryItem();
-        inventoryItem.setIngredient(ingredient);
-
-        when(shoppingListRepository.findByIngredientAndUser(ingredient, user)).thenReturn(Optional.empty());
-
-        shoppingListService.deleteShoppingListItem(inventoryItem);
-    }
-
-    @Test
-    public void shouldDeleteShoppingListItemWhenUsingExistingInventoryItem() throws Exception
-    {
-        Ingredient ingredient = new Ingredient();
-        InventoryItem inventoryItem = new InventoryItem();
-        inventoryItem.setIngredient(ingredient);
-
-        ShoppingListItem shoppingListItem = new ShoppingListItem();
-
-        when(shoppingListRepository.findByIngredientAndUser(ingredient, user)).thenReturn(Optional.of(shoppingListItem));
-
-        shoppingListService.deleteShoppingListItem(inventoryItem);
-
-        verify(shoppingListRepository).delete(shoppingListItem);
-    }
-
     @Test
     public void shouldCreateRecipe()
     {
@@ -125,18 +100,56 @@ public class ShoppingListServiceTest
         assertEquals(shoppingListItemDto.getQuantity(), ingredient.getImperial());
     }
 
-    @Test
-    public void shouldCreateRecipeFromInventoryItem()
+    @Test(expected = IngredientDoesNotExistException.class)
+    public void shouldThrowIngredientDoesNotExistExceptionWhenAddingNonExistentIngredient() throws Exception
     {
-        InventoryItem inventoryItem = new InventoryItem();
-        inventoryItem.setIngredient(new Ingredient());
+        Long ingredientId = 12345L;
+
+        when(ingredientRepository.findByIdAndUser(ingredientId, user)).thenReturn(Optional.empty());
+
+        shoppingListService.addToShoppingList(ingredientId);
+    }
+
+    @Test
+    public void shouldAddIngredientToShoppingListWhenIngredientExists() throws Exception
+    {
+        Long ingredientId = 12345L;
+        Ingredient ingredient = new Ingredient();
+
+        when(ingredientRepository.findByIdAndUser(ingredientId, user)).thenReturn(Optional.of(ingredient));
 
         ArgumentCaptor<ShoppingListItem> argumentCaptor = ArgumentCaptor.forClass(ShoppingListItem.class);
 
-        shoppingListService.createShoppingListItem(inventoryItem);
+        shoppingListService.addToShoppingList(ingredientId);
 
         verify(shoppingListRepository).save(argumentCaptor.capture());
 
-        assertEquals(inventoryItem.getIngredient(), argumentCaptor.getValue().getIngredient());
+        ShoppingListItem shoppingListItem = argumentCaptor.getValue();
+
+        assertEquals(user, shoppingListItem.getUser());
+        assertEquals(ingredient, shoppingListItem.getIngredient());
+    }
+
+    @Test(expected = ShoppingListItemNotFoundException.class)
+    public void shouldThrowShoppingListItemNotFoundExceptionWhenRemovingNonExistentShoppingListItem() throws Exception
+    {
+        Long ingredientId = 12345L;
+
+        when(shoppingListRepository.findByIngredientIdAndUser(ingredientId, user)).thenReturn(Optional.empty());
+
+        shoppingListService.removeFromShoppingList(ingredientId);
+    }
+
+    @Test
+    public void shouldRemoveShoppingListItemWhenShoppingListItemExists() throws Exception
+    {
+        Long ingredientId = 12345L;
+        ShoppingListItem shoppingListItem = new ShoppingListItem();
+
+        when(shoppingListRepository.findByIngredientIdAndUser(ingredientId, user)).thenReturn(Optional.of(shoppingListItem));
+
+        shoppingListService.removeFromShoppingList(ingredientId);
+
+        verify(shoppingListRepository).delete(shoppingListItem);
     }
 }

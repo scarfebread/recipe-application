@@ -190,6 +190,9 @@ public class RecipeService
 
         recipeRepository.save(recipe);
 
-        return ingredient;
+        // Simply returning ingredient does not set the ID required by the front end
+        return recipe.getIngredients().get(
+                recipe.getIngredients().size() - 1
+        );
     }
 }

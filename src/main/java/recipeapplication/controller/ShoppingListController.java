@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import recipeapplication.dto.ShoppingListItemDto;
+import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
 import recipeapplication.model.ShoppingListItem;
 import recipeapplication.service.InventoryService;
@@ -76,5 +77,33 @@ public class ShoppingListController
         }
 
         return ResponseEntity.status(201).body("Created");
+    }
+
+    @DeleteMapping("/remove/{ingredientId}")
+    public ResponseEntity removeFromShoppingList(@PathVariable(value = "ingredientId") Long ingredientId)
+    {
+        try
+        {
+            shoppingListService.removeFromShoppingList(ingredientId);
+            return ResponseEntity.status(202).body("Removed successfully");
+        }
+        catch (ShoppingListItemNotFoundException e)
+        {
+            return ResponseEntity.status(404).body("Shopping list entry not found");
+        }
+    }
+
+    @PostMapping("/add/{ingredientId}")
+    public ResponseEntity addToShoppingList(@PathVariable(value = "ingredientId") Long ingredientId)
+    {
+        try
+        {
+            shoppingListService.addToShoppingList(ingredientId);
+            return ResponseEntity.status(201).body("Added successfully");
+        }
+        catch (IngredientDoesNotExistException e)
+        {
+            return ResponseEntity.status(404).body("Ingredient not found");
+        }
     }
 }

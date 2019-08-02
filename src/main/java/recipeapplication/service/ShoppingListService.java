@@ -3,11 +3,12 @@ package recipeapplication.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import recipeapplication.dto.ShoppingListItemDto;
+import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.ShoppingListItemNotFoundException;
 import recipeapplication.model.Ingredient;
-import recipeapplication.model.InventoryItem;
 import recipeapplication.model.ShoppingListItem;
 import recipeapplication.model.User;
+import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.ShoppingListRepository;
 
 import java.util.List;
@@ -17,12 +18,17 @@ import java.util.Optional;
 public class ShoppingListService
 {
     private ShoppingListRepository shoppingListRepository;
+    private IngredientRepository ingredientRepository;
     private AuthService authService;
 
     @Autowired
-    public ShoppingListService(ShoppingListRepository shoppingListRepository, AuthService authService)
+    public ShoppingListService(
+            ShoppingListRepository shoppingListRepository,
+            IngredientRepository ingredientRepository,
+            AuthService authService)
     {
         this.shoppingListRepository = shoppingListRepository;
+        this.ingredientRepository = ingredientRepository;
         this.authService = authService;
     }
 
@@ -38,20 +44,6 @@ public class ShoppingListService
         ShoppingListItem shoppingListItem = getShoppingListItem(shoppingListItemDto);
 
         shoppingListRepository.delete(shoppingListItem);
-    }
-
-    public void deleteShoppingListItem(InventoryItem inventoryItem) throws ShoppingListItemNotFoundException
-    {
-        User user = authService.getLoggedInUser();
-
-        Optional<ShoppingListItem> shoppingListItem = shoppingListRepository.findByIngredientAndUser(inventoryItem.getIngredient(), user);
-
-        if (!shoppingListItem.isPresent())
-        {
-            throw new ShoppingListItemNotFoundException();
-        }
-
-        shoppingListRepository.delete(shoppingListItem.get());
     }
 
     public ShoppingListItem getShoppingListItem(ShoppingListItemDto shoppingListItemDto) throws ShoppingListItemNotFoundException
@@ -81,15 +73,37 @@ public class ShoppingListService
         return shoppingListRepository.save(shoppingListItem);
     }
 
-    public void createShoppingListItem(InventoryItem inventoryItem)
+    public void addToShoppingList(Long ingredientId) throws IngredientDoesNotExistException
     {
         User user = authService.getLoggedInUser();
 
-        ShoppingListItem shoppingListItem = new ShoppingListItem();
+        Optional<Ingredient> ingredient = ingredientRepository.findByIdAndUser(ingredientId, user);
 
+        if (!ingredient.isPresent())
+        {
+            throw new IngredientDoesNotExistException();
+        }
+
+        ShoppingListItem shoppingListItem = new ShoppingListItem();
         shoppingListItem.setUser(user);
-        shoppingListItem.setIngredient(inventoryItem.getIngredient());
+        shoppingListItem.setIngredient(ingredient.get());
 
         shoppingListRepository.save(shoppingListItem);
+    }
+
+    public void removeFromShoppingList(Long ingredientId) throws ShoppingListItemNotFoundException
+    {
+        User user = authService.getLoggedInUser();
+
+        Optional<ShoppingListItem> shoppingListItem = shoppingListRepository.findByIngredientIdAndUser(ingredientId, user);
+
+        if (shoppingListItem.isPresent())
+        {
+            shoppingListRepository.delete(shoppingListItem.get());
+        }
+        else
+        {
+            throw new ShoppingListItemNotFoundException();
+        }
     }
 }
