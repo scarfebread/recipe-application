@@ -13,7 +13,7 @@ public class InventoryItem
     @OneToOne
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Ingredient ingredient;
 
     @JoinColumn(name = "ingredient_id", referencedColumnName = "ingredient_id",insertable = false, updatable = false)

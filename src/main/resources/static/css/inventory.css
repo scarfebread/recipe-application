@@ -33,6 +33,7 @@
     font-size:24px !important;
     color: #aaaaaa;;
     font-weight: bold;
+    padding-right: 5px;
 }
 
 .plusSymbol {
@@ -86,6 +87,8 @@
 
 .symbols {
     float: left;
+    align-items: center;
+    display: flex;
 }
 
 .button {
