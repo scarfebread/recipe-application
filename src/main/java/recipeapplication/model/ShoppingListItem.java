@@ -14,7 +14,7 @@ public class ShoppingListItem implements Serializable
     @OneToOne
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Ingredient ingredient;
 
     public Long getId()
