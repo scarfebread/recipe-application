@@ -76,21 +76,19 @@ function addCreateInventoryItemEnterKeyEventListener(element)
 
 function displayInventoryItem(item)
 {
-    let ingredientLabel = createElement('label');
-    ingredientLabel.innerHTML = item.ingredient.description;
+    let template = getTemplate('inventoryTemplate');
 
-    let itemAndQuantity = createElement('div');
-    itemAndQuantity.className = 'itemAndQuantity';
-    itemAndQuantity.appendChild(ingredientLabel);
+    let descriptionLabel = template.querySelector('.description');
+    let metricLabel = template.querySelector('.metric');
+    let imperialLabel = template.querySelector('.imperial');
+    let shoppingCartSymbol = template.querySelector('.shoppingCartSymbol');
+    let deleteSymbol = template.querySelector('.deleteSymbol');
+
+    descriptionLabel.innerHTML = item.ingredient.description;
+    shoppingCartSymbol.setAttribute('data-ingredientId', item.ingredient.id);
 
     if (item.ingredient.metric) {
-        ingredientLabel.className = 'insertedElement';
-        let metricLabel = createElement('label');
-        metricLabel.className = 'metric';
         metricLabel.innerHTML = item.ingredient.metric;
-
-        let imperialLabel = createElement('label');
-        imperialLabel.className = 'imperial';
         imperialLabel.innerHTML = item.ingredient.imperial;
 
         if (metric) {
@@ -98,35 +96,10 @@ function displayInventoryItem(item)
         } else {
             metricLabel.style.display = 'none';
         }
-
-        itemAndQuantity.appendChild(metricLabel);
-        itemAndQuantity.appendChild(imperialLabel);
     }
 
-    let shoppingCartSymbol = createElement('i');
-    shoppingCartSymbol.classList.add('fa');
-    shoppingCartSymbol.classList.add('shoppingCartSymbol');
-    shoppingCartSymbol.classList.add('fa-shopping-cart');
-    shoppingCartSymbol.classList.add('insertedElement');
-    shoppingCartSymbol.setAttribute('data-ingredientId', item.ingredient.id);
-
-    let deleteSymbol = createElement('span');
-    deleteSymbol.className = 'deleteSymbol';
-    deleteSymbol.innerHTML = '&times;';
-
-    let symbols = createElement('div');
-    symbols.className = 'symbols';
-    symbols.appendChild(shoppingCartSymbol);
-    symbols.appendChild(deleteSymbol);
-
-    let inventoryItem = createElement('div');
-    inventoryItem.className = 'inventoryItem';
-    inventoryItem.id = item.id;
-    inventoryItem.appendChild(itemAndQuantity);
-    inventoryItem.appendChild(symbols);
-
     let inventoryContainer = getElementById('inventoryContainer');
-    inventoryContainer.appendChild(inventoryItem);
+    inventoryContainer.appendChild(template);
 
     addDeleteEventListener(deleteSymbol);
     addShoppingListEventListener(shoppingCartSymbol);
