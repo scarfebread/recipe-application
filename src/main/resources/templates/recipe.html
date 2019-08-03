@@ -228,8 +228,8 @@
                     <tr th:each="step,iter : ${recipe.steps}">
                         <td class="stepNumberColumn"><h3 class="stepNumber" th:text="${iter.index + 1 + '.'}"></h3></td>
                         <td class="stepColumn" th:text="${step.description}"></td>
-                        <td class="ingredientActionColumn">
-                            <span class="close ingredientDelete">&times;</span>
+                        <td class="stepActionColumn">
+                            <span class="close stepDelete">&times;</span>
                         </td>
                     </tr>
                     <tr hidden id="addStepRow">
@@ -237,7 +237,7 @@
                         <td>
                             <input id="newStep" class="input">
                         </td>
-                        <td class="ingredientActionColumn">
+                        <td class="stepActionColumn">
                             <button id="addStepButton" class="ingredientAndStepButton button">
                                 <span>ADD</span>
                             </button>
@@ -316,8 +316,8 @@
             <h3 class="stepNumber"></h3>
         </td>
         <td class="stepColumn"></td>
-        <td class="ingredientActionColumn">
-            <span class="close ingredientDelete">&times;</span>
+        <td class="stepActionColumn">
+            <span class="close stepDelete">&times;</span>
         </td>
     </tr>
 </template>

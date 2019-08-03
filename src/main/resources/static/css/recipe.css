@@ -93,9 +93,19 @@
 }
 
 .ingredientActionColumn {
-    display: none;
     justify-content: center;
     align-items: center;
+    display: flex;
+}
+
+.stepActionColumn {
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.ingredientDelete {
+    display: none;
 }
 
 .table {
@@ -140,12 +150,12 @@
 .ingredientColumn {
     height: 36px;
     padding-right: 8px;
-    width: 60%;
+    width: 45%;
 }
 
 .quantityColumn {
     height: 36px;
-    width: 40%
+    width: 28%
 }
 
 .buttonColumn {
