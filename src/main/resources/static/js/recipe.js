@@ -67,9 +67,13 @@ document.addEventListener("DOMContentLoaded", function(event)
     let confirmShareRecipe = getElementById('confirmShareButton');
     let confirmDeleteRecipe = getElementById('confirmDeleteButton');
     let difficulty = getElementById('difficulty');
+    let difficultyLabel = getElementById('difficultyLabel');
     let cookTime = getElementById('cookTime');
     let prepTime = getElementById('prepTime');
+    let cookTimeLabel = getElementById('cookTimeLabel');
+    let prepTimeLabel = getElementById('prepTimeLabel');
     let serves = getElementById('serves');
+    let servesLabel = getElementById('servesLabel');
     let notes = getElementById('notes');
     let rating1 = getElementById('rating1');
     let rating2 = getElementById('rating2');
@@ -84,22 +88,24 @@ document.addEventListener("DOMContentLoaded", function(event)
     displayRating();
     serves.value = recipeServes;
     difficulty.value = recipeDifficulty;
-    cookTime.innerText = recipeCookTime;
-    prepTime.innerText = recipePrepTime;
 
     difficulty.onchange = function () {
+        difficultyLabel.innerHTML = difficulty.value;
         updateRecipe();
     };
 
     cookTime.onchange = function () {
+        cookTimeLabel.innerText = cookTime.value;
         updateRecipe();
     };
 
     prepTime.onchange = function () {
+        prepTimeLabel.innerText = prepTime.value;
         updateRecipe();
     };
 
     serves.onchange = function () {
+        servesLabel.innerText = serves.value;
         updateRecipe();
     };
 
@@ -170,10 +176,14 @@ document.addEventListener("DOMContentLoaded", function(event)
         editRecipe = true;
         editRecipeButton.style.display = 'none';
         lockRecipeButton.style.display = 'inline-block';
-        difficulty.disabled = false;
-        cookTime.disabled = false;
-        prepTime.disabled = false;
-        serves.disabled = false;
+        difficulty.style.display = 'inline-block';
+        difficultyLabel.style.display = 'none';
+        cookTime.style.display = '-webkit-inline-flex';
+        prepTime.style.display = '-webkit-inline-flex';
+        cookTimeLabel.style.display = 'none';
+        prepTimeLabel.style.display = 'none';
+        serves.style.display = 'inline-block';
+        servesLabel.style.display = 'none';
         notes.disabled = false;
         getElementById('addIngredientRow').hidden = false;
         getElementById('addStepRow').hidden = false;
@@ -205,10 +215,14 @@ document.addEventListener("DOMContentLoaded", function(event)
         editRecipe = false;
         editRecipeButton.style.display = 'inline-block';
         lockRecipeButton.style.display = 'none';
-        difficulty.disabled = true;
-        cookTime.disabled = true;
-        prepTime.disabled = true;
-        serves.disabled = true;
+        difficulty.style.display = 'none';
+        difficultyLabel.style.display = 'inline-block';
+        cookTime.style.display = 'none';
+        prepTime.style.display = 'none';
+        cookTimeLabel.style.display = 'inline-block';
+        prepTimeLabel.style.display = 'inline-block';
+        serves.style.display = 'none';
+        servesLabel.style.display = 'inline-block';
         notes.disabled = true;
         getElementById('addIngredientRow').hidden = true;
         getElementById('addStepRow').hidden = true;
