@@ -67,39 +67,22 @@ function displayRecipes(recipes)
 
 function displayRecipe(recipe)
 {
-    let listItem = createElement('div');
-    listItem.className = 'recipeListItem';
+    let template = getTemplate('recipeTemplate');
 
-    let title = createElement('h3');
-    title.innerText = recipe.title;
-    title.className = 'recipeTitle';
+    let recipeLink = template.querySelector('.recipeLink');
+    let totalTime = template.querySelector('.totalTime');
+    let recipeTitle = template.querySelector('.recipeTitle');
+    let stars = template.querySelectorAll('.star');
 
-    let link = createElement('a');
-    link.href = `/recipe?id=${recipe.id}`;
-    link.appendChild(title);
-    listItem.appendChild(link);
-
-    let cookTime = createElement('label');
-    cookTime.innerText = `Total time: ${recipe.totalTime}`;
-
-    listItem.appendChild(cookTime);
-
-    listItem.appendChild(createElement('br'));
+    recipeLink.href = `/recipe?id=${recipe.id}`;
+    totalTime.innerText = `Total time: ${recipe.totalTime}`;
+    recipeTitle.innerText = recipe.title;
 
     for (let i = 0; i < recipe.rating; i++) {
-        let star = createElement('span');
-        star.className = 'fa fa-star star checked';
-        listItem.appendChild(star);
+        stars[i].classList.add('checked');
     }
 
-    for (let i = 0; i < (5 - recipe.rating); i++) {
-        let star = createElement('span');
-        star.className = 'fa fa-star star';
-        listItem.appendChild(star);
-    }
-
-    let list = getElementById('allRecipes');
-    list.appendChild(listItem);
+    getElementById('allRecipes').appendChild(template);
 }
 
 function closeModal(modal)

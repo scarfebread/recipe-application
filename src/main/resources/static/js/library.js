@@ -40,11 +40,6 @@ function getValueById(id)
     return getElementById(id).value;
 }
 
-function createElement(tag)
-{
-    return document.createElement(tag);
-}
-
 function removeChildElements(element)
 {
     while (element.firstChild)
@@ -116,7 +111,7 @@ function autocomplete(input, array) {
         this.parentNode.appendChild(a);
         for (i = 0; i < array.length; i++) {
             if (array[i].substr(0, val.length).toUpperCase() === val.toUpperCase()) {
-                b = document.createElement("DIV");
+                b = document.createElement("div");
                 b.innerHTML = "<strong>" + array[i].substr(0, val.length) + "</strong>";
                 b.innerHTML += array[i].substr(val.length);
                 b.innerHTML += "<input type='hidden' value='" + array[i] + "'>";
