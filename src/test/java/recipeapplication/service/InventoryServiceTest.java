@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 
@@ -137,5 +138,40 @@ public class InventoryServiceTest
         when(ingredientRepository.getIngredients(user)).thenReturn(ingredients);
 
         assertEquals(ingredients, inventoryService.getIngredients());
+    }
+
+    @Test
+    public void shouldGetSimilarIngredients()
+    {
+        Ingredient ingredient1 = new Ingredient();
+        Ingredient ingredient2 = new Ingredient();
+        InventoryItem inventoryItem1 = new InventoryItem();
+        InventoryItem inventoryItem2 = new InventoryItem();
+        inventoryItem1.setIngredient(ingredient1);
+        inventoryItem2.setIngredient(ingredient2);
+        List<InventoryItem> inventoryItems = new ArrayList<>();
+        inventoryItems.add(inventoryItem1);
+        inventoryItems.add(inventoryItem2);
+
+        Ingredient searchIngredient = new Ingredient("DESCRIPTION", null, null);
+
+        when(inventoryRepository.findByIngredientDescription(searchIngredient.getDescription())).thenReturn(inventoryItems);
+
+        List<Ingredient> result = inventoryService.getSimilarIngredients(searchIngredient);
+
+        assertEquals(ingredient1, result.get(0));
+        assertEquals(ingredient2, result.get(1));
+    }
+
+    @Test
+    public void shouldGetSimilarIngredientsWithNoResults()
+    {
+        Ingredient searchIngredient = new Ingredient("DESCRIPTION", null, null);
+
+        when(inventoryRepository.findByIngredientDescription(searchIngredient.getDescription())).thenReturn(new ArrayList<>());
+
+        List<Ingredient> result = inventoryService.getSimilarIngredients(searchIngredient);
+
+        assertEquals(0, result.size());
     }
 }

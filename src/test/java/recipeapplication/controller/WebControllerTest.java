@@ -1,6 +1,7 @@
 package recipeapplication.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
@@ -141,7 +142,15 @@ public class WebControllerTest
 
         when(recipeService.getRecipe(recipe.getId())).thenReturn(recipe);
         when(inventoryService.getIngredients()).thenReturn(autoCompleteIngredients);
-        when(shoppingListService.getShoppingList()).thenReturn(shoppingListItems);
+
+        when(shoppingListService.isInShoppingList(ingredient1)).thenReturn(false);
+        when(shoppingListService.isInShoppingList(ingredient2)).thenReturn(true);
+
+        Ingredient similarIngredient = new Ingredient();
+        List<Ingredient> similarIngredients = Collections.singletonList(similarIngredient);
+
+        when(inventoryService.getSimilarIngredients(ingredient1)).thenReturn(similarIngredients);
+        when(inventoryService.getSimilarIngredients(ingredient2)).thenReturn(Collections.emptyList());
 
         Model model = mock(Model.class);
 
@@ -159,6 +168,8 @@ public class WebControllerTest
 
         assertFalse(resultIngredients.get(0).isInShoppingList());
         assertTrue(resultIngredients.get(1).isInShoppingList());
+        assertEquals(similarIngredients, resultIngredients.get(0).getInventoryItems());
+        assertEquals(Collections.emptyList(), resultIngredients.get(1).getInventoryItems());
     }
 
     @Test

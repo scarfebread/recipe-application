@@ -13,4 +13,5 @@ public interface ShoppingListRepository extends JpaRepository<ShoppingListItem, 
     List<ShoppingListItem> findByUser(User user);
     Optional<ShoppingListItem> findByIdAndUser(Long id, User user);
     Optional<ShoppingListItem> findByIngredientIdAndUser(Long ingredientId, User user);
+    Optional<ShoppingListItem> findByIngredient(Ingredient ingredient);
 }

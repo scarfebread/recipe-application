@@ -235,6 +235,44 @@ input[type="time"]::-webkit-clear-button {
     color: #000 !important;
 }
 
+.ingredientInInventory {
+    color: #000 !important;
+}
+
+.inventorySymbol {
+    font-size:24px !important;
+    color: #aaaaaa;;
+    font-weight: bold;
+    padding-right: 5px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.inventorySymbol .tooltipText {
+    visibility: hidden;
+    width: auto;
+    background-color: #857c7f;
+    color: #000;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    font-size: 15px;
+    margin-left: -50px;
+    margin-top: 5px;
+}
+
+.inventorySymbol:hover .tooltipText {
+    visibility: visible;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+p {
+    margin: 5px;
+}
+
 @media screen and (max-width: 925px) {
     .subRecipeContainer {
         width: 380px;

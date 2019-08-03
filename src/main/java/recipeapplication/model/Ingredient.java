@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import recipeapplication.utility.IngredientConverter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "ingredients")
@@ -20,6 +24,10 @@ public class Ingredient
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Transient
     private boolean inShoppingList;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Transient
+    private List<Ingredient> inventoryItems;
 
     @OneToOne
     private User user;
@@ -82,5 +90,15 @@ public class Ingredient
     public void setInShoppingList(boolean inShoppingList)
     {
         this.inShoppingList = inShoppingList;
+    }
+
+    public List<Ingredient> getInventoryItems()
+    {
+        return inventoryItems;
+    }
+
+    public void setInventoryItems(List<Ingredient> inventoryItems)
+    {
+        this.inventoryItems = inventoryItems;
     }
 }
