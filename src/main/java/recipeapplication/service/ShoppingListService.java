@@ -106,4 +106,9 @@ public class ShoppingListService
             throw new ShoppingListItemNotFoundException();
         }
     }
+
+    public boolean isInShoppingList(Ingredient ingredient)
+    {
+        return shoppingListRepository.findByIngredient(ingredient).isPresent();
+    }
 }

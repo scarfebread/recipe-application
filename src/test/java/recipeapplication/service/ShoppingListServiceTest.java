@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 
@@ -151,5 +151,25 @@ public class ShoppingListServiceTest
         shoppingListService.removeFromShoppingList(ingredientId);
 
         verify(shoppingListRepository).delete(shoppingListItem);
+    }
+
+    @Test
+    public void shouldReturnTrueWhenIngredientInShoppingList()
+    {
+        Ingredient ingredient = new Ingredient();
+
+        when(shoppingListRepository.findByIngredient(ingredient)).thenReturn(Optional.of(new ShoppingListItem()));
+
+        assertTrue(shoppingListService.isInShoppingList(ingredient));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenIngredientNotInShoppingList()
+    {
+        Ingredient ingredient = new Ingredient();
+
+        when(shoppingListRepository.findByIngredient(ingredient)).thenReturn(Optional.empty());
+
+        assertFalse(shoppingListService.isInShoppingList(ingredient));
     }
 }

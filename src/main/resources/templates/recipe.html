@@ -163,6 +163,21 @@
                         <td class="quantityColumn metric" th:text="${ingredient.metric}">
                         <td class="quantityColumn imperial hidden" th:text="${ingredient.imperial}"></td>
                         <td class="ingredientActionColumn">
+                            <i th:if="${!ingredient.inventoryItems.empty}"
+                               class="fa fa-home inventorySymbol ingredientInInventory" aria-hidden="true">
+                                <span class="tooltipText">
+                                    <p>Items in your inventory:</p>
+                                    <p th:each="inventoryIngredient : ${ingredient.inventoryItems}"
+                                       th:text="${inventoryIngredient.description + ' ' + inventoryIngredient.metric}">
+                                    </p>
+                                </span>
+                            </i>
+                            <i th:if="${ingredient.inventoryItems.empty}"
+                               class="fa fa-home inventorySymbol" aria-hidden="true">
+                                <span class="tooltipText">
+                                    <p>Not found in inventory</p>
+                                </span>
+                            </i>
                             <i th:if="${ingredient.inShoppingList}"
                                class="fa fa-shopping-cart shoppingCartSymbol ingredientInShoppingList"
                                th:data-ingredientId="${ingredient.id}"></i>

@@ -13,4 +13,5 @@ public interface InventoryRepository extends JpaRepository<InventoryItem, Long>
     List<InventoryItem> findByUser(User user);
     Optional<InventoryItem> findByIdAndUser(Long id, User user);
     Optional<InventoryItem> findByIngredientAndUser(Ingredient ingredient, User user);
+    List<InventoryItem> findByIngredientDescription(String ingredient);
 }

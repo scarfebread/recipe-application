@@ -178,23 +178,11 @@ document.addEventListener("DOMContentLoaded", function(event)
         getElementById('addIngredientRow').hidden = false;
         getElementById('addStepRow').hidden = false;
 
-        let nonEditableIds = ['addIngredientColumn', 'addQuantityColumn', 'ingredientHeading', 'quantityHeading'];
-
         Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function (element) {
-            if (!nonEditableIds.includes(element.id)) {
-                element.contentEditable = true;
-                element.style.cursor = 'pointer';
-            }
-
             element.style.width = '45%';
         });
 
         Array.from(document.getElementsByClassName('quantityColumn')).forEach(function (element) {
-            if (!nonEditableIds.includes(element.id)) {
-                element.contentEditable = true;
-                element.style.cursor = 'pointer';
-            }
-
             element.style.width = '28%';
         });
 

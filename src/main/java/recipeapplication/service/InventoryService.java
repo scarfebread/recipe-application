@@ -3,7 +3,6 @@ package recipeapplication.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import recipeapplication.dto.InventoryItemDto;
-import recipeapplication.dto.ShoppingListItemDto;
 import recipeapplication.exception.InventoryItemNotFoundException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.InventoryItem;
@@ -13,6 +12,7 @@ import recipeapplication.repository.InventoryRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class InventoryService
@@ -74,7 +74,7 @@ public class InventoryService
         inventoryRepository.save(inventoryItem);
     }
 
-    public InventoryItem getInventoryItem(InventoryItemDto inventoryItemDto) throws InventoryItemNotFoundException
+    private InventoryItem getInventoryItem(InventoryItemDto inventoryItemDto) throws InventoryItemNotFoundException
     {
         User user = authService.getLoggedInUser();
 
@@ -91,5 +91,13 @@ public class InventoryService
     public List<String> getIngredients()
     {
         return ingredientRepository.getIngredients(authService.getLoggedInUser());
+    }
+
+    public List<Ingredient> getSimilarIngredients(Ingredient ingredient)
+    {
+        List<InventoryItem> inventoryItems = inventoryRepository.findByIngredientDescription(ingredient.getDescription());
+
+        // TODO is this readable?
+        return inventoryItems.stream().map(InventoryItem::getIngredient).collect(Collectors.toList());
     }
 }
