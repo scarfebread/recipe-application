@@ -178,21 +178,17 @@ document.addEventListener("DOMContentLoaded", function(event)
         getElementById('addIngredientRow').hidden = false;
         getElementById('addStepRow').hidden = false;
 
-        Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function (element) {
-            element.style.width = '45%';
-        });
-
-        Array.from(document.getElementsByClassName('quantityColumn')).forEach(function (element) {
-            element.style.width = '28%';
-        });
-
         Array.from(document.getElementsByClassName('stepColumn')).forEach(function (element) {
             element.contentEditable = true;
             element.style.width = '70%';
             element.style.cursor = 'pointer';
         });
 
-        Array.from(document.getElementsByClassName('ingredientActionColumn')).forEach(function(element) {
+        Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
+            element.style.display = 'flex';
+        });
+
+        Array.from(document.getElementsByClassName('stepActionColumn')).forEach(function(element) {
             element.style.display = 'flex';
         });
 
@@ -217,25 +213,17 @@ document.addEventListener("DOMContentLoaded", function(event)
         getElementById('addIngredientRow').hidden = true;
         getElementById('addStepRow').hidden = true;
 
-        Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
-            element.contentEditable = false;
-            element.style.width = '60%';
-            element.style.cursor = 'auto';
-        });
-
-        Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
-            element.contentEditable = false;
-            element.style.width = '40%';
-            element.style.cursor = 'auto';
-        });
-
         Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
             element.contentEditable = false;
             element.style.width = '95%';
             element.style.cursor = 'auto';
         });
 
-        Array.from(document.getElementsByClassName('ingredientActionColumn')).forEach(function(element) {
+        Array.from(document.getElementsByClassName('stepActionColumn')).forEach(function(element) {
+            element.style.display = 'none';
+        });
+
+        Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
             element.style.display = 'none';
         });
 
@@ -315,6 +303,10 @@ function addEditListener(element)
 function addIngredientDeleteListeners()
 {
     Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
+        addIngredientDeleteListener(element);
+    });
+
+    Array.from(document.getElementsByClassName('stepDelete')).forEach(function(element) {
         addIngredientDeleteListener(element);
     });
 }
@@ -506,13 +498,11 @@ function addIngredientToList(ingredient)
     let metricColumn = template.querySelector('.metric');
     let imperialColumn = template.querySelector('.imperial');
     let ingredientDelete = template.querySelector('.ingredientDelete');
-    let ingredientActionColumn = template.querySelector('.ingredientActionColumn');
     let shoppingCartSymbol = template.querySelector('.shoppingCartSymbol');
 
     descriptionColumn.innerText = ingredient.description;
     metricColumn.innerText = ingredient.metric;
     imperialColumn.innerText = ingredient.imperial;
-    ingredientActionColumn.style.display = 'flex';
     shoppingCartSymbol.setAttribute('data-ingredientId', ingredient.id);
 
     if (metric) {
@@ -553,12 +543,12 @@ function addStepToList(step)
 
     let stepNumber = template.querySelector('.stepNumber');
     let stepColumn = template.querySelector('.stepColumn');
-    let ingredientActionColumn = template.querySelector('.ingredientActionColumn');
-    let stepDelete = template.querySelector('.ingredientDelete');
+    let stepActionColumn = template.querySelector('.stepActionColumn');
+    let stepDelete = template.querySelector('.stepDelete');
 
     stepNumber.innerText = (getSteps().length + 1) + '.';
     stepColumn.innerText = step;
-    ingredientActionColumn.style.display = 'flex';
+    stepActionColumn.style.display = 'flex';
 
     stepTable.insertBefore(template, stepTable.children[stepTable.children.length -1]);
 
