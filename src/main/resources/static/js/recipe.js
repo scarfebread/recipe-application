@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 {
     RecipeEditor.init();
     DeleteIngredient.init();
+    AddIngredient.init();
 
     rating = recipeRating;
 
@@ -82,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function(event)
     let rating3 = getElementById('rating3');
     let rating4 = getElementById('rating4');
     let rating5 = getElementById('rating5');
-    let addIngredientButton = getElementById('addIngredientButton');
     let addStepButton = getElementById('addStepButton');
 
     displayRating();
@@ -172,13 +172,6 @@ document.addEventListener("DOMContentLoaded", function(event)
         }
     };
 
-    addIngredientButton.onclick = function () {
-        createIngredient();
-    };
-
-    addCreateIngredientEnterKeyEventListener(getElementById('ingredientDescription'));
-    addCreateIngredientEnterKeyEventListener(getElementById('ingredientQuantity'));
-
     addStepButton.onclick = function () {
         createStep();
     };
@@ -264,28 +257,6 @@ function updateRecipe()
     let failure = function(failure) {};
 
     callApi("/api/recipe", HTTP_PUT, recipe, false, success, failure);
-}
-
-function getIngredients()
-{
-    let ingredients = [];
-
-    let ingredientTable = getElementById('ingredientTable');
-
-    for (let i = 1, row; row = ingredientTable.rows[i]; i++) {
-        if (i === ingredientTable.rows.length -1) {
-            break;
-        }
-
-        let tableRow = metric ? 1 : 2;
-
-        ingredients.push({
-            description: row.children[0].innerHTML,
-            quantity: row.children[tableRow].innerHTML
-        });
-    }
-
-    return ingredients;
 }
 
 function getSteps()
@@ -381,63 +352,6 @@ function closeModal(modal)
     getElementById('username').value = '';
 }
 
-function createIngredient()
-{
-    let ingredientDescription = getElementById('ingredientDescription');
-    let ingredientQuantity = getElementById('ingredientQuantity');
-
-    if (!validateStringLength(ingredientDescription.value, 1)) {
-        return;
-    }
-
-    let ingredient = {
-        recipe: recipeId,
-        description: ingredientDescription.value,
-        quantity: ingredientQuantity.value
-    };
-
-    let success = function(ingredient) {
-        addIngredientToList(ingredient);
-        ingredientDescription.value = '';
-        ingredientQuantity.value = '';
-    };
-
-    let failure = function(failure) {};
-
-    callApi("/api/recipe/ingredient", HTTP_PUT, ingredient, true, success, failure);
-}
-
-function addIngredientToList(ingredient)
-{
-    let template = getTemplate('ingredientTemplate');
-
-    let ingredientRow = template.querySelector('.ingredientRow');
-    let descriptionColumn = template.querySelector('.ingredientColumn');
-    let metricColumn = template.querySelector('.metric');
-    let imperialColumn = template.querySelector('.imperial');
-    let ingredientDelete = template.querySelector('.ingredientDelete');
-    let shoppingCartSymbol = template.querySelector('.shoppingCartSymbol');
-
-    descriptionColumn.innerText = ingredient.description;
-    metricColumn.innerText = ingredient.metric;
-    imperialColumn.innerText = ingredient.imperial;
-    shoppingCartSymbol.setAttribute('data-ingredientid', ingredient.id);
-    ingredientRow.setAttribute('data-ingredientid', ingredient.id);
-    ingredientDelete.style.display = 'flex';
-
-    if (metric) {
-        imperialColumn.style.display = 'none';
-    } else {
-        metricColumn.style.display = 'none';
-    }
-
-    let ingredientTable = getElementById('ingredientTable').children[0];
-    ingredientTable.insertBefore(template, ingredientTable.children[ingredientTable.children.length -1]);
-
-    DeleteIngredient.addListener(ingredientDelete);
-    addShoppingListEventListener(shoppingCartSymbol);
-}
-
 function createStep()
 {
     let newStep = getElementById('newStep');
@@ -471,13 +385,4 @@ function addStepToList(step)
 
     addEditListener(stepColumn);
     addStepDeleteListener(stepDelete);
-}
-
-function addCreateIngredientEnterKeyEventListener(element)
-{
-    element.addEventListener("keyup", function (event) {
-        if (event.key === "Enter") {
-            createIngredient();
-        }
-    });
 }

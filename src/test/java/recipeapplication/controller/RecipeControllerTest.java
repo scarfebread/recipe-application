@@ -14,6 +14,7 @@ import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
 import recipeapplication.model.User;
+import recipeapplication.service.InventoryService;
 import recipeapplication.service.RecipeService;
 import recipeapplication.service.UserService;
 
@@ -29,6 +30,7 @@ public class RecipeControllerTest
     private Errors noErrors;
     private RecipeController recipeController;
     private RecipeService recipeService;
+    private InventoryService inventoryService;
     private UserService userService;
 
     @Before
@@ -41,9 +43,10 @@ public class RecipeControllerTest
         when(noErrors.hasErrors()).thenReturn(false);
 
         recipeService = mock(RecipeService.class);
+        inventoryService = mock(InventoryService.class);
         userService = mock(UserService.class);
 
-        recipeController = new RecipeController(recipeService, userService);
+        recipeController = new RecipeController(recipeService, inventoryService, userService);
     }
 
     @Test
@@ -265,11 +268,16 @@ public class RecipeControllerTest
         ingredient.setImperial("imperial");
         ingredient.setMetric("metric");
 
+        List<Ingredient> similarIngredients = new ArrayList<>();
+        similarIngredients.add(new Ingredient());
+
         when(recipeService.addIngredient(ingredientDto)).thenReturn(ingredient);
+        when(inventoryService.getSimilarIngredients(ingredient)).thenReturn(similarIngredients);
 
         ResponseEntity response = recipeController.addIngredient(ingredientDto, noErrors);
 
         assertEquals(ingredient, response.getBody());
+        assertEquals(similarIngredients, ((Ingredient) response.getBody()).getInventoryItems());
         assertEquals(202, response.getStatusCodeValue());
     }
 

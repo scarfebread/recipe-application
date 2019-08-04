@@ -29,7 +29,7 @@ public class EmailService
 
         String text = String.format(
                 "Dear %s,\n\nA password reset was requested. Please follow the following link to reset your password:\n" +
-                "http://%s/changePassword?token=%s\n\nRegards,\nThe Cooking Pot",
+                "http://%s/change-password-with-token?token=%s\n\nRegards,\nThe Cooking Pot",
                 user.getUsername(),
                 serverName,
                 token
