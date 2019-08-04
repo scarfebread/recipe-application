@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", function(event)
 {
+    ShoppingList.init();
+    IngredientFormatSlider.init();
+
     getElementById('addInventoryItem').onclick = function() {
         createInventoryItem();
     };
@@ -11,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function(event)
         addDeleteEventListener(element);
     });
 
-    addShoppingListEventListeners();
     enableSearchAutoComplete();
     autocomplete(getElementById('ingredient'), ingredients);
 });
@@ -90,7 +92,7 @@ function displayInventoryItem(item)
         metricLabel.innerHTML = item.ingredient.metric;
         imperialLabel.innerHTML = item.ingredient.imperial;
 
-        if (metric) {
+        if (IngredientFormatSlider.metric) {
             imperialLabel.style.display = 'none';
         } else {
             metricLabel.style.display = 'none';
@@ -101,7 +103,7 @@ function displayInventoryItem(item)
     inventoryContainer.appendChild(template);
 
     addDeleteEventListener(deleteSymbol);
-    addShoppingListEventListener(shoppingCartSymbol);
+    ShoppingList.addEventListener(shoppingCartSymbol);
 }
 
 function enableSearchAutoComplete()

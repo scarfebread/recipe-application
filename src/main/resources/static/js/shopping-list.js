@@ -115,7 +115,7 @@ function displayShoppingListItem(item)
         metricLabel.innerHTML = item.ingredient.metric;
         imperialLabel.innerHTML = item.ingredient.imperial;
 
-        if (metric) {
+        if (IngredientFormatSlider.metric) {
             imperialLabel.style.display = 'none';
         } else {
             metricLabel.style.display = 'none';

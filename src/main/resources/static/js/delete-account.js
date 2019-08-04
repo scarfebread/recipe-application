@@ -1,63 +1,70 @@
 let accountDeleted = false;
 
-document.addEventListener("DOMContentLoaded", function(event)
-{
-    let deleteAccountButton = getElementById('deleteAccountButton');
-    let confirmDeleteButton = getElementById('confirmDeleteButton');
-    let cancelDeleteButton = getElementById('cancelDeleteButton');
-    let modal = getElementById('deleteAccountModal');
-    let closeModalButton = document.getElementsByClassName("close")[0];
-
-    deleteAccountButton.onclick = function() {
-        modal.style.display = 'block';
-    };
-
-    cancelDeleteButton.onclick = function() {
-        closeModal(modal);
-    };
-
-    confirmDeleteButton.onclick = function () {
-        if (accountDeleted) {
-            return;
-        }
-
-        deleteAccount();
-    };
-
-    closeModalButton.onclick = function() {
-        closeModal(modal);
-    };
-
-    window.onclick = function(event) {
-        if (event.target === modal) {
-            closeModal(modal);
-        }
-    };
-
-    window.onkeydown = function(event) {
-        if (event.key === 'Escape') {
-            closeModal(modal);
-        }
-    };
+document.addEventListener("DOMContentLoaded", function() {
+    DeleteAccount.init();
 });
 
-function deleteAccount()
-{
-    let successCallback = function(success) {
-        hideElement('preAccountDeleted');
-        showElement('postAccountDeleted');
-    };
+DeleteAccount = {
+    init: function () {
+        this.bindUserActions();
+    },
 
-    let failureCallback = function (failure) {
-        getElementById('deleteAccountError').innerText = failure;
-        showElement('deleteAccountError');
-    };
+    bindUserActions: function () {
+        let deleteAccountButton = getElementById('deleteAccountButton');
+        let confirmDeleteButton = getElementById('confirmDeleteButton');
+        let cancelDeleteButton = getElementById('cancelDeleteButton');
+        let modal = getElementById('deleteAccountModal');
+        let closeModalButton = document.getElementsByClassName("close")[0];
 
-    callApi('/api/user', HTTP_DELETE, null, false, successCallback, failureCallback)
-}
+        deleteAccountButton.onclick = function() {
+            modal.style.display = 'block';
+        };
 
-function closeModal(modal)
-{
-    hideElement('deleteAccountError');
-    modal.style.display = "none";
-}
+        cancelDeleteButton.onclick = function() {
+            DeleteAccount.closeModal(modal);
+        };
+
+        confirmDeleteButton.onclick = function () {
+            if (accountDeleted) {
+                return;
+            }
+
+            DeleteAccount.deleteAccount();
+        };
+
+        closeModalButton.onclick = function() {
+            DeleteAccount.closeModal(modal);
+        };
+
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                DeleteAccount.closeModal(modal);
+            }
+        };
+
+        window.onkeydown = function(event) {
+            if (event.key === 'Escape') {
+                DeleteAccount.closeModal(modal);
+            }
+        };
+    },
+
+    deleteAccount: function () {
+        let successCallback = function(success) {
+            hideElement('preAccountDeleted');
+            showElement('postAccountDeleted');
+        };
+
+        let failureCallback = function (failure) {
+            getElementById('deleteAccountError').innerText = failure;
+            showElement('deleteAccountError');
+        };
+
+        callApi('/api/user', HTTP_DELETE, null, false, successCallback, failureCallback);
+    },
+
+    closeModal: function (modal) {
+        hideElement('deleteAccountError');
+        modal.style.display = "none";
+    },
+};

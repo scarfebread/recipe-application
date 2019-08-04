@@ -40,14 +40,6 @@ function getValueById(id)
     return getElementById(id).value;
 }
 
-function removeChildElements(element)
-{
-    while (element.firstChild)
-    {
-        element.removeChild(element.firstChild);
-    }
-}
-
 function callApi(url, method, body, jsonResponse, success, failure)
 {
     let request = {

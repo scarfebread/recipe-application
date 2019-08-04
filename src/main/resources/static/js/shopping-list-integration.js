@@ -1,44 +1,46 @@
-function addShoppingListEventListeners()
-{
-    let shoppingCartSymbols = document.getElementsByClassName('shoppingCartSymbol');
-    Array.from(shoppingCartSymbols).forEach(function (element) {
-        addShoppingListEventListener(element);
-    });
-}
+ShoppingList = {
+    init: function () {
+        this.bindUserActions();
+    },
 
-function addShoppingListEventListener(element)
-{
-    element.addEventListener('click', function () {
-        if (element.classList.contains('ingredientInShoppingList')) {
-            removeFromShoppingList(element);
-        } else {
-            addToShoppingList(element);
-        }
-    });
-}
+    bindUserActions: function () {
+        let shoppingCartSymbols = document.getElementsByClassName('shoppingCartSymbol');
+        Array.from(shoppingCartSymbols).forEach(function (element) {
+            ShoppingList.addEventListener(element);
+        });
+    },
 
-function removeFromShoppingList(element)
-{
-    let ingredientId = element.getAttribute('data-ingredientid');
+    addEventListener: function (element) {
+        element.addEventListener('click', function () {
+            if (element.classList.contains('ingredientInShoppingList')) {
+                ShoppingList.remove(element);
+            } else {
+                ShoppingList.add(element);
+            }
+        });
+    },
 
-    let success = function () {
-        element.classList.remove('ingredientInShoppingList');
-    };
-    let failure = function () {};
+    add: function (element) {
+        let ingredientId = element.getAttribute('data-ingredientid');
 
-    callApi(`/api/shopping-list/remove/${ingredientId}`, HTTP_DELETE, null, false, success, failure);
-}
+        let success = function () {
+            element.setAttribute('data-ingredientid', ingredientId);
+            element.classList.add('ingredientInShoppingList');
+        };
 
-function addToShoppingList(element)
-{
-    let ingredientId = element.getAttribute('data-ingredientid');
+        let failure = function () {};
 
-    let success = function () {
-        element.setAttribute('data-ingredientid', ingredientId);
-        element.classList.add('ingredientInShoppingList');
-    };
+        callApi(`/api/shopping-list/add/${ingredientId}`, HTTP_POST, null, false, success, failure);
+    },
 
-    let failure = function () {};
+    remove: function (element) {
+        let ingredientId = element.getAttribute('data-ingredientid');
 
-    callApi(`/api/shopping-list/add/${ingredientId}`, HTTP_POST, null, false, success, failure);
-}
+        let success = function () {
+            element.classList.remove('ingredientInShoppingList');
+        };
+        let failure = function () {};
+
+        callApi(`/api/shopping-list/remove/${ingredientId}`, HTTP_DELETE, null, false, success, failure);
+    }
+};

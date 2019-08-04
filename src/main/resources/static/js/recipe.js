@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function(event)
     RecipeEditor.init();
     DeleteIngredient.init();
     AddIngredient.init();
+    ShoppingList.init();
+    IngredientFormatSlider.init();
 
     rating = recipeRating;
 
@@ -60,8 +62,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
     window.onkeydown = function(event)
     {
-        if (event.key === 'Escape')
-        {
+        if (event.key === 'Escape') {
             closeModal(shareRecipeModal);
             closeModal(deleteRecipeModal);
         }
@@ -184,7 +185,6 @@ document.addEventListener("DOMContentLoaded", function(event)
 
     addStepDeleteListeners();
     addStepEditListeners();
-    addShoppingListEventListeners();
 
     autocomplete(getElementById("ingredientDescription"), ingredients);
 });
