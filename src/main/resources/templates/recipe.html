@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="/css/ingredient-auto-complete.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon'/>
+    <script type="application/javascript" src="/js/library.js"></script>
+    <script type="application/javascript" src="/js/recipe.js"></script>
+    <script type="application/javascript" src="/js/ingredient-format-slider.js"></script>
+    <script type="application/javascript" src="/js/shopping-list-integration.js"></script>
+    <script type="application/javascript" src="/js/recipe-editor.js"></script>
     <script th:inline="javascript">
     /*<![CDATA[*/
         let recipeId = [[${recipe.id}]];
@@ -23,10 +28,6 @@
         let displayInstructions = [[${displayInstructions}]]
     /*]]>*/
     </script>
-    <script type="application/javascript" src="/js/library.js"></script>
-    <script type="application/javascript" src="/js/recipe.js"></script>
-    <script type="application/javascript" src="/js/ingredient-format-slider.js"></script>
-    <script type="application/javascript" src="/js/shopping-list-integration.js"></script>
 </head>
 <body>
     <div class="baseContainer container">
