@@ -75,7 +75,7 @@ AddIngredient = {
         ingredientRow.setAttribute('data-ingredientid', ingredient.id);
         ingredientDelete.style.display = 'flex';
 
-        if (metric) {
+        if (IngredientFormatSlider.metric) {
             imperialColumn.style.display = 'none';
         } else {
             metricColumn.style.display = 'none';
@@ -89,7 +89,7 @@ AddIngredient = {
 
             Array.from(ingredient.inventoryItems).forEach(function (item) {
                 let inventoryItem = AddIngredient.createParagraph();
-                let measurement = metric ? item.metric : item.imperial;
+                let measurement = IngredientFormatSlider.metric ? item.metric : item.imperial;
                 inventoryItem.innerText = `${item.description} ${measurement}`;
                 tooltipText.appendChild(inventoryItem);
             });
@@ -103,7 +103,7 @@ AddIngredient = {
         ingredientTable.insertBefore(template, ingredientTable.children[ingredientTable.children.length -1]);
 
         DeleteIngredient.addListener(ingredientDelete);
-        addShoppingListEventListener(shoppingCartSymbol);
+        ShoppingList.addEventListener(shoppingCartSymbol);
     },
 
     createParagraph: function () {

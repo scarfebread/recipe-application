@@ -1,35 +1,40 @@
-let metric = true;
+IngredientFormatSlider = {
+    metric: true,
 
-document.addEventListener("DOMContentLoaded", function(event)
-{
-    let ingredientFormatButton = getElementById('ingredientFormatButton');
+    init: function () {
+        this.bindUserActions();
+    },
 
-    ingredientFormatButton.onclick = function() {
-        metric = !metric;
+    bindUserActions: function () {
+        let ingredientFormatButton = getElementById('ingredientFormatButton');
 
-        let displayClass;
-        let hideClass;
+        ingredientFormatButton.onclick = function() {
+            this.metric = !this.metric;
 
-        if (metric) {
-            displayClass = 'metric';
-            hideClass = 'imperial';
-        } else {
-            displayClass = 'imperial';
-            hideClass = 'metric';
-        }
+            let displayClass;
+            let hideClass;
 
-        let displayProperty = null;
-
-        Array.from(document.getElementsByClassName(hideClass)).forEach(function(element) {
-            if (!displayProperty) {
-                displayProperty = getComputedStyle(element, null).display;
+            if (this.metric) {
+                displayClass = 'metric';
+                hideClass = 'imperial';
+            } else {
+                displayClass = 'imperial';
+                hideClass = 'metric';
             }
 
-            element.style.display = "none";
-        });
+            let displayProperty = null;
 
-        Array.from(document.getElementsByClassName(displayClass)).forEach(function(element) {
-            element.style.display = displayProperty;
-        });
-    };
-});
+            Array.from(document.getElementsByClassName(hideClass)).forEach(function(element) {
+                if (!displayProperty) {
+                    displayProperty = getComputedStyle(element, null).display;
+                }
+
+                element.style.display = "none";
+            });
+
+            Array.from(document.getElementsByClassName(displayClass)).forEach(function(element) {
+                element.style.display = displayProperty;
+            });
+        };
+    }
+};
