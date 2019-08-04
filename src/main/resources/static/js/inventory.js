@@ -84,7 +84,7 @@ function displayInventoryItem(item)
     let deleteSymbol = template.querySelector('.deleteSymbol');
 
     descriptionLabel.innerHTML = item.ingredient.description;
-    shoppingCartSymbol.setAttribute('data-ingredientId', item.ingredient.id);
+    shoppingCartSymbol.setAttribute('data-ingredientid', item.ingredient.id);
 
     if (item.ingredient.metric) {
         metricLabel.innerHTML = item.ingredient.metric;

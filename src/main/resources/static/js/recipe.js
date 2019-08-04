@@ -4,6 +4,7 @@ let recipeDeleted = false;
 document.addEventListener("DOMContentLoaded", function(event)
 {
     RecipeEditor.init();
+    DeleteIngredient.init();
 
     rating = recipeRating;
 
@@ -188,24 +189,12 @@ document.addEventListener("DOMContentLoaded", function(event)
         }
     });
 
-    addIngredientDeleteListeners();
-    addIngredientEditListeners();
+    addStepDeleteListeners();
     addStepEditListeners();
     addShoppingListEventListeners();
 
     autocomplete(getElementById("ingredientDescription"), ingredients);
 });
-
-function addIngredientEditListeners()
-{
-    Array.from(document.getElementsByClassName('ingredientColumn')).forEach(function(element) {
-        addEditListener(element);
-    });
-
-    Array.from(document.getElementsByClassName('quantityColumn')).forEach(function(element) {
-        addEditListener(element);
-    });
-}
 
 function addStepEditListeners()
 {
@@ -235,18 +224,14 @@ function addEditListener(element)
     });
 }
 
-function addIngredientDeleteListeners()
+function addStepDeleteListeners()
 {
-    Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
-        addIngredientDeleteListener(element);
-    });
-
     Array.from(document.getElementsByClassName('stepDelete')).forEach(function(element) {
-        addIngredientDeleteListener(element);
+        addStepDeleteListener(element);
     });
 }
 
-function addIngredientDeleteListener(element)
+function addStepDeleteListener(element)
 {
     element.addEventListener('click', function () {
         let row = element.parentNode.parentNode;
@@ -271,7 +256,6 @@ function updateRecipe()
         cookTime: getElementById('cookTime').value,
         prepTime: getElementById('prepTime').value,
         difficulty: difficulty.options[difficulty.selectedIndex].value,
-        ingredients: getIngredients(),
         steps: getSteps()
     };
 
@@ -427,6 +411,7 @@ function addIngredientToList(ingredient)
 {
     let template = getTemplate('ingredientTemplate');
 
+    let ingredientRow = template.querySelector('.ingredientRow');
     let descriptionColumn = template.querySelector('.ingredientColumn');
     let metricColumn = template.querySelector('.metric');
     let imperialColumn = template.querySelector('.imperial');
@@ -436,7 +421,9 @@ function addIngredientToList(ingredient)
     descriptionColumn.innerText = ingredient.description;
     metricColumn.innerText = ingredient.metric;
     imperialColumn.innerText = ingredient.imperial;
-    shoppingCartSymbol.setAttribute('data-ingredientId', ingredient.id);
+    shoppingCartSymbol.setAttribute('data-ingredientid', ingredient.id);
+    ingredientRow.setAttribute('data-ingredientid', ingredient.id);
+    ingredientDelete.style.display = 'flex';
 
     if (metric) {
         imperialColumn.style.display = 'none';
@@ -447,10 +434,7 @@ function addIngredientToList(ingredient)
     let ingredientTable = getElementById('ingredientTable').children[0];
     ingredientTable.insertBefore(template, ingredientTable.children[ingredientTable.children.length -1]);
 
-    addEditListener(descriptionColumn);
-    addEditListener(metricColumn);
-    addEditListener(imperialColumn);
-    addIngredientDeleteListener(ingredientDelete);
+    DeleteIngredient.addListener(ingredientDelete);
     addShoppingListEventListener(shoppingCartSymbol);
 }
 
@@ -486,7 +470,7 @@ function addStepToList(step)
     stepTable.insertBefore(template, stepTable.children[stepTable.children.length -1]);
 
     addEditListener(stepColumn);
-    addIngredientDeleteListener(stepDelete);
+    addStepDeleteListener(stepDelete);
 }
 
 function addCreateIngredientEnterKeyEventListener(element)

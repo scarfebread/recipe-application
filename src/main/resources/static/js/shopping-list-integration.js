@@ -19,7 +19,7 @@ function addShoppingListEventListener(element)
 
 function removeFromShoppingList(element)
 {
-    let ingredientId = element.getAttribute('data-ingredientId');
+    let ingredientId = element.getAttribute('data-ingredientid');
 
     let success = function () {
         element.classList.remove('ingredientInShoppingList');
@@ -31,10 +31,10 @@ function removeFromShoppingList(element)
 
 function addToShoppingList(element)
 {
-    let ingredientId = element.getAttribute('data-ingredientId');
+    let ingredientId = element.getAttribute('data-ingredientid');
 
     let success = function () {
-        element.setAttribute('data-ingredientId', ingredientId);
+        element.setAttribute('data-ingredientid', ingredientId);
         element.classList.add('ingredientInShoppingList');
     };
 

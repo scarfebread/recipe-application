@@ -12,7 +12,6 @@ public class RecipeDto
     private String prepTime;
     private String difficulty;
     private String newUser;
-    private List<IngredientDto> ingredients;
     private List<String> steps;
 
     public Long getId()
@@ -53,11 +52,6 @@ public class RecipeDto
     public String getNewUser()
     {
         return newUser;
-    }
-
-    public List<IngredientDto> getIngredients()
-    {
-        return ingredients;
     }
 
     public List<String> getSteps()
@@ -103,11 +97,6 @@ public class RecipeDto
     public void setDifficulty(String difficulty)
     {
         this.difficulty = difficulty;
-    }
-
-    public void setIngredients(List<IngredientDto> ingredients)
-    {
-        this.ingredients = ingredients;
     }
 
     public void setSteps(List<String> steps)

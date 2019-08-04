@@ -9,9 +9,7 @@ import java.util.Optional;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long>
 {
-    Optional<Recipe> findByIdAndUserId(Long id, Long userId);
-
+    Optional<Recipe> findByIdAndUser(Long id, User user);
     List<Recipe> findByUser(User user);
-
     void deleteAllByUserId(Long userId);
 }

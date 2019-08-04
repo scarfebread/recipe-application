@@ -5,8 +5,10 @@ import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import recipeapplication.dto.CreateRecipeDto;
+import recipeapplication.dto.DeleteIngredientDto;
 import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
+import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.Ingredient;
@@ -269,5 +271,40 @@ public class RecipeControllerTest
 
         assertEquals(ingredient, response.getBody());
         assertEquals(202, response.getStatusCodeValue());
+    }
+
+    @Test
+    public void shouldReturnInvalidIngredientWhenHasErrors()
+    {
+        ResponseEntity response = recipeController.deleteIngredient(new DeleteIngredientDto(), errors);
+
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("Invalid ingredient supplied", response.getBody());
+    }
+
+    @Test
+    public void shouldReturnIngredientNotFoundWhenIngredientNotFound() throws Exception
+    {
+        DeleteIngredientDto ingredientDto = new DeleteIngredientDto();
+
+        doThrow(IngredientDoesNotExistException.class).when(recipeService).deleteIngredient(ingredientDto);
+
+        ResponseEntity response = recipeController.deleteIngredient(ingredientDto, noErrors);
+
+        assertEquals(404, response.getStatusCodeValue());
+        assertEquals("Ingredient not found", response.getBody());
+    }
+
+    @Test
+    public void shouldDeleteIngredientWithValidRequest() throws Exception
+    {
+        DeleteIngredientDto ingredientDto = new DeleteIngredientDto();
+
+        ResponseEntity response = recipeController.deleteIngredient(ingredientDto, noErrors);
+
+        verify(recipeService).deleteIngredient(ingredientDto);
+
+        assertEquals(202, response.getStatusCodeValue());
+        assertEquals("Ingredient deleted", response.getBody());
     }
 }

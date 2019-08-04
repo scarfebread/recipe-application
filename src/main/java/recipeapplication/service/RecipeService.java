@@ -4,10 +4,13 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import recipeapplication.dto.CreateRecipeDto;
+import recipeapplication.dto.DeleteIngredientDto;
 import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
+import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.*;
+import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecentlyViewedRepository;
 import recipeapplication.repository.RecipeRepository;
 import recipeapplication.repository.StepRepository;
@@ -25,6 +28,7 @@ import javax.transaction.Transactional;
 public class RecipeService
 {
     private RecipeRepository recipeRepository;
+    private IngredientRepository ingredientRepository;
     private StepRepository stepRepository;
     private AuthService authService;
     private RecentlyViewedRepository recentlyViewedRepository;
@@ -33,12 +37,14 @@ public class RecipeService
     @Autowired
     public RecipeService(
             RecipeRepository recipeRepository,
+            IngredientRepository ingredientRepository,
             StepRepository stepRepository,
             AuthService authService,
             RecentlyViewedRepository recentlyViewedRepository,
             EntityManager entityManager)
     {
         this.recipeRepository = recipeRepository;
+        this.ingredientRepository = ingredientRepository;
         this.stepRepository = stepRepository;
         this.authService = authService;
         this.recentlyViewedRepository = recentlyViewedRepository;
@@ -70,7 +76,7 @@ public class RecipeService
 
     public Recipe getRecipe(Long id) throws RecipeDoesNotExistException
     {
-        Optional<Recipe> result = recipeRepository.findByIdAndUserId(id, authService.getLoggedInUser().getId());
+        Optional<Recipe> result = recipeRepository.findByIdAndUser(id, authService.getLoggedInUser());
 
         if (!result.isPresent())
         {
@@ -90,7 +96,6 @@ public class RecipeService
     public void updateRecipe(RecipeDto recipeDto) throws RecipeDoesNotExistException
     {
         Recipe recipe = getRecipe(recipeDto.getId());
-        User user = authService.getLoggedInUser();
 
         recipe.setNotes(recipeDto.getNotes());
         recipe.setRating(recipeDto.getRating());
@@ -99,13 +104,6 @@ public class RecipeService
         recipe.setPrepTime(recipeDto.getPrepTime());
         recipe.setTotalTime(RecipeTime.combineCookAndPrepTime(recipeDto.getCookTime(), recipeDto.getPrepTime()));
         recipe.setDifficulty(recipeDto.getDifficulty());
-
-        List<Ingredient> ingredients = new ArrayList<>();
-        for (IngredientDto ingredient : recipeDto.getIngredients())
-        {
-            ingredients.add(new Ingredient(ingredient.getDescription(), ingredient.getQuantity(), user));
-        }
-        recipe.setIngredients(ingredients);
 
         stepRepository.deleteByRecipe(recipe);
         List<Step> steps = new ArrayList<>();
@@ -194,5 +192,27 @@ public class RecipeService
         return recipe.getIngredients().get(
                 recipe.getIngredients().size() - 1
         );
+    }
+
+    public void deleteIngredient(DeleteIngredientDto ingredientDto) throws RecipeDoesNotExistException, IngredientDoesNotExistException
+    {
+        User user = authService.getLoggedInUser();
+        Recipe recipe = getRecipe(ingredientDto.getRecipeId());
+        Optional<Ingredient> ingredient = ingredientRepository.findByIdAndUser(ingredientDto.getIngredientId(), user);
+
+        if (!ingredient.isPresent())
+        {
+            throw new IngredientDoesNotExistException();
+        }
+
+        for (Ingredient recipeIngredient : recipe.getIngredients())
+        {
+            if (recipeIngredient == ingredient.get())
+            {
+                recipe.getIngredients().remove(recipeIngredient);
+                recipeRepository.save(recipe);
+                break;
+            }
+        }
     }
 }
