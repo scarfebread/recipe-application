@@ -81,7 +81,7 @@ public class WebControllerTest
     @Test
     public void shouldGetChangePasswordTemplateForValidChangePasswordToken()
     {
-        assertEquals("change_password.html", controller.changePassword(VALID_TOKEN));
+        assertEquals("change_password_with_token.html", controller.changePassword(VALID_TOKEN));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class WebControllerTest
 
         String result = controller.changePasswordLoggedIn(model);
 
-        assertEquals("change_password_logged_in.html", result);
+        assertEquals("change_password.html", result);
 
         verify(model).addAttribute("user", USERNAME);
         verify(model).addAttribute("recentlyViewed", recentlyViewed);

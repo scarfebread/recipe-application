@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function(event)
         createShoppingListItem();
     };
 
-    addCreateShoppingListItemEnterKeyEventListener(getElementById('item'));
+    addCreateShoppingListItemEnterKeyEventListener(getElementById('ingredient'));
     addCreateShoppingListItemEnterKeyEventListener(getElementById('quantity'));
 
     Array.from(document.getElementsByClassName('deleteSymbol')).forEach(function (element) {
@@ -64,8 +64,7 @@ function purchaseIngredient(id)
 
 function createShoppingListItem()
 {
-    // TODO inconsistent naming
-    let ingredient = getValueById('item');
+    let ingredient = getValueById('ingredient');
     let quantity = getValueById('quantity');
 
     if (!validateStringLength(ingredient, 1)) {
@@ -80,7 +79,7 @@ function createShoppingListItem()
     let success = function(data) {
         displayShoppingListItem(data);
 
-        getElementById('item').value = '';
+        getElementById('ingredient').value = '';
         getElementById('quantity').value = '';
     };
 

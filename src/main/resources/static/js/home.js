@@ -47,9 +47,7 @@ function getRecipes()
         enableAutocomplete(recipes);
     };
 
-    let failure = function(failure) {
-        // TODO show error banner
-    };
+    let failure = function(failure) {};
 
     callApi("/api/recipe", HTTP_GET, null, true, success, failure);
 }
