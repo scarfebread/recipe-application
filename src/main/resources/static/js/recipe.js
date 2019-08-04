@@ -1,9 +1,10 @@
 let rating;
 let recipeDeleted = false;
-let editRecipe = false;
 
 document.addEventListener("DOMContentLoaded", function(event)
 {
+    RecipeEditor.init();
+
     rating = recipeRating;
 
     let shareRecipeButton = getElementById('shareRecipeButton');
@@ -80,8 +81,6 @@ document.addEventListener("DOMContentLoaded", function(event)
     let rating3 = getElementById('rating3');
     let rating4 = getElementById('rating4');
     let rating5 = getElementById('rating5');
-    let editRecipeButton = getElementById('editRecipeButton');
-    let lockRecipeButton = getElementById('lockRecipeButton');
     let addIngredientButton = getElementById('addIngredientButton');
     let addStepButton = getElementById('addStepButton');
 
@@ -170,84 +169,6 @@ document.addEventListener("DOMContentLoaded", function(event)
         if (!recipeDeleted) {
             confirmDeleteRecipe.disabled = false;
         }
-    };
-
-    editRecipeButton.onclick = function () {
-        editRecipe = true;
-        editRecipeButton.style.display = 'none';
-        lockRecipeButton.style.display = 'inline-block';
-        difficulty.style.display = 'inline-block';
-        difficultyLabel.style.display = 'none';
-        cookTime.style.display = '-webkit-inline-flex';
-        prepTime.style.display = '-webkit-inline-flex';
-        cookTimeLabel.style.display = 'none';
-        prepTimeLabel.style.display = 'none';
-        serves.style.display = 'inline-block';
-        servesLabel.style.display = 'none';
-        notes.disabled = false;
-        getElementById('addIngredientRow').hidden = false;
-        getElementById('addStepRow').hidden = false;
-
-        Array.from(document.getElementsByClassName('stepColumn')).forEach(function (element) {
-            element.contentEditable = true;
-            element.style.width = '70%';
-            element.style.cursor = 'pointer';
-        });
-
-        Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
-            element.style.display = 'flex';
-        });
-
-        Array.from(document.getElementsByClassName('stepActionColumn')).forEach(function(element) {
-            element.style.display = 'flex';
-        });
-
-        Array.from(document.getElementsByClassName('buttonColumn')).forEach(function (element) {
-            element.hidden = false;
-        });
-
-        Array.from(document.getElementsByClassName('stepHeader')).forEach(function (element) {
-            element.style.width = '65%';
-        });
-    };
-
-    lockRecipeButton.onclick = function() {
-        editRecipe = false;
-        editRecipeButton.style.display = 'inline-block';
-        lockRecipeButton.style.display = 'none';
-        difficulty.style.display = 'none';
-        difficultyLabel.style.display = 'inline-block';
-        cookTime.style.display = 'none';
-        prepTime.style.display = 'none';
-        cookTimeLabel.style.display = 'inline-block';
-        prepTimeLabel.style.display = 'inline-block';
-        serves.style.display = 'none';
-        servesLabel.style.display = 'inline-block';
-        notes.disabled = true;
-        getElementById('addIngredientRow').hidden = true;
-        getElementById('addStepRow').hidden = true;
-
-        Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
-            element.contentEditable = false;
-            element.style.width = '95%';
-            element.style.cursor = 'auto';
-        });
-
-        Array.from(document.getElementsByClassName('stepActionColumn')).forEach(function(element) {
-            element.style.display = 'none';
-        });
-
-        Array.from(document.getElementsByClassName('ingredientDelete')).forEach(function(element) {
-            element.style.display = 'none';
-        });
-
-        Array.from(document.getElementsByClassName('buttonColumn')).forEach(function(element) {
-            element.hidden = true;
-        });
-
-        Array.from(document.getElementsByClassName('stepHeader')).forEach(function(element) {
-            element.style.width = '95%';
-        });
     };
 
     addIngredientButton.onclick = function () {
