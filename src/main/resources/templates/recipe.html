@@ -17,6 +17,7 @@
     <script type="application/javascript" src="/js/ingredient-format-slider.js"></script>
     <script type="application/javascript" src="/js/shopping-list-integration.js"></script>
     <script type="application/javascript" src="/js/recipe-editor.js"></script>
+    <script type="application/javascript" src="/js/delete-ingredient.js"></script>
     <script th:inline="javascript">
     /*<![CDATA[*/
         let recipeId = [[${recipe.id}]];
@@ -163,7 +164,7 @@
                         <td id="quantityHeading" class="quantityColumn">Quantity</td>
                         <td hidden class="buttonColumn"></td>
                     </tr>
-                    <tr th:each="ingredient : ${recipe.ingredients}">
+                    <tr th:each="ingredient : ${recipe.ingredients}" class="ingredientRow" th:data-ingredientid="${ingredient.id}">
                         <td class="ingredientColumn ingredient" th:text="${ingredient.description}"></td>
                         <td class="quantityColumn metric" th:text="${ingredient.metric}">
                         <td class="quantityColumn imperial hidden" th:text="${ingredient.imperial}"></td>
@@ -185,10 +186,10 @@
                             </i>
                             <i th:if="${ingredient.inShoppingList}"
                                class="fa fa-shopping-cart shoppingCartSymbol ingredientInShoppingList"
-                               th:data-ingredientId="${ingredient.id}"></i>
+                               th:data-ingredientid="${ingredient.id}"></i>
                             <i th:unless="${ingredient.inShoppingList}"
                                class="fa fa-shopping-cart shoppingCartSymbol"
-                               th:data-ingredientId="${ingredient.id}"></i>
+                               th:data-ingredientid="${ingredient.id}"></i>
                             <span class="close ingredientDelete">&times;</span>
                         </td>
                     </tr>
@@ -304,7 +305,7 @@
 </body>
 
 <template id="ingredientTemplate">
-    <tr>
+    <tr class="ingredientRow">
         <td class="ingredientColumn ingredient"></td>
         <td class="quantityColumn metric">
         <td class="quantityColumn imperial"></td>

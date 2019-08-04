@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import recipeapplication.dto.CreateRecipeDto;
+import recipeapplication.dto.DeleteIngredientDto;
 import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
+import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.Ingredient;
@@ -112,6 +114,25 @@ public class RecipeController
         }
 
         return ResponseEntity.status(202).body(ingredient);
+    }
+
+    @PutMapping(path = "/delete-ingredient")
+    public ResponseEntity deleteIngredient(@Valid @RequestBody DeleteIngredientDto ingredientDto, Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.status(400).body("Invalid ingredient supplied");
+        }
+
+        try
+        {
+            recipeService.deleteIngredient(ingredientDto);
+            return ResponseEntity.status(202).body("Ingredient deleted");
+        }
+        catch (IngredientDoesNotExistException | RecipeDoesNotExistException e)
+        {
+            return ResponseEntity.status(404).body("Ingredient not found");
+        }
     }
 
     @PostMapping(path = "/share")

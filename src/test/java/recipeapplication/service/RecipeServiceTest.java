@@ -5,8 +5,10 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import recipeapplication.dto.CreateRecipeDto;
+import recipeapplication.dto.DeleteIngredientDto;
 import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
+import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.model.*;
 import recipeapplication.repository.IngredientRepository;
@@ -61,7 +63,7 @@ public class RecipeServiceTest
 
         when(authService.getLoggedInUser()).thenReturn(loggedInUser);
 
-        recipeService = new RecipeService(recipeRepository, stepRepository, authService, recentlyViewedRepository, entityManager);
+        recipeService = new RecipeService(recipeRepository, ingredientRepository, stepRepository, authService, recentlyViewedRepository, entityManager);
     }
 
     @Test
@@ -107,7 +109,7 @@ public class RecipeServiceTest
     {
         Long recipeId = 2L;
 
-        when(recipeRepository.findByIdAndUserId(recipeId, loggedInUser.getId())).thenReturn(Optional.empty());
+        when(recipeRepository.findByIdAndUser(recipeId, loggedInUser)).thenReturn(Optional.empty());
 
         recipeService.getRecipe(recipeId);
     }
@@ -118,7 +120,7 @@ public class RecipeServiceTest
         Recipe recipe = new Recipe();
         recipe.setId(3L);
 
-        when(recipeRepository.findByIdAndUserId(recipe.getId(), loggedInUser.getId())).thenReturn(Optional.of(recipe));
+        when(recipeRepository.findByIdAndUser(recipe.getId(), loggedInUser)).thenReturn(Optional.of(recipe));
 
         assertEquals(recipe, recipeService.getRecipe(recipe.getId()));
     }
@@ -129,7 +131,7 @@ public class RecipeServiceTest
         RecipeDto recipeDto = new RecipeDto();
         recipeDto.setId(2L);
 
-        when(recipeRepository.findByIdAndUserId(recipeDto.getId(), loggedInUser.getId())).thenReturn(Optional.empty());
+        when(recipeRepository.findByIdAndUser(recipeDto.getId(), loggedInUser)).thenReturn(Optional.empty());
 
         recipeService.deleteRecipe(recipeDto);
     }
@@ -143,7 +145,7 @@ public class RecipeServiceTest
         Recipe recipe = new Recipe();
         recipe.setId(3L);
 
-        when(recipeRepository.findByIdAndUserId(recipe.getId(), loggedInUser.getId())).thenReturn(Optional.of(recipe));
+        when(recipeRepository.findByIdAndUser(recipe.getId(), loggedInUser)).thenReturn(Optional.of(recipe));
 
         recipeService.deleteRecipe(recipeDto);
 
@@ -156,7 +158,7 @@ public class RecipeServiceTest
         RecipeDto recipeDto = new RecipeDto();
         recipeDto.setId(2L);
 
-        when(recipeRepository.findByIdAndUserId(recipeDto.getId(), loggedInUser.getId())).thenReturn(Optional.empty());
+        when(recipeRepository.findByIdAndUser(recipeDto.getId(), loggedInUser)).thenReturn(Optional.empty());
 
         recipeService.updateRecipe(recipeDto);
     }
@@ -172,26 +174,14 @@ public class RecipeServiceTest
         recipeDto.setRating(RATING);
         recipeDto.setServes(SERVES);
 
-        IngredientDto ingredientDto1 = new IngredientDto();
-        ingredientDto1.setDescription("description");
-        ingredientDto1.setQuantity("quantity");
-
-        IngredientDto ingredientDto2 = new IngredientDto();
-        ingredientDto2.setDescription("description");
-        ingredientDto2.setQuantity("quantity");
-
-        List<IngredientDto> ingredients = new ArrayList<>();
-        ingredients.add(ingredientDto1);
-        ingredients.add(ingredientDto2);
 
         List<String> steps = new ArrayList<>();
         steps.add("Step 1");
         steps.add("Step 2");
 
-        recipeDto.setIngredients(ingredients);
         recipeDto.setSteps(steps);
 
-        when(recipeRepository.findByIdAndUserId(recipeDto.getId(), loggedInUser.getId())).thenReturn(Optional.of(new Recipe()));
+        when(recipeRepository.findByIdAndUser(recipeDto.getId(), loggedInUser)).thenReturn(Optional.of(new Recipe()));
 
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
 
@@ -210,11 +200,6 @@ public class RecipeServiceTest
         assertEquals(RATING, recipe.getRating());
         assertEquals(SERVES, recipe.getServes());
 
-        assertEquals(ingredients.get(0).getDescription(), recipe.getIngredients().get(0).getDescription());
-        assertEquals(ingredients.get(0).getQuantity(), recipe.getIngredients().get(0).getImperial());
-        assertEquals(ingredients.get(1).getQuantity(), recipe.getIngredients().get(1).getMetric());
-        assertEquals(loggedInUser, recipe.getIngredients().get(0).getUser());
-
         assertEquals(steps.get(0), recipe.getSteps().get(0).getDescription());
         assertEquals(steps.get(1), recipe.getSteps().get(1).getDescription());
     }
@@ -225,7 +210,7 @@ public class RecipeServiceTest
         RecipeDto recipeDto = new RecipeDto();
         recipeDto.setId(2L);
 
-        when(recipeRepository.findByIdAndUserId(recipeDto.getId(), loggedInUser.getId())).thenReturn(Optional.empty());
+        when(recipeRepository.findByIdAndUser(recipeDto.getId(), loggedInUser)).thenReturn(Optional.empty());
 
         recipeService.shareRecipe(recipeDto, new User());
     }
@@ -259,7 +244,7 @@ public class RecipeServiceTest
         recipe.setIngredients(ingredients);
         recipe.setSteps(steps);
 
-        when(recipeRepository.findByIdAndUserId(recipeDto.getId(), loggedInUser.getId())).thenReturn(Optional.of(recipe));
+        when(recipeRepository.findByIdAndUser(recipeDto.getId(), loggedInUser)).thenReturn(Optional.of(recipe));
 
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
 
@@ -413,7 +398,7 @@ public class RecipeServiceTest
 
         Recipe recipe = new Recipe();
 
-        when(recipeRepository.findByIdAndUserId(ingredientDto.getRecipe(), loggedInUser.getId())).thenReturn(Optional.of(recipe));
+        when(recipeRepository.findByIdAndUser(ingredientDto.getRecipe(), loggedInUser)).thenReturn(Optional.of(recipe));
 
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
 
@@ -426,5 +411,68 @@ public class RecipeServiceTest
         assertEquals(ingredientDto.getQuantity(), result.getMetric());
         assertEquals(ingredientDto.getQuantity(), result.getImperial());
         assertEquals(loggedInUser, result.getUser());
+    }
+
+    @Test(expected = IngredientDoesNotExistException.class)
+    public void shouldThrowIngredientNotFoundWhenIngredientDoesNotExist() throws Exception
+    {
+        DeleteIngredientDto ingredientDto = new DeleteIngredientDto();
+        ingredientDto.setIngredientId(12345L);
+        ingredientDto.setRecipeId(54321L);
+
+        when(ingredientRepository.findByIdAndUser(ingredientDto.getIngredientId(), loggedInUser)).thenReturn(Optional.empty());
+        when(recipeRepository.findByIdAndUser(ingredientDto.getRecipeId(), loggedInUser)).thenReturn(Optional.of(new Recipe()));
+
+        recipeService.deleteIngredient(ingredientDto);
+    }
+
+    @Test
+    public void shouldDeleteIngredientWhenItExistsForTheRecipeSupplied() throws Exception
+    {
+        DeleteIngredientDto ingredientDto = new DeleteIngredientDto();
+        ingredientDto.setIngredientId(12345L);
+        ingredientDto.setRecipeId(54321L);
+
+        Ingredient ingredient = new Ingredient();
+        Ingredient anotherIngredient = new Ingredient();
+
+        Recipe recipe = new Recipe();
+        recipe.addIngredient(ingredient);
+        recipe.addIngredient(anotherIngredient);
+
+        when(ingredientRepository.findByIdAndUser(ingredientDto.getIngredientId(), loggedInUser)).thenReturn(Optional.of(ingredient));
+        when(recipeRepository.findByIdAndUser(ingredientDto.getRecipeId(), loggedInUser)).thenReturn(Optional.of(recipe));
+
+        ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+
+        recipeService.deleteIngredient(ingredientDto);
+
+        verify(recipeRepository).save(argumentCaptor.capture());
+
+        Recipe result = argumentCaptor.getValue();
+
+        assertEquals(1, result.getIngredients().size());
+        assertEquals(anotherIngredient, result.getIngredients().get(0));
+    }
+
+    @Test
+    public void shouldNotDeleteIngredientWhenItDoesNotExistsForTheRecipeSupplied() throws Exception
+    {
+        DeleteIngredientDto ingredientDto = new DeleteIngredientDto();
+        ingredientDto.setIngredientId(12345L);
+        ingredientDto.setRecipeId(54321L);
+
+        Ingredient ingredient = new Ingredient();
+        Ingredient anotherIngredient = new Ingredient();
+
+        Recipe recipe = new Recipe();
+        recipe.addIngredient(anotherIngredient);
+
+        when(ingredientRepository.findByIdAndUser(ingredientDto.getIngredientId(), loggedInUser)).thenReturn(Optional.of(ingredient));
+        when(recipeRepository.findByIdAndUser(ingredientDto.getRecipeId(), loggedInUser)).thenReturn(Optional.of(recipe));
+
+        recipeService.deleteIngredient(ingredientDto);
+
+        verify(recipeRepository, never()).save(any());
     }
 }
