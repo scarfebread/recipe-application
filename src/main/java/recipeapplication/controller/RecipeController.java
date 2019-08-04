@@ -14,6 +14,7 @@ import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
 import recipeapplication.model.User;
+import recipeapplication.service.InventoryService;
 import recipeapplication.service.RecipeService;
 import recipeapplication.service.UserService;
 
@@ -25,12 +26,14 @@ import java.util.List;
 public class RecipeController
 {
     private RecipeService recipeService;
+    private InventoryService inventoryService;
     private UserService userService;
 
     @Autowired
-    public RecipeController(RecipeService recipeService, UserService userService)
+    public RecipeController(RecipeService recipeService, InventoryService inventoryService, UserService userService)
     {
         this.recipeService = recipeService;
+        this.inventoryService = inventoryService;
         this.userService = userService;
     }
 
@@ -107,6 +110,9 @@ public class RecipeController
         try
         {
             ingredient = recipeService.addIngredient(ingredientDto);
+            ingredient.setInventoryItems(
+                    inventoryService.getSimilarIngredients(ingredient)
+            );
         }
         catch (RecipeDoesNotExistException e)
         {
@@ -127,12 +133,13 @@ public class RecipeController
         try
         {
             recipeService.deleteIngredient(ingredientDto);
-            return ResponseEntity.status(202).body("Ingredient deleted");
         }
         catch (IngredientDoesNotExistException | RecipeDoesNotExistException e)
         {
             return ResponseEntity.status(404).body("Ingredient not found");
         }
+
+        return ResponseEntity.status(202).body("Ingredient deleted");
     }
 
     @PostMapping(path = "/share")

@@ -24,7 +24,7 @@ public class EmailServiceTest
         String expectedText = "Dear USERNAME,\n" +
                 "\n" +
                 "A password reset was requested. Please follow the following link to reset your password:\n" +
-                "http://SERVER/changePassword?token=TOKEN\n" +
+                "http://SERVER/change-password-with-token?token=TOKEN\n" +
                 "\n" +
                 "Regards,\n" +
                 "The Cooking Pot";
