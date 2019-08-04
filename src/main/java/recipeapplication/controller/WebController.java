@@ -102,14 +102,14 @@ public class WebController
         return "reset_password.html";
     }
 
-    @GetMapping("/change-password")
+    @GetMapping("/change-password-with-token")
     public String changePassword(@RequestParam String token)
     {
         try
         {
             userService.processPasswordResetToken(token);
 
-            return "change_password.html";
+            return "change_password_with_token.html";
         }
         catch (InvalidPasswordTokenException e)
         {
@@ -117,14 +117,13 @@ public class WebController
         }
     }
 
-    // TODO this could have a better name
-    @GetMapping("/change-password-logged-in")
+    @GetMapping("/change-password")
     public String changePasswordLoggedIn(Model model)
     {
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
         model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
 
-        return "change_password_logged_in.html";
+        return "change_password.html";
     }
 
     @GetMapping("/delete-account")

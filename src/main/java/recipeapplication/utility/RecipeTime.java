@@ -6,8 +6,6 @@ public class RecipeTime
 
     public static String combineCookAndPrepTime(String cookTime, String prepTime)
     {
-        // TODO I might want to handle invalid formats
-
         if (cookTime.isEmpty() && prepTime.isEmpty())
         {
             return DEFAULT_VALUE;
@@ -66,13 +64,7 @@ public class RecipeTime
     {
         String hoursAsString = zeroPadTime4DP(time).substring(0, 2);
 
-        if (!hoursAsString.equals(""))
-        {
-            return Integer.parseInt(hoursAsString);
-        }
-
-        // TODO this is not covered by unit tests
-        return 0;
+        return Integer.parseInt(hoursAsString);
     }
 
     private static int getMinuteFromTime(String time)

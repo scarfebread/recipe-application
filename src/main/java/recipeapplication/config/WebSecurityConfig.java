@@ -29,14 +29,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
-        // TODO auto login failing after change password
-
-        // TODO enable the CSRF token
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/signup", "/reset-password", "/change-password", "/api/signup", "/css/**", "/images/**", "/js/**")
+                .antMatchers("/api/password-reset", "/api/signup", "/signup", "/reset-password", "/change-password-with-token", "/api/signup", "/css/**", "/images/**", "/js/**")
                 .permitAll()
-                .antMatchers("/", "/recipe", "/shopping-list", "/inventory", "/delete-account", "/change-password-logged-in").hasAuthority(Role.USER.toString())
+                .antMatchers("/", "/recipe", "/shopping-list", "/inventory", "/delete-account", "/change-password").hasAuthority(Role.USER.toString())
                 .antMatchers("/api/change-password").hasAnyAuthority(Role.CHANGE_PASSWORD.toString(), Role.USER.toString())
                 .and()
             .formLogin()
@@ -47,13 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .accessDeniedPage("/login")
                 .and()
             .logout().logoutSuccessUrl("/login").deleteCookies("JSESSIONID").invalidateHttpSession(true);
-    }
-
-    @Override
-    public void configure(WebSecurity web)
-    {
-        // TODO there might be a better way to do this
-        web.ignoring().antMatchers("/api/signup", "/api/password-reset");
     }
 
     @Override

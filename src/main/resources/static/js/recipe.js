@@ -356,9 +356,7 @@ function updateRecipe()
 
     let success = function() {};
 
-    let failure = function(failure) {
-        // TODO show error banner
-    };
+    let failure = function(failure) {};
 
     callApi("/api/recipe", HTTP_PUT, recipe, false, success, failure);
 }

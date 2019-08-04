@@ -44,7 +44,6 @@ public class SignupController
             return ResponseEntity.status(400).body("Email address already exists");
         }
 
-        // TODO enable auto login after signup
         return ResponseEntity.status(201).body("Created");
     }
 

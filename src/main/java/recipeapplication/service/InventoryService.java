@@ -97,7 +97,6 @@ public class InventoryService
     {
         List<InventoryItem> inventoryItems = inventoryRepository.findByIngredientDescription(ingredient.getDescription());
 
-        // TODO is this readable?
         return inventoryItems.stream().map(InventoryItem::getIngredient).collect(Collectors.toList());
     }
 }

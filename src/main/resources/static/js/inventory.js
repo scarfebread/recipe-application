@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function(event)
         createInventoryItem();
     };
 
-    addCreateInventoryItemEnterKeyEventListener(getElementById('item'));
+    addCreateInventoryItemEnterKeyEventListener(getElementById('ingredient'));
     addCreateInventoryItemEnterKeyEventListener(getElementById('quantity'));
 
     Array.from(document.getElementsByClassName('deleteSymbol')).forEach(function (element) {
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function(event)
 
     addShoppingListEventListeners();
     enableSearchAutoComplete();
-    autocomplete(getElementById('item'), ingredients);
+    autocomplete(getElementById('ingredient'), ingredients);
 });
 
 function addDeleteEventListener(element)
@@ -40,8 +40,7 @@ function deleteInventoryItem(id)
 
 function createInventoryItem()
 {
-    // TODO inconsistent naming
-    let ingredient = getValueById('item');
+    let ingredient = getValueById('ingredient');
     let quantity = getValueById('quantity');
 
     if (!validateStringLength(ingredient, 1)) {
@@ -56,7 +55,7 @@ function createInventoryItem()
     let success = function(data) {
         displayInventoryItem(data);
 
-        getElementById('item').value = '';
+        getElementById('ingredient').value = '';
         getElementById('quantity').value = '';
     };
 
