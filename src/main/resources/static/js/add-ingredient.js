@@ -19,7 +19,7 @@ AddIngredient = {
         let addIngredientButton = getElementById('addIngredientButton');
 
         this.addEnterKeyEventListener(this.descriptionInput);
-        this.addEnterKeyEventListener(this.descriptionInput);
+        this.addEnterKeyEventListener(this.quantityInput);
 
         addIngredientButton.onclick = function () {
             AddIngredient.createIngredient();

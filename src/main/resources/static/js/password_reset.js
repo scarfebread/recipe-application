@@ -1,6 +1,6 @@
-function passwordReset() {
+document.addEventListener("DOMContentLoaded", function() {
     PasswordReset.init();
-}
+});
 
 PasswordReset = {
     init: function () {
@@ -14,7 +14,7 @@ PasswordReset = {
         };
 
         let input = getElementById('usernameoremail');
-        input.addEventListener("keydown keyup", function (event) {
+        input.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 PasswordReset.reset();
             }

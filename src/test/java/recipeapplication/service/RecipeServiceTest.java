@@ -10,6 +10,7 @@ import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.exception.SameUsernameException;
 import recipeapplication.model.*;
 import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecentlyViewedRepository;
@@ -213,6 +214,15 @@ public class RecipeServiceTest
         when(recipeRepository.findByIdAndUser(recipeDto.getId(), loggedInUser)).thenReturn(Optional.empty());
 
         recipeService.shareRecipe(recipeDto, new User());
+    }
+
+    @Test(expected = SameUsernameException.class)
+    public void shouldThrowSameUsernameExceptionWhenSharingWithSameUser() throws Exception
+    {
+        User user = new User();
+        user.setUsername(loggedInUser.getUsername());
+
+        recipeService.shareRecipe(new RecipeDto(), user);
     }
 
     @Test

@@ -10,6 +10,7 @@ import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.exception.SameUsernameException;
 import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
@@ -215,6 +216,26 @@ public class RecipeControllerTest
 
         assertEquals("User does not exist", response.getBody());
         assertEquals(404, response.getStatusCodeValue());
+    }
+
+    @Test
+    public void shouldReturnBadRequestWhenSharingToSameUser() throws Exception
+    {
+        String newUser = "newUser";
+
+        RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setId(1L);
+        recipeDto.setNewUser(newUser);
+
+        User user = new User();
+
+        when(userService.getUser(newUser)).thenReturn(user);
+        doThrow(SameUsernameException.class).when(recipeService).shareRecipe(recipeDto, user);
+
+        ResponseEntity response = recipeController.shareRecipe(recipeDto);
+
+        assertEquals("You already have this recipe", response.getBody());
+        assertEquals(400, response.getStatusCodeValue());
     }
 
     @Test

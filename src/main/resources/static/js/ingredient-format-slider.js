@@ -9,12 +9,12 @@ IngredientFormatSlider = {
         let ingredientFormatButton = getElementById('ingredientFormatButton');
 
         ingredientFormatButton.onclick = function() {
-            this.metric = !this.metric;
+            IngredientFormatSlider.metric = !IngredientFormatSlider.metric;
 
             let displayClass;
             let hideClass;
 
-            if (this.metric) {
+            if (IngredientFormatSlider.metric) {
                 displayClass = 'metric';
                 hideClass = 'imperial';
             } else {
