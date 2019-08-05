@@ -37,6 +37,6 @@ public class EmailService
 
         message.setText(text);
 
-        mailSender.send(message);
+        new Thread(() -> mailSender.send(message)).start();
     }
 }
