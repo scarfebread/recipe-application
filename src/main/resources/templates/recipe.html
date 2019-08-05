@@ -19,6 +19,7 @@
     <script type="application/javascript" src="/js/recipe-editor.js"></script>
     <script type="application/javascript" src="/js/delete-ingredient.js"></script>
     <script type="application/javascript" src="/js/add-ingredient.js"></script>
+    <script type="application/javascript" src="/js/share-recipe.js"></script>
     <script th:inline="javascript">
     /*<![CDATA[*/
         let recipeId = [[${recipe.id}]];
@@ -94,17 +95,13 @@
                 <div class="recipeDetailsContainer">
                     <div class="label">
                         <label class="cookAndPrepTimeLabel" for="cookTime">Cook time:</label>
-                        <label th:if="${recipe.cookTime != ''}" th:text="${recipe.cookTime}" id="cookTimeLabel" class="timeLabel"></label>
-                        <label th:if="${recipe.cookTime == ''}" id="cookTimeLabel" class="timeLabel">00:00</label>
-                        <input th:if="${recipe.cookTime != ''}" id="cookTime" class="timeInput" type="time" th:value="${recipe.cookTime}"/>
-                        <input th:if="${recipe.cookTime == ''}" id="cookTime" class="timeInput" type="time" value="00:00"/>
+                        <label th:text="${recipe.cookTime}" id="cookTimeLabel" class="timeLabel"></label>
+                        <input th:value="${recipe.cookTime}" id="cookTime" class="timeInput" type="time"/>
                     </div>
                     <div class="label">
                         <label class="cookAndPrepTimeLabel" for="prepTime">Prep time:</label>
-                        <label th:if="${recipe.prepTime != ''}" th:text="${recipe.prepTime}" id="prepTimeLabel" class="timeLabel"></label>
-                        <label th:if="${recipe.prepTime == ''}" id="prepTimeLabel" class="timeLabel">00:00</label>
-                        <input th:if="${recipe.prepTime != ''}" id="prepTime" class="timeInput" type="time" th:value="${recipe.prepTime}"/>
-                        <input th:if="${recipe.prepTime == ''}" id="prepTime" class="timeInput" type="time" value="00:00"/>
+                        <label th:text="${recipe.prepTime}" id="prepTimeLabel" class="timeLabel"></label>
+                        <input th:value="${recipe.prepTime}" id="prepTime" class="timeInput" type="time"/>
                     </div>
                     <div class="label">
                         <label for="serves">Serves:</label>

@@ -1,13 +1,14 @@
 let rating;
 let recipeDeleted = false;
 
-document.addEventListener("DOMContentLoaded", function(event)
+document.addEventListener("DOMContentLoaded", function()
 {
     RecipeEditor.init();
     DeleteIngredient.init();
     AddIngredient.init();
     ShoppingList.init();
     IngredientFormatSlider.init();
+    ShareRecipe.init();
 
     rating = recipeRating;
 
@@ -68,7 +69,6 @@ document.addEventListener("DOMContentLoaded", function(event)
         }
     };
 
-    let confirmShareRecipe = getElementById('confirmShareButton');
     let confirmDeleteRecipe = getElementById('confirmDeleteButton');
     let difficulty = getElementById('difficulty');
     let difficultyLabel = getElementById('difficultyLabel');
@@ -142,23 +142,6 @@ document.addEventListener("DOMContentLoaded", function(event)
         rating = 5;
         displayRating();
         updateRecipe()
-    };
-
-    confirmShareRecipe.onclick = function () {
-        confirmShareRecipe.disabled = true;
-
-        hideElement('invalidUsernameError');
-        hideElement('shareRecipeError');
-
-        let username = getValueById('username');
-
-        if (validateStringLength(username, 1)) {
-            shareRecipe(username);
-        } else {
-            showElement('invalidUsernameError');
-        }
-
-        confirmShareRecipe.disabled = false;
     };
 
     confirmDeleteRecipe.onclick = function () {
@@ -277,26 +260,6 @@ function getSteps()
     }
 
     return steps;
-}
-
-function shareRecipe(newUser)
-{
-    let recipe = {
-        id: recipeId,
-        newUser: newUser
-    };
-
-    let success = function() {
-        hideElement('preShare');
-        showElement('postShare');
-    };
-
-    let failure = function(failure) {
-        getElementById('shareRecipeError').innerText = failure;
-        showElement('shareRecipeError');
-    };
-
-    callApi("/api/recipe/share", HTTP_POST, recipe, false, success, failure);
 }
 
 function deleteRecipe()

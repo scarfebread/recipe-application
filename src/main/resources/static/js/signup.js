@@ -93,7 +93,7 @@ Signup = {
     },
 
     addEnterKeyListener: function (element) {
-        element.addEventListener("keydown keyup", function (event) {
+        element.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 Signup.signup();
             }

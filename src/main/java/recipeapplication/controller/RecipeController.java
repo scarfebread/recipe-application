@@ -10,6 +10,7 @@ import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.exception.SameUsernameException;
 import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
@@ -168,6 +169,10 @@ public class RecipeController
         catch (UserNotFoundException e)
         {
             return ResponseEntity.status(404).body("User does not exist");
+        }
+        catch (SameUsernameException e)
+        {
+            return ResponseEntity.status(400).body("You already have this recipe");
         }
 
         return ResponseEntity.status(201).body("Created");

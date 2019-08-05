@@ -9,6 +9,7 @@ import recipeapplication.dto.IngredientDto;
 import recipeapplication.dto.RecipeDto;
 import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
+import recipeapplication.exception.SameUsernameException;
 import recipeapplication.model.*;
 import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecentlyViewedRepository;
@@ -63,6 +64,8 @@ public class RecipeService
         recipe.setServes(1L);
         recipe.setDifficulty("Medium");
         recipe.setTotalTime("00:00");
+        recipe.setCookTime("00:00");
+        recipe.setPrepTime("00:00");
 
         return recipeRepository.save(recipe);
     }
@@ -116,8 +119,14 @@ public class RecipeService
         recipeRepository.save(recipe);
     }
 
-    public void shareRecipe(RecipeDto recipeDto, User user) throws RecipeDoesNotExistException
+    public void shareRecipe(RecipeDto recipeDto, User user) throws RecipeDoesNotExistException, SameUsernameException
     {
+        User loggedInUser = authService.getLoggedInUser();
+        if (loggedInUser.getUsername().equals(user.getUsername()))
+        {
+            throw new SameUsernameException();
+        }
+
         Recipe recipe = getRecipe(recipeDto.getId());
 
         // Clone the existing recipe
