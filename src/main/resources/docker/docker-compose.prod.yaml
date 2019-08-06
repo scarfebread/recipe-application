@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: U9]zCd(-3Uk4~<|G
+    volumes:
+      - ../schema/:/docker-entrypoint-initdb.d
+  app:
+    image: recipe-application
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - "8080:8080"
