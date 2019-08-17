@@ -15,4 +15,5 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long>
     List<String> getIngredients(User user);
 
     Optional<Ingredient> findByIdAndUser(Long id, User user);
+    void deleteAllByUser(User user);
 }

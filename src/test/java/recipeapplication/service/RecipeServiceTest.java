@@ -395,7 +395,7 @@ public class RecipeServiceTest
     {
         recipeService.deleteAllRecipes();
 
-        verify(recipeRepository).deleteAllByUserId(loggedInUser.getId());
+        verify(recipeRepository).deleteAllByUser(loggedInUser);
     }
 
     @Test

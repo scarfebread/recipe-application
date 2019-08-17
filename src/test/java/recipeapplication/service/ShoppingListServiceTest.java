@@ -172,4 +172,12 @@ public class ShoppingListServiceTest
 
         assertFalse(shoppingListService.isInShoppingList(ingredient));
     }
+
+    @Test
+    public void shouldDeleteAllSuccessfully()
+    {
+        shoppingListService.deleteAll();
+
+        verify(shoppingListRepository).deleteAllByUser(user);
+    }
 }

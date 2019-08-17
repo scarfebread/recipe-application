@@ -183,7 +183,7 @@ public class RecipeService
     {
         User user = authService.getLoggedInUser();
 
-        recipeRepository.deleteAllByUserId(user.getId());
+        recipeRepository.deleteAllByUser(user);
     }
 
     public Ingredient addIngredient(IngredientDto ingredientDto) throws RecipeDoesNotExistException

@@ -99,4 +99,10 @@ public class InventoryService
 
         return inventoryItems.stream().map(InventoryItem::getIngredient).collect(Collectors.toList());
     }
+
+    public void deleteAll()
+    {
+        User user = authService.getLoggedInUser();
+        inventoryRepository.deleteAllByUser(user);
+    }
 }
