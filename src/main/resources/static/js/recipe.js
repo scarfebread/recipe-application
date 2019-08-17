@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function()
     RecipeEditor.init();
     DeleteIngredient.init();
     AddIngredient.init();
+    AddStep.init();
     ShoppingList.init();
     IngredientFormatSlider.init();
     ShareRecipe.init();
@@ -84,7 +85,6 @@ document.addEventListener("DOMContentLoaded", function()
     let rating3 = getElementById('rating3');
     let rating4 = getElementById('rating4');
     let rating5 = getElementById('rating5');
-    let addStepButton = getElementById('addStepButton');
 
     displayRating();
     serves.value = recipeServes;
@@ -156,68 +156,8 @@ document.addEventListener("DOMContentLoaded", function()
         }
     };
 
-    addStepButton.onclick = function () {
-        createStep();
-    };
-
-    getElementById('newStep').addEventListener("keyup", function (event) {
-        if (event.key === "Enter") {
-            createStep();
-        }
-    });
-
-    addStepDeleteListeners();
-    addStepEditListeners();
-
     autocomplete(getElementById("ingredientDescription"), ingredients);
 });
-
-function addStepEditListeners()
-{
-    Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
-        addEditListener(element);
-    });
-}
-
-function addEditListener(element)
-{
-    element.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            element.blur();
-        }
-    });
-
-    element.addEventListener('blur', function () {
-        if (!validateStringLength(element.innerHTML, 1)) {
-            let row = element.parentNode;
-            let table = row.parentNode;
-
-            table.removeChild(row);
-        }
-
-        updateRecipe();
-    });
-}
-
-function addStepDeleteListeners()
-{
-    Array.from(document.getElementsByClassName('stepDelete')).forEach(function(element) {
-        addStepDeleteListener(element);
-    });
-}
-
-function addStepDeleteListener(element)
-{
-    element.addEventListener('click', function () {
-        let row = element.parentNode.parentNode;
-        let table = row.parentNode;
-
-        table.removeChild(row);
-
-        updateRecipe();
-    });
-}
 
 function updateRecipe()
 {
@@ -313,39 +253,4 @@ function closeModal(modal)
     showElement('preShare');
     modal.style.display = "none";
     getElementById('username').value = '';
-}
-
-function createStep()
-{
-    let newStep = getElementById('newStep');
-
-    if (!validateStringLength(newStep.value, 1)) {
-        return;
-    }
-
-    addStepToList(newStep.value);
-    updateRecipe();
-
-    newStep.value = '';
-}
-
-function addStepToList(step)
-{
-    let stepTable = getElementById('stepTable').children[0];
-
-    let template = getTemplate('stepTemplate');
-
-    let stepNumber = template.querySelector('.stepNumber');
-    let stepColumn = template.querySelector('.stepColumn');
-    let stepActionColumn = template.querySelector('.stepActionColumn');
-    let stepDelete = template.querySelector('.stepDelete');
-
-    stepNumber.innerText = (getSteps().length + 1) + '.';
-    stepColumn.innerText = step;
-    stepActionColumn.style.display = 'flex';
-
-    stepTable.insertBefore(template, stepTable.children[stepTable.children.length -1]);
-
-    addEditListener(stepColumn);
-    addStepDeleteListener(stepDelete);
 }
