@@ -19,6 +19,7 @@
     <script type="application/javascript" src="/js/recipe-editor.js"></script>
     <script type="application/javascript" src="/js/delete-ingredient.js"></script>
     <script type="application/javascript" src="/js/add-ingredient.js"></script>
+    <script type="application/javascript" src="/js/add-step.js"></script>
     <script type="application/javascript" src="/js/share-recipe.js"></script>
     <script th:inline="javascript">
     /*<![CDATA[*/
@@ -322,7 +323,7 @@
         <td class="stepNumberColumn">
             <h3 class="stepNumber"></h3>
         </td>
-        <td class="stepColumn"></td>
+        <td class="stepColumn" contenteditable="true"></td>
         <td class="stepActionColumn">
             <span class="close stepDelete">&times;</span>
         </td>

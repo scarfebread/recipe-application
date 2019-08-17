@@ -133,7 +133,7 @@ Home = {
         }
     },
 
-    enableAutocomplete: function () {
+    enableAutocomplete: function (recipes) {
         let searchBar = getElementById('searchForRecipe');
 
         searchBar.addEventListener("input", function(e) {
