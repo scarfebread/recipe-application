@@ -13,13 +13,19 @@ IngredientFormatSlider = {
 
             let displayClass;
             let hideClass;
+            let ingredientToolTipDisplayClass;
+            let ingredientToolTipHideClass;
 
             if (IngredientFormatSlider.metric) {
                 displayClass = 'metric';
                 hideClass = 'imperial';
+                ingredientToolTipDisplayClass = 'ingredientMetricToolTip';
+                ingredientToolTipHideClass = 'ingredientImperialToolTip';
             } else {
                 displayClass = 'imperial';
                 hideClass = 'metric';
+                ingredientToolTipHideClass = 'ingredientMetricToolTip';
+                ingredientToolTipDisplayClass = 'ingredientImperialToolTip';
             }
 
             let displayProperty = null;
@@ -35,6 +41,14 @@ IngredientFormatSlider = {
             Array.from(document.getElementsByClassName(displayClass)).forEach(function(element) {
                 element.style.display = displayProperty;
             });
+
+            Array.from(document.getElementsByClassName(ingredientToolTipHideClass)).forEach(function(element) {
+                element.style.display = "none";
+            });
+
+            Array.from(document.getElementsByClassName(ingredientToolTipDisplayClass)).forEach(function(element) {
+                element.style.display = 'block';
+            });
         };
-    }
+    },
 };
