@@ -305,6 +305,10 @@ p {
     margin: 5px;
 }
 
+#confirmDeleteButton {
+    margin-top: 10px;
+}
+
 @media screen and (max-width: 925px) {
     .subRecipeContainer {
         width: 380px;
