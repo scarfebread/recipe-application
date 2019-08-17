@@ -111,4 +111,10 @@ public class ShoppingListService
     {
         return shoppingListRepository.findByIngredient(ingredient).isPresent();
     }
+
+    public void deleteAll()
+    {
+        User user = authService.getLoggedInUser();
+        shoppingListRepository.deleteAllByUser(user);
+    }
 }

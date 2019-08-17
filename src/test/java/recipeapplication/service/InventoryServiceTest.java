@@ -173,4 +173,12 @@ public class InventoryServiceTest
 
         assertEquals(0, result.size());
     }
+
+    @Test
+    public void shouldDeleteAllSuccessfully()
+    {
+        inventoryService.deleteAll();
+
+        verify(inventoryRepository).deleteAllByUser(user);
+    }
 }

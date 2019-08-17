@@ -3,9 +3,7 @@ package recipeapplication.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
-import recipeapplication.service.AuthService;
-import recipeapplication.service.RecipeService;
-import recipeapplication.service.UserService;
+import recipeapplication.service.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -15,6 +13,9 @@ public class UserControllerTest
 {
     private UserService userService;
     private RecipeService recipeService;
+    private ShoppingListService shoppingListService;
+    private InventoryService inventoryService;
+    private IngredientService ingredientService;
     private AuthService authService;
     private UserController userController;
 
@@ -23,9 +24,14 @@ public class UserControllerTest
     {
         userService = mock(UserService.class);
         recipeService = mock(RecipeService.class);
+        shoppingListService = mock(ShoppingListService.class);
+        inventoryService = mock(InventoryService.class);
+        ingredientService = mock(IngredientService.class);
         authService = mock(AuthService.class);
 
-        userController = new UserController(userService, recipeService, authService);
+        userController = new UserController(
+                userService, recipeService, ingredientService, shoppingListService, inventoryService, authService
+        );
     }
 
     @Test
@@ -36,6 +42,9 @@ public class UserControllerTest
         verify(userService).deleteAccount();
         verify(authService).disableUserSession();
         verify(recipeService).deleteAllRecipes();
+        verify(shoppingListService).deleteAll();
+        verify(inventoryService).deleteAll();
+        verify(ingredientService).deleteAll();
 
         assertEquals(202, responseEntity.getStatusCodeValue());
         assertEquals("Account deleted", responseEntity.getBody());
