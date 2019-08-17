@@ -179,10 +179,12 @@ body {
     height: 35px;
     width: 98%;
     margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .modalClose {
     float: right;
+    line-height: 5px;
 }
 
 .searchBar {
