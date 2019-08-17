@@ -173,7 +173,12 @@
                                 <span class="tooltipText">
                                     <p>Items in your inventory:</p>
                                     <p th:each="inventoryIngredient : ${ingredient.inventoryItems}"
-                                       th:text="${inventoryIngredient.description + ' ' + inventoryIngredient.metric}">
+                                       th:text="${inventoryIngredient.description + ' ' + inventoryIngredient.metric}"
+                                       class="ingredientMetricToolTip">
+                                    </p>
+                                    <p th:each="inventoryIngredient : ${ingredient.inventoryItems}"
+                                       th:text="${inventoryIngredient.description + ' ' + inventoryIngredient.imperial}"
+                                       class="ingredientImperialToolTip hidden">
                                     </p>
                                 </span>
                             </i>

@@ -88,10 +88,22 @@ AddIngredient = {
             tooltipText.appendChild(inventoryItemsTitle);
 
             Array.from(ingredient.inventoryItems).forEach(function (item) {
-                let inventoryItem = AddIngredient.createParagraph();
-                let measurement = IngredientFormatSlider.metric ? item.metric : item.imperial;
-                inventoryItem.innerText = `${item.description} ${measurement}`;
-                tooltipText.appendChild(inventoryItem);
+                let metric = AddIngredient.createParagraph();
+                metric.innerText = `${item.description} ${item.metric}`;
+                metric.className = 'ingredientMetricToolTip';
+
+                let imperial = AddIngredient.createParagraph();
+                imperial.innerText = `${item.description} ${item.imperial}`;
+                imperial.className = 'ingredientImperialToolTip';
+
+                if (IngredientFormatSlider.metric) {
+                    imperial.style.display = 'none';
+                } else {
+                    metric.style.display = 'none';
+                }
+
+                tooltipText.appendChild(metric);
+                tooltipText.appendChild(imperial);
             });
         } else {
             let inventoryItemsText = this.createParagraph();
