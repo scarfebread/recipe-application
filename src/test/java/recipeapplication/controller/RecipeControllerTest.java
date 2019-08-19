@@ -4,16 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import recipeapplication.dto.CreateRecipeDto;
-import recipeapplication.dto.DeleteIngredientDto;
-import recipeapplication.dto.IngredientDto;
-import recipeapplication.dto.RecipeDto;
+import recipeapplication.dto.*;
 import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.exception.SameUsernameException;
 import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
+import recipeapplication.model.Step;
 import recipeapplication.model.User;
 import recipeapplication.service.InventoryService;
 import recipeapplication.service.RecipeService;
@@ -335,5 +333,111 @@ public class RecipeControllerTest
 
         assertEquals(202, response.getStatusCodeValue());
         assertEquals("Ingredient deleted", response.getBody());
+    }
+
+    @Test
+    public void shouldReturnInvalidStepWhenAddingInvalidStep()
+    {
+        ResponseEntity response = recipeController.addStep(null, errors);
+
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("Invalid step", response.getBody());
+    }
+
+    @Test
+    public void shouldReturnRecipeDoesNotExistWhenRecipeDoesNotExistWhenAddingStep() throws Exception
+    {
+        CreateStepDto stepDto = new CreateStepDto();
+
+        when(recipeService.addStep(stepDto)).thenThrow(RecipeDoesNotExistException.class);
+
+        ResponseEntity response = recipeController.addStep(stepDto, noErrors);
+
+        assertEquals(404, response.getStatusCodeValue());
+        assertEquals("Recipe does not exist", response.getBody());
+    }
+
+    @Test
+    public void shouldAddStepSuccessfully() throws Exception
+    {
+        CreateStepDto stepDto = new CreateStepDto();
+        Step step = new Step();
+
+        when(recipeService.addStep(stepDto)).thenReturn(step);
+
+        ResponseEntity response = recipeController.addStep(stepDto, noErrors);
+
+        assertEquals(202, response.getStatusCodeValue());
+        assertEquals(step, response.getBody());
+    }
+
+    @Test
+    public void shouldReturnInvalidStepWhenUpdatingInvalidStep()
+    {
+        ResponseEntity response = recipeController.updateStep(null, errors);
+
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("Invalid step supplied", response.getBody());
+    }
+
+    @Test
+    public void shouldReturnRecipeDoesNotExistWhenRecipeDoesNotExistWhenUpdatingStep() throws Exception
+    {
+        UpdateStepDto stepDto = new UpdateStepDto();
+
+        doThrow(RecipeDoesNotExistException.class).when(recipeService).updateStep(stepDto);
+
+        ResponseEntity response = recipeController.updateStep(stepDto, noErrors);
+
+        assertEquals(404, response.getStatusCodeValue());
+        assertEquals("Recipe not found", response.getBody());
+    }
+
+    @Test
+    public void shouldUpdateStepSuccessfully() throws Exception
+    {
+        UpdateStepDto stepDto = new UpdateStepDto();
+
+        ResponseEntity response = recipeController.updateStep(stepDto, noErrors);
+
+        verify(recipeService).updateStep(stepDto);
+
+        assertEquals(202, response.getStatusCodeValue());
+        assertEquals("Step updated", response.getBody());
+    }
+
+    @Test
+    public void shouldReturnInvalidStepWhenDeletingInvalidStep()
+    {
+        ResponseEntity response = recipeController.deleteStep(null, errors);
+
+        assertEquals(400, response.getStatusCodeValue());
+        assertEquals("Invalid step supplied", response.getBody());
+    }
+
+    @Test
+    public void shouldReturnRecipeDoesNotExistWhenRecipeDoesNotExistWhenDeletingStep() throws Exception
+    {
+        DeleteStepDto stepDto = new DeleteStepDto();
+
+        doThrow(RecipeDoesNotExistException.class).when(recipeService).deleteStep(stepDto);
+
+        ResponseEntity response = recipeController.deleteStep(stepDto, noErrors);
+
+        assertEquals(404, response.getStatusCodeValue());
+        assertEquals("Recipe not found", response.getBody());
+    }
+
+    @Test
+    public void shouldDeleteStepSuccessfully() throws Exception
+    {
+        DeleteStepDto stepDto = new DeleteStepDto();
+
+        ResponseEntity response = recipeController.deleteStep(stepDto, noErrors);
+
+        verify(recipeService).deleteStep(stepDto);
+
+        assertEquals(202, response.getStatusCodeValue());
+        assertEquals("Step deleted", response.getBody());
     }
 }

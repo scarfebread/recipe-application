@@ -24,6 +24,11 @@ public class Step
         this.description = description;
     }
 
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
     public String getDescription()
     {
         return description;
@@ -32,5 +37,10 @@ public class Step
     public void setId(Long id)
     {
         this.id = id;
+    }
+
+    public Long getId()
+    {
+        return id;
     }
 }

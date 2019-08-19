@@ -1,8 +1,7 @@
 let rating;
 let recipeDeleted = false;
 
-document.addEventListener("DOMContentLoaded", function()
-{
+document.addEventListener("DOMContentLoaded", function() {
     RecipeEditor.init();
     DeleteIngredient.init();
     AddIngredient.init();
@@ -159,8 +158,7 @@ document.addEventListener("DOMContentLoaded", function()
     autocomplete(getElementById("ingredientDescription"), ingredients);
 });
 
-function updateRecipe()
-{
+function updateRecipe() {
     let serves = getElementById('serves');
     let difficulty = getElementById('difficulty');
 
@@ -171,8 +169,7 @@ function updateRecipe()
         serves: serves.options[serves.selectedIndex].value,
         cookTime: getElementById('cookTime').value,
         prepTime: getElementById('prepTime').value,
-        difficulty: difficulty.options[difficulty.selectedIndex].value,
-        steps: getSteps()
+        difficulty: difficulty.options[difficulty.selectedIndex].value
     };
 
     let success = function() {};
@@ -182,28 +179,7 @@ function updateRecipe()
     callApi("/api/recipe", HTTP_PUT, recipe, false, success, failure);
 }
 
-function getSteps()
-{
-    let steps = [];
-
-    let stepTable = getElementById('stepTable');
-
-    for (let i = 1, row; row = stepTable.rows[i]; i++) {
-        if (i === stepTable.rows.length -1)
-        {
-            break;
-        }
-
-        row.children[0].children[0].innerHTML = (i) + '.';
-
-        steps.push(row.children[1].innerHTML)
-    }
-
-    return steps;
-}
-
-function deleteRecipe()
-{
+function deleteRecipe() {
     let recipe = {
         id: recipeId
     };
@@ -223,26 +199,22 @@ function deleteRecipe()
     callApi("/api/recipe", HTTP_DELETE, recipe, false, success, failure);
 }
 
-function displayRating()
-{
+function displayRating() {
     let starRating = getElementById('starRating');
 
     let children = starRating.children;
-    for (let i = 0; i < children.length; i++)
-    {
+    for (let i = 0; i < children.length; i++) {
         let star = children[i];
 
         star.classList.remove('checked');
 
-        if (i < rating)
-        {
+        if (i < rating) {
             star.classList.add('checked');
         }
     }
 }
 
-function closeModal(modal)
-{
+function closeModal(modal) {
     if (recipeDeleted) {
         return;
     }

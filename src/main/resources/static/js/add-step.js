@@ -24,25 +24,36 @@ AddStep  = (function () {
             return;
         }
 
-        addStepToList(newStep.value);
-        updateRecipe();
+        let body = {
+            description: newStep.value,
+            recipe: recipeId
+        };
 
-        newStep.value = '';
+        let success = function (step) {
+            addStepToList(step.id, step.description);
+            newStep.value = '';
+        };
+
+        let failure = function () {};
+
+        callApi('/api/recipe/add-step', HTTP_PUT, body, true, success, failure);
     };
 
-    let addStepToList = function (step) {
+    let addStepToList = function (stepId, description) {
         let stepTable = getElementById('stepTable').children[0];
 
         let template = getTemplate('stepTemplate');
 
         let stepNumber = template.querySelector('.stepNumber');
         let stepColumn = template.querySelector('.stepColumn');
+        let stepRow = template.querySelector('.stepRow');
         let stepActionColumn = template.querySelector('.stepActionColumn');
         let stepDelete = template.querySelector('.stepDelete');
 
-        stepNumber.innerText = (getSteps().length + 1) + '.';
-        stepColumn.innerText = step;
+        stepNumber.innerText = getNextStepNumber() + '.';
+        stepColumn.innerText = description;
         stepActionColumn.style.display = 'flex';
+        stepRow.setAttribute('data-stepid', stepId);
 
         stepTable.insertBefore(template, stepTable.children[stepTable.children.length -1]);
 
@@ -59,14 +70,23 @@ AddStep  = (function () {
         });
 
         step.addEventListener('blur', function () {
-            if (!validateStringLength(step.innerHTML, 1)) {
-                let row = step.parentNode;
-                let table = row.parentNode;
+            let stepRow = step.parentNode;
 
-                table.removeChild(row);
+            if (!validateStringLength(step.innerHTML, 1)) {
+                deleteStep(stepRow);
+                return;
             }
 
-            updateRecipe();
+            let body = {
+                id: stepRow.getAttribute('data-stepid'),
+                description : step.innerHTML,
+                recipe: recipeId
+            };
+
+            let success = function () {};
+            let failure = function () {};
+
+            callApi('/api/recipe/update-step', HTTP_PUT, body, false, success, failure);
         });
     };
 
@@ -79,19 +99,50 @@ AddStep  = (function () {
 
     let addDeleteListener = function (deleteButton) {
         deleteButton.addEventListener('click', function () {
-            let row = deleteButton.parentNode.parentNode;
-            let table = row.parentNode;
-
-            table.removeChild(row);
-
-            updateRecipe();
+            deleteStep(
+                deleteButton.parentNode.parentNode
+            );
         });
+    };
+
+    let deleteStep = function (stepRow) {
+        let table = stepRow.parentNode;
+
+        let body = {
+            stepId: stepRow.getAttribute('data-stepid'),
+            recipeId: recipeId
+        };
+
+        let success = function () {
+            table.removeChild(stepRow);
+            updateStepNumbers();
+        };
+
+        let failure = function () {};
+
+        callApi('/api/recipe/delete-step', HTTP_PUT, body, false, success, failure);
     };
 
     let addDeleteListeners = function () {
         let steps = document.getElementsByClassName('stepDelete');
         Array.from(steps).forEach(function(element) {
             addDeleteListener(element);
+        });
+    };
+
+    let getNextStepNumber = function () {
+        let steps = document.querySelectorAll('.stepColumn');
+
+        return steps.length + 1;
+    };
+
+    let updateStepNumbers = function () {
+        let stepNumber = 1;
+        let stepNumbers = document.querySelectorAll('.stepNumber');
+
+        Array.from(stepNumbers).forEach(function (step) {
+            step.innerHTML = stepNumber + '.';
+            stepNumber++;
         });
     };
 
