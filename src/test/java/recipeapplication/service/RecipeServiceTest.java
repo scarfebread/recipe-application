@@ -4,10 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import recipeapplication.dto.CreateRecipeDto;
-import recipeapplication.dto.DeleteIngredientDto;
-import recipeapplication.dto.IngredientDto;
-import recipeapplication.dto.RecipeDto;
+import recipeapplication.dto.*;
 import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.exception.SameUsernameException;
@@ -15,7 +12,6 @@ import recipeapplication.model.*;
 import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecentlyViewedRepository;
 import recipeapplication.repository.RecipeRepository;
-import recipeapplication.repository.StepRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +37,6 @@ public class RecipeServiceTest
 
     private RecipeRepository recipeRepository;
     private IngredientRepository ingredientRepository;
-    private StepRepository stepRepository;
-    private AuthService authService;
     private RecentlyViewedRepository recentlyViewedRepository;
     private EntityManager entityManager;
     private RecipeService recipeService;
@@ -53,8 +47,7 @@ public class RecipeServiceTest
     {
         recipeRepository = mock(RecipeRepository.class);
         ingredientRepository = mock(IngredientRepository.class);
-        stepRepository = mock(StepRepository.class);
-        authService = mock(AuthService.class);
+        AuthService authService = mock(AuthService.class);
         recentlyViewedRepository = mock(RecentlyViewedRepository.class);
         entityManager = mock(EntityManager.class);
 
@@ -64,7 +57,7 @@ public class RecipeServiceTest
 
         when(authService.getLoggedInUser()).thenReturn(loggedInUser);
 
-        recipeService = new RecipeService(recipeRepository, ingredientRepository, stepRepository, authService, recentlyViewedRepository, entityManager);
+        recipeService = new RecipeService(recipeRepository, ingredientRepository, authService, recentlyViewedRepository, entityManager);
     }
 
     @Test
@@ -175,13 +168,6 @@ public class RecipeServiceTest
         recipeDto.setRating(RATING);
         recipeDto.setServes(SERVES);
 
-
-        List<String> steps = new ArrayList<>();
-        steps.add("Step 1");
-        steps.add("Step 2");
-
-        recipeDto.setSteps(steps);
-
         when(recipeRepository.findByIdAndUser(recipeDto.getId(), loggedInUser)).thenReturn(Optional.of(new Recipe()));
 
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
@@ -189,7 +175,6 @@ public class RecipeServiceTest
         recipeService.updateRecipe(recipeDto);
 
         verify(recipeRepository).save(argumentCaptor.capture());
-        verify(stepRepository).deleteByRecipe(any(Recipe.class));
 
         Recipe recipe = argumentCaptor.getValue();
 
@@ -200,9 +185,6 @@ public class RecipeServiceTest
         assertEquals(TOTAL_TIME, recipe.getTotalTime());
         assertEquals(RATING, recipe.getRating());
         assertEquals(SERVES, recipe.getServes());
-
-        assertEquals(steps.get(0), recipe.getSteps().get(0).getDescription());
-        assertEquals(steps.get(1), recipe.getSteps().get(1).getDescription());
     }
 
     @Test(expected = RecipeDoesNotExistException.class)
@@ -484,5 +466,95 @@ public class RecipeServiceTest
         recipeService.deleteIngredient(ingredientDto);
 
         verify(recipeRepository, never()).save(any());
+    }
+
+    @Test
+    public void shouldDeleteStepSuccessfully() throws Exception
+    {
+        Step step1 = new Step();
+        step1.setId(1L);
+        Step step2 = new Step();
+        step2.setId(2L);
+        Step step3 = new Step();
+        step3.setId(3L);
+
+        Recipe recipe = new Recipe();
+        recipe.addStep(step1);
+        recipe.addStep(step2);
+        recipe.addStep(step3);
+
+        DeleteStepDto stepDto = new DeleteStepDto();
+        stepDto.setStepId(2L);
+        stepDto.setRecipeId(4L);
+
+        when(recipeRepository.findByIdAndUser(stepDto.getRecipeId(), loggedInUser)).thenReturn(Optional.of(recipe));
+
+        recipeService.deleteStep(stepDto);
+
+        ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+
+        verify(recipeRepository).save(argumentCaptor.capture());
+
+        List<Step> result = argumentCaptor.getValue().getSteps();
+
+        assertEquals(2, result.size());
+        assertEquals(step1, result.get(0));
+        assertEquals(step3, result.get(1));
+    }
+
+    @Test
+    public void shouldUpdateStepSuccessfully() throws Exception
+    {
+        Step step1 = new Step();
+        step1.setId(1L);
+        Step step2 = new Step();
+        step2.setId(2L);
+        Step step3 = new Step();
+        step3.setId(3L);
+
+        Recipe recipe = new Recipe();
+        recipe.addStep(step1);
+        recipe.addStep(step2);
+        recipe.addStep(step3);
+
+        UpdateStepDto stepDto = new UpdateStepDto();
+        stepDto.setId(2L);
+        stepDto.setRecipe(4L);
+        stepDto.setDescription("DESCRIPTION");
+
+        when(recipeRepository.findByIdAndUser(stepDto.getRecipe(), loggedInUser)).thenReturn(Optional.of(recipe));
+
+        recipeService.updateStep(stepDto);
+
+        ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+
+        verify(recipeRepository).save(argumentCaptor.capture());
+
+        List<Step> result = argumentCaptor.getValue().getSteps();
+
+        assertNull(result.get(0).getDescription());
+        assertEquals(stepDto.getDescription(), result.get(1).getDescription());
+        assertNull(result.get(2).getDescription());
+    }
+
+    @Test
+    public void shouldAddStepSuccessfully() throws Exception
+    {
+        CreateStepDto stepDto = new CreateStepDto();
+        stepDto.setDescription("DESCRIPTION");
+        stepDto.setRecipe(1L);
+
+        Recipe recipe = new Recipe();
+
+        when(recipeRepository.findByIdAndUser(stepDto.getRecipe(), loggedInUser)).thenReturn(Optional.of(recipe));
+
+        ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+
+        Step result = recipeService.addStep(stepDto);
+
+        verify(recipeRepository).save(argumentCaptor.capture());
+
+        assertEquals(result, argumentCaptor.getValue().getSteps().get(0));
+        assertEquals(stepDto.getDescription(), result.getDescription());
     }
 }

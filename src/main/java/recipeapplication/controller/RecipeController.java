@@ -4,16 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import recipeapplication.dto.CreateRecipeDto;
-import recipeapplication.dto.DeleteIngredientDto;
-import recipeapplication.dto.IngredientDto;
-import recipeapplication.dto.RecipeDto;
+import recipeapplication.dto.*;
 import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.exception.SameUsernameException;
 import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.Ingredient;
 import recipeapplication.model.Recipe;
+import recipeapplication.model.Step;
 import recipeapplication.model.User;
 import recipeapplication.service.InventoryService;
 import recipeapplication.service.RecipeService;
@@ -110,6 +108,7 @@ public class RecipeController
 
         try
         {
+            userService.turnOffInstructions();
             ingredient = recipeService.addIngredient(ingredientDto);
             ingredient.setInventoryItems(
                     inventoryService.getSimilarIngredients(ingredient)
@@ -141,6 +140,69 @@ public class RecipeController
         }
 
         return ResponseEntity.status(202).body("Ingredient deleted");
+    }
+
+    @PutMapping(path = "/add-step")
+    public ResponseEntity addStep(@Valid @RequestBody CreateStepDto stepDto, Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.status(400).body("Invalid step");
+        }
+
+        Step step;
+
+        try
+        {
+            userService.turnOffInstructions();
+            step = recipeService.addStep(stepDto);
+        }
+        catch (RecipeDoesNotExistException e)
+        {
+            return ResponseEntity.status(404).body("Recipe does not exist");
+        }
+
+        return ResponseEntity.status(202).body(step);
+    }
+
+    @PutMapping(path = "/delete-step")
+    public ResponseEntity deleteStep(@Valid @RequestBody DeleteStepDto stepDto, Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.status(400).body("Invalid step supplied");
+        }
+
+        try
+        {
+            recipeService.deleteStep(stepDto);
+        }
+        catch (RecipeDoesNotExistException e)
+        {
+            return ResponseEntity.status(404).body("Recipe not found");
+        }
+
+        return ResponseEntity.status(202).body("Step deleted");
+    }
+
+    @PutMapping(path = "/update-step")
+    public ResponseEntity updateStep(@Valid @RequestBody UpdateStepDto stepDto, Errors errors)
+    {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.status(400).body("Invalid step supplied");
+        }
+
+        try
+        {
+            recipeService.updateStep(stepDto);
+        }
+        catch (RecipeDoesNotExistException e)
+        {
+            return ResponseEntity.status(404).body("Recipe not found");
+        }
+
+        return ResponseEntity.status(202).body("Step updated");
     }
 
     @PostMapping(path = "/share")

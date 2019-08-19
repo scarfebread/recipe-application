@@ -39,9 +39,10 @@ public class Recipe
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Step> steps;
 
+    // TODO this isn't used. Should it be?
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecentlyViewed> recentlyViewed;
 
@@ -183,5 +184,15 @@ public class Recipe
         }
 
         ingredients.add(ingredient);
+    }
+
+    public void addStep(Step step)
+    {
+        if (steps == null)
+        {
+            steps = new ArrayList<>();
+        }
+
+        steps.add(step);
     }
 }

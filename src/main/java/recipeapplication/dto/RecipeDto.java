@@ -1,9 +1,8 @@
 package recipeapplication.dto;
 
-import java.util.List;
-
 public class RecipeDto
 {
+    // TODO do these need validation?
     private Long id;
     private String notes;
     private Long rating;
@@ -12,7 +11,6 @@ public class RecipeDto
     private String prepTime;
     private String difficulty;
     private String newUser;
-    private List<String> steps;
 
     public Long getId()
     {
@@ -54,11 +52,6 @@ public class RecipeDto
         return newUser;
     }
 
-    public List<String> getSteps()
-    {
-        return steps;
-    }
-
     public void setId(Long id)
     {
         this.id = id;
@@ -97,10 +90,5 @@ public class RecipeDto
     public void setDifficulty(String difficulty)
     {
         this.difficulty = difficulty;
-    }
-
-    public void setSteps(List<String> steps)
-    {
-        this.steps = steps;
     }
 }

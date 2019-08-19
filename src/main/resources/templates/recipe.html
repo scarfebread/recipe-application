@@ -235,7 +235,7 @@
                         <td class="stepHeader"></td>
                         <td hidden class="buttonColumn"></td>
                     </tr>
-                    <tr th:each="step,iter : ${recipe.steps}">
+                    <tr th:each="step,iter : ${recipe.steps}" th:data-stepid="${step.id}">
                         <td class="stepNumberColumn"><h3 class="stepNumber" th:text="${iter.index + 1 + '.'}"></h3></td>
                         <td class="stepColumn" th:text="${step.description}"></td>
                         <td class="stepActionColumn">
@@ -324,7 +324,7 @@
 </template>
 
 <template id="stepTemplate">
-    <tr>
+    <tr class="stepRow">
         <td class="stepNumberColumn">
             <h3 class="stepNumber"></h3>
         </td>

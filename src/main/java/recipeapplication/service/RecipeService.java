@@ -3,10 +3,7 @@ package recipeapplication.service;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import recipeapplication.dto.CreateRecipeDto;
-import recipeapplication.dto.DeleteIngredientDto;
-import recipeapplication.dto.IngredientDto;
-import recipeapplication.dto.RecipeDto;
+import recipeapplication.dto.*;
 import recipeapplication.exception.IngredientDoesNotExistException;
 import recipeapplication.exception.RecipeDoesNotExistException;
 import recipeapplication.exception.SameUsernameException;
@@ -14,10 +11,8 @@ import recipeapplication.model.*;
 import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecentlyViewedRepository;
 import recipeapplication.repository.RecipeRepository;
-import recipeapplication.repository.StepRepository;
 import recipeapplication.utility.RecipeTime;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +25,6 @@ public class RecipeService
 {
     private RecipeRepository recipeRepository;
     private IngredientRepository ingredientRepository;
-    private StepRepository stepRepository;
     private AuthService authService;
     private RecentlyViewedRepository recentlyViewedRepository;
     private EntityManager entityManager;
@@ -39,14 +33,12 @@ public class RecipeService
     public RecipeService(
             RecipeRepository recipeRepository,
             IngredientRepository ingredientRepository,
-            StepRepository stepRepository,
             AuthService authService,
             RecentlyViewedRepository recentlyViewedRepository,
             EntityManager entityManager)
     {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
-        this.stepRepository = stepRepository;
         this.authService = authService;
         this.recentlyViewedRepository = recentlyViewedRepository;
         this.entityManager = entityManager;
@@ -107,14 +99,6 @@ public class RecipeService
         recipe.setPrepTime(recipeDto.getPrepTime());
         recipe.setTotalTime(RecipeTime.combineCookAndPrepTime(recipeDto.getCookTime(), recipeDto.getPrepTime()));
         recipe.setDifficulty(recipeDto.getDifficulty());
-
-        stepRepository.deleteByRecipe(recipe);
-        List<Step> steps = new ArrayList<>();
-        for (String step : recipeDto.getSteps())
-        {
-            steps.add(new Step(recipe, step));
-        }
-        recipe.setSteps(steps);
 
         recipeRepository.save(recipe);
     }
@@ -203,6 +187,22 @@ public class RecipeService
         );
     }
 
+    public Step addStep(CreateStepDto stepDto) throws RecipeDoesNotExistException
+    {
+        Recipe recipe = getRecipe(stepDto.getRecipe());
+
+        Step step = new Step(recipe, stepDto.getDescription());
+
+        recipe.addStep(step);
+
+        recipeRepository.save(recipe);
+
+        // Simply returning the step does not set the ID required by the front end
+        return recipe.getSteps().get(
+                recipe.getSteps().size() - 1
+        );
+    }
+
     public void deleteIngredient(DeleteIngredientDto ingredientDto) throws RecipeDoesNotExistException, IngredientDoesNotExistException
     {
         User user = authService.getLoggedInUser();
@@ -223,5 +223,42 @@ public class RecipeService
                 break;
             }
         }
+    }
+
+    public void deleteStep(DeleteStepDto stepDto) throws RecipeDoesNotExistException
+    {
+        Recipe recipe = getRecipe(stepDto.getRecipeId());
+        Step step = extractStepFromRecipe(stepDto.getStepId(), recipe);
+
+        if (step != null)
+        {
+            recipe.getSteps().remove(step);
+            recipeRepository.save(recipe);
+        }
+    }
+
+    public void updateStep(UpdateStepDto stepDto) throws RecipeDoesNotExistException
+    {
+        Recipe recipe = getRecipe(stepDto.getRecipe());
+        Step step = extractStepFromRecipe(stepDto.getId(), recipe);
+
+        if (step != null)
+        {
+            step.setDescription(stepDto.getDescription());
+            recipeRepository.save(recipe);
+        }
+    }
+
+    private Step extractStepFromRecipe(Long stepId, Recipe recipe)
+    {
+        for (Step step : recipe.getSteps())
+        {
+            if (step.getId().equals(stepId))
+            {
+                return step;
+            }
+        }
+
+        return null;
     }
 }
