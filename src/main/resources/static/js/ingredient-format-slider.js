@@ -1,11 +1,5 @@
-IngredientFormatSlider = {
-    metric: true,
-
-    init: function () {
-        this.bindUserActions();
-    },
-
-    bindUserActions: function () {
+IngredientFormatSlider = (function () {
+    let addEventListeners = function () {
         let ingredientFormatButton = getElementById('ingredientFormatButton');
 
         ingredientFormatButton.onclick = function() {
@@ -50,5 +44,13 @@ IngredientFormatSlider = {
                 element.style.display = 'block';
             });
         };
-    },
-};
+    };
+
+    return {
+        metric: true,
+
+        init: function () {
+            addEventListeners();
+        }
+    }
+})();

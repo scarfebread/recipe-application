@@ -1,35 +1,31 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function() {
     Signup.init()
 });
 
-Signup = {
-    enabled: true,
-
-    init: function () {
-        this.bindUserActions();
-    },
-
-    bindUserActions: function () {
+Signup = (function () {
+    let enabled = true;
+        
+    let addEventListeners = function () {
         let signupButton = getElementById('signupButton');
 
-        this.addEnterKeyListener(getElementById('username'));
-        this.addEnterKeyListener(getElementById('password'));
-        this.addEnterKeyListener(getElementById('retypepassword'));
-        this.addEnterKeyListener(getElementById('email'));
+        addEnterKeyListener(getElementById('username'));
+        addEnterKeyListener(getElementById('password'));
+        addEnterKeyListener(getElementById('retypepassword'));
+        addEnterKeyListener(getElementById('email'));
 
         signupButton.onclick = function () {
-            Signup.signup();
+            signup();
         };
-    },
+    };
 
-    signup: function () {
-        if (!this.enabled) {
+    let signup = function () {
+        if (!enabled) {
             return;
         }
 
-        this.enabled = false;
+        enabled = false;
 
-        this.resetErrors();
+        resetErrors();
 
         let username = getValueById('username');
         let password = getValueById('password');
@@ -59,7 +55,7 @@ Signup = {
         }
 
         if (!isValid) {
-            this.enabled = true;
+            enabled = true;
             return false;
         }
 
@@ -78,25 +74,31 @@ Signup = {
             document.getElementById("signupError").innerText = failure;
             showElement('signupError');
 
-            Signup.enabled = true;
+            enabled = true;
         };
 
         callApi("/api/signup", HTTP_POST, user, false, success, failure);
-    },
+    };
 
-    resetErrors: function () {
+    let resetErrors = function () {
         hideElement("passwordsDoNotMatchError");
         hideElement("emailNotValid");
         hideElement("signupError");
         hideElement('usernameTooShortError');
         hideElement('passwordTooShortError');
-    },
+    };
 
-    addEnterKeyListener: function (element) {
+    let addEnterKeyListener = function (element) {
         element.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
-                Signup.signup();
+                signup();
             }
         });
+    };
+
+    return {
+        init: function () {
+            addEventListeners();
+        }
     }
-};
+})();

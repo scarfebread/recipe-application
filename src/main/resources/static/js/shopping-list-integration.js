@@ -2,7 +2,17 @@ ShoppingListIntegration = (function () {
     let bindUserActions = function () {
         let shoppingCartSymbols = document.getElementsByClassName('shoppingCartSymbol');
         Array.from(shoppingCartSymbols).forEach(function (element) {
-            ShoppingListIntegration.addEventListener(element);
+            addEventListener(element);
+        });
+    };
+
+    let addEventListener = function (element) {
+        element.addEventListener('click', function () {
+            if (element.classList.contains('ingredientInShoppingListIntegration')) {
+                remove(element);
+            } else {
+                add(element);
+            }
         });
     };
 
@@ -42,13 +52,7 @@ ShoppingListIntegration = (function () {
         },
 
         addEventListener: function (element) {
-            element.addEventListener('click', function () {
-                if (element.classList.contains('ingredientInShoppingListIntegration')) {
-                    remove(element);
-                } else {
-                    add(element);
-                }
-            });
+            addEventListener(element);
         }
     }
 })();

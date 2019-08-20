@@ -1,39 +1,32 @@
-RecipeEditor = {
-    editButton: null,
-    lockButton: null,
+RecipeEditor = (function () {
+    let editButton = null;
+    let lockButton = null;
 
-    init: function() {
-        this.editButton = getElementById('editRecipeButton');
-        this.lockButton = getElementById('lockRecipeButton');
-
-        this.bindUserActions();
-    },
-
-    bindUserActions: function () {
-        this.editButton.onclick = function () {
-            RecipeEditor.editRecipe();
+    let addEventListeners = function () {
+        editButton.onclick = function () {
+            editRecipe();
         };
 
-        this.lockButton.onclick = function () {
-            RecipeEditor.lockRecipe();
+        lockButton.onclick = function () {
+            lockRecipe();
         };
-    },
+    };
 
-    lockRecipe: function () {
-        this.editButton.style.display = 'inline-block';
-        this.lockButton.style.display = 'none';
+    let lockRecipe = function () {
+        editButton.style.display = 'inline-block';
+        lockButton.style.display = 'none';
 
-        this.setDisplay('difficulty', 'none');
-        this.setDisplay('difficultyLabel', 'inline-block');
-        this.setDisplay('cookTime', 'none');
-        this.setDisplay('prepTime', 'none');
-        this.setDisplay('cookTimeLabel', 'inline-block');
-        this.setDisplay('prepTimeLabel', 'inline-block');
-        this.setDisplay('serves', 'none');
-        this.setDisplay('servesLabel', 'inline-block');
-        this.disableElement('notes');
-        this.hideElement('addIngredientRow');
-        this.hideElement('addStepRow');
+        setDisplay('difficulty', 'none');
+        setDisplay('difficultyLabel', 'inline-block');
+        setDisplay('cookTime', 'none');
+        setDisplay('prepTime', 'none');
+        setDisplay('cookTimeLabel', 'inline-block');
+        setDisplay('prepTimeLabel', 'inline-block');
+        setDisplay('serves', 'none');
+        setDisplay('servesLabel', 'inline-block');
+        disableElement('notes');
+        hideElement('addIngredientRow');
+        hideElement('addStepRow');
 
         Array.from(document.getElementsByClassName('stepColumn')).forEach(function(element) {
             element.contentEditable = false;
@@ -56,23 +49,23 @@ RecipeEditor = {
         Array.from(document.getElementsByClassName('stepHeader')).forEach(function(element) {
             element.style.width = '95%';
         });
-    },
+    };
 
-    editRecipe: function () {
-        this.editButton.style.display = 'none';
-        this.lockButton.style.display = 'inline-block';
+    let editRecipe = function () {
+        editButton.style.display = 'none';
+        lockButton.style.display = 'inline-block';
 
-        this.setDisplay('difficulty', 'inline-block');
-        this.setDisplay('difficultyLabel', 'none');
-        this.setDisplay('cookTime', '-webkit-inline-flex');
-        this.setDisplay('prepTime', '-webkit-inline-flex');
-        this.setDisplay('cookTimeLabel', 'none');
-        this.setDisplay('prepTimeLabel', 'none');
-        this.setDisplay('serves', 'inline-block');
-        this.setDisplay('servesLabel', 'none');
-        this.enableElement('notes');
-        this.showElement('addIngredientRow');
-        this.showElement('addStepRow');
+        setDisplay('difficulty', 'inline-block');
+        setDisplay('difficultyLabel', 'none');
+        setDisplay('cookTime', '-webkit-inline-flex');
+        setDisplay('prepTime', '-webkit-inline-flex');
+        setDisplay('cookTimeLabel', 'none');
+        setDisplay('prepTimeLabel', 'none');
+        setDisplay('serves', 'inline-block');
+        setDisplay('servesLabel', 'none');
+        enableElement('notes');
+        showElement('addIngredientRow');
+        showElement('addStepRow');
 
         Array.from(document.getElementsByClassName('stepColumn')).forEach(function (element) {
             element.contentEditable = true;
@@ -95,25 +88,34 @@ RecipeEditor = {
         Array.from(document.getElementsByClassName('stepHeader')).forEach(function (element) {
             element.style.width = '65%';
         });
-    },
+    };
 
-    setDisplay: function (id, display) {
+    let setDisplay = function (id, display) {
         getElementById(id).style.display = display;
-    },
+    };
 
-    hideElement: function (id) {
+    let hideElement = function (id) {
         getElementById(id).hidden = true;
-    },
+    };
 
-    showElement: function (id) {
+    let showElement = function (id) {
         getElementById(id).hidden = false;
-    },
+    };
 
-    disableElement: function (id) {
+    let disableElement = function (id) {
         getElementById(id).disabled = true;
-    },
+    };
 
-    enableElement: function (id) {
+    let enableElement = function (id) {
         getElementById(id).disabled = false;
-    },
-};
+    };
+    
+    return {
+        init: function() {
+            editButton = getElementById('editRecipeButton');
+            lockButton = getElementById('lockRecipeButton');
+
+            addEventListeners();
+        }
+    }
+})();

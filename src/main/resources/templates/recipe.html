@@ -22,6 +22,8 @@
     <script type="application/javascript" src="/js/add-step.js"></script>
     <script type="application/javascript" src="/js/share-recipe.js"></script>
     <script type="application/javascript" src="/js/event-log.js"></script>
+    <script type="application/javascript" src="/js/delete-recipe.js"></script>
+    <script type="application/javascript" src="/js/recipe-rating.js"></script>
     <script th:inline="javascript">
     /*<![CDATA[*/
         let recipeId = [[${recipe.id}]];
@@ -283,7 +285,7 @@
         <div class="modal-content">
             <span id="closeDeleteRecipeModal" class="close modalClose">&times;</span>
             <div id="preDelete">
-                <label id="deleteLabel"></label><br>
+                <label id="deleteLabel" th:text="${'Are you sure you want to delete ' + recipe.title}"></label><br>
                 <label id="deleteRecipeError" class="hidden error"></label>
                 <button id="confirmDeleteButton" class="modalButton button">
                     <span>DELETE</span>

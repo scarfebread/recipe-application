@@ -1,36 +1,32 @@
-DeleteIngredient = {
-    settings: {
+DeleteIngredient = (function () {
+    let settings = {
         url: '/api/recipe/delete-ingredient',
         deleteButton: 'ingredientDelete',
         ingredientIdAttribute: 'data-ingredientid'
-    },
+    };
 
-    init: function () {
-        this.bindUserActions();
-    },
-
-    bindUserActions: function () {
-        let ingredientDeleteButtons = document.getElementsByClassName(this.settings.deleteButton);
+    let addEventListeners = function () {
+        let ingredientDeleteButtons = document.getElementsByClassName(settings.deleteButton);
 
         Array.from(ingredientDeleteButtons).forEach(function(deleteButton) {
-            DeleteIngredient.addListener(deleteButton);
+            addListener(deleteButton);
         });
-    },
+    };
 
-    addListener: function(deleteButton) {
+    let addListener = function(deleteButton) {
         deleteButton.addEventListener('click', function () {
             let row = deleteButton.parentNode.parentNode;
             let table = row.parentNode;
 
             table.removeChild(row);
 
-            let ingredientId = row.getAttribute(DeleteIngredient.settings.ingredientIdAttribute);
+            let ingredientId = row.getAttribute(settings.ingredientIdAttribute);
 
-            DeleteIngredient.deleteIngredient(ingredientId);
+            deleteIngredient(ingredientId);
         });
-    },
+    };
 
-    deleteIngredient: function (ingredientId) {
+    let deleteIngredient = function (ingredientId) {
         let body = {
             ingredientId: ingredientId,
             recipeId: recipeId
@@ -43,6 +39,16 @@ DeleteIngredient = {
             EventLog.add(`Failed to delete ingredient - ${failure}`)
         };
 
-        callApi(this.settings.url, HTTP_PUT, body, false, success, failure)
+        callApi(settings.url, HTTP_PUT, body, false, success, failure)
+    };
+
+    return {
+        init: function () {
+            addEventListeners();
+        },
+
+        addListener: function(deleteButton) {
+            addListener(deleteButton)
+        }
     }
-};
+})();

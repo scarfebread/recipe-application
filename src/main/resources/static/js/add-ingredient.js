@@ -1,54 +1,47 @@
-AddIngredient = {
-    settings: {
+AddIngredient = (function () {
+    let settings = {
         url: "/api/recipe/ingredient",
         inventoryTitleText: 'Items in your inventory:',
         inventoryDefaultText: 'Not found in inventory',
-    },
+    };
 
-    descriptionInput: null,
-    quantityInput: null,
+    let descriptionInput = null;
+    let quantityInput = null;
 
-    init: function () {
-        this.descriptionInput = getElementById('ingredientDescription');
-        this.quantityInput = getElementById('ingredientQuantity');
-
-        this.bindUserActions();
-    },
-
-    bindUserActions: function () {
+    let bindUserActions = function () {
         let addIngredientButton = getElementById('addIngredientButton');
 
-        this.addEnterKeyEventListener(this.descriptionInput);
-        this.addEnterKeyEventListener(this.quantityInput);
+        addEnterKeyEventListener(descriptionInput);
+        addEnterKeyEventListener(quantityInput);
 
         addIngredientButton.onclick = function () {
-            AddIngredient.createIngredient();
+            createIngredient();
         };
-    },
+    };
 
-    addEnterKeyEventListener: function (element) {
+    let addEnterKeyEventListener = function (element) {
         element.addEventListener("keyup", function (event) {
             if (event.key === "Enter") {
-                AddIngredient.createIngredient();
+                createIngredient();
             }
         });
-    },
+    };
 
-    createIngredient: function () {
-        if (!validateStringLength(this.descriptionInput.value, 1)) {
+    let createIngredient = function () {
+        if (!validateStringLength(descriptionInput.value, 1)) {
             return;
         }
 
         let ingredient = {
             recipe: recipeId,
-            description: this.descriptionInput.value,
-            quantity: this.quantityInput.value
+            description: descriptionInput.value,
+            quantity: quantityInput.value
         };
 
         let success = function(ingredient) {
-            AddIngredient.addIngredientToPage(ingredient);
-            AddIngredient.descriptionInput.value = '';
-            AddIngredient.quantityInput.value = '';
+            addIngredientToPage(ingredient);
+            descriptionInput.value = '';
+            quantityInput.value = '';
 
             EventLog.add(`Ingredient ${ingredient.description} added to recipe`);
         };
@@ -57,10 +50,10 @@ AddIngredient = {
             EventLog.add(`Failed to add ingredient - ${failure}`);
         };
 
-        callApi(this.settings.url, HTTP_PUT, ingredient, true, success, failure);
-    },
+        callApi(settings.url, HTTP_PUT, ingredient, true, success, failure);
+    };
 
-    addIngredientToPage: function (ingredient) {
+    let addIngredientToPage = function (ingredient) {
         let template = getTemplate('ingredientTemplate');
 
         let ingredientRow = template.querySelector('.ingredientRow');
@@ -87,16 +80,16 @@ AddIngredient = {
 
         if (ingredient.inventoryItems.length) {
             inventorySymbol.classList.add('ingredientInInventory');
-            let inventoryItemsTitle = this.createParagraph();
-            inventoryItemsTitle.innerText = this.settings.inventoryTitleText;
+            let inventoryItemsTitle = createParagraph();
+            inventoryItemsTitle.innerText = settings.inventoryTitleText;
             tooltipText.appendChild(inventoryItemsTitle);
 
             Array.from(ingredient.inventoryItems).forEach(function (item) {
-                let metric = AddIngredient.createParagraph();
+                let metric = createParagraph();
                 metric.innerText = `${item.description} ${item.metric}`;
                 metric.className = 'ingredientMetricToolTip';
 
-                let imperial = AddIngredient.createParagraph();
+                let imperial = createParagraph();
                 imperial.innerText = `${item.description} ${item.imperial}`;
                 imperial.className = 'ingredientImperialToolTip';
 
@@ -110,8 +103,8 @@ AddIngredient = {
                 tooltipText.appendChild(imperial);
             });
         } else {
-            let inventoryItemsText = this.createParagraph();
-            inventoryItemsText.innerText = this.settings.inventoryDefaultText;
+            let inventoryItemsText = createParagraph();
+            inventoryItemsText.innerText = settings.inventoryDefaultText;
             tooltipText.appendChild(inventoryItemsText);
         }
 
@@ -120,9 +113,18 @@ AddIngredient = {
 
         DeleteIngredient.addListener(ingredientDelete);
         ShoppingListIntegration.addEventListener(shoppingCartSymbol);
-    },
+    };
 
-    createParagraph: function () {
+    let createParagraph = function () {
         return document.createElement('p');
-    },
-};
+    };
+
+    return {
+        init: function () {
+            descriptionInput = getElementById('ingredientDescription');
+            quantityInput = getElementById('ingredientQuantity');
+
+            bindUserActions();
+        }
+    }
+})();

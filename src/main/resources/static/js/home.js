@@ -1,17 +1,11 @@
-let createRecipeEnabled = true;
-
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function() {
     Home.init();
 });
 
-Home = {
-    enabled: true,
+Home = (function () {
+    let createRecipeEnabled = true;
 
-    init: function () {
-        this.bindUserActions();
-    },
-
-    bindUserActions: function () {
+    let addEventListeners = function () {
         let modal = getElementById('createRecipeModal');
         let createRecipeButton = getElementById("createRecipeButton");
         let closeModalButton = document.getElementsByClassName("close")[0];
@@ -22,56 +16,56 @@ Home = {
         };
 
         closeModalButton.onclick = function() {
-            Home.closeModal(modal);
+            closeModal(modal);
         };
 
         window.onclick = function(event) {
             if (event.target === modal) {
-                Home.closeModal(modal);
+                closeModal(modal);
             }
         };
 
         window.onkeydown = function(event) {
             if (event.key === 'Escape') {
-                Home.closeModal(modal);
+                closeModal(modal);
             }
         };
 
         confirmRecipeButton.onclick = function () {
-            Home.createRecipe();
+            createRecipe();
         };
 
         getElementById('recipeName').addEventListener("keyup", function (event) {
             if (event.key === "Enter") {
-                Home.createRecipe();
+                createRecipe();
             }
         });
 
-        this.getRecipes();
-    },
+        getRecipes();
+    };
 
-    getRecipes: function () {
+    let getRecipes = function () {
         let success = function(recipes) {
-            Home.displayRecipes(recipes);
-            Home.enableAutocomplete(recipes);
+            displayRecipes(recipes);
+            enableAutocomplete(recipes);
         };
 
         let failure = function(failure) {};
 
         callApi("/api/recipe", HTTP_GET, null, true, success, failure);
-    },
+    };
 
-    displayRecipes: function (recipes) {
+    let displayRecipes = function (recipes) {
         let allRecipes = getElementById('allRecipes');
 
-        this.removeChildElements(allRecipes);
+        removeChildElements(allRecipes);
 
         for (let i in recipes) {
-            this.displayRecipe(recipes[i]);
+            displayRecipe(recipes[i]);
         }
-    },
+    };
 
-    displayRecipe: function (recipe) {
+    let displayRecipe = function (recipe) {
         let template = getTemplate('recipeTemplate');
 
         let recipeLink = template.querySelector('.recipeLink');
@@ -88,17 +82,17 @@ Home = {
         }
 
         getElementById('allRecipes').appendChild(template);
-    },
+    };
 
-    closeModal: function (modal) {
+    let closeModal = function (modal) {
         hideElement('invalidRecipeNameError');
         hideElement('postRecipeCreated');
         showElement('preRecipeCreated');
         modal.style.display = "none";
         getElementById('recipeName').value = '';
-    },
+    };
 
-    createRecipe: function () {
+    let createRecipe = function () {
         hideElement('invalidRecipeNameError');
 
         let recipe = {
@@ -115,7 +109,7 @@ Home = {
 
             hideElement('preRecipeCreated');
             showElement('postRecipeCreated');
-            Home.getRecipes();
+            getRecipes();
 
             createRecipeEnabled = true;
         };
@@ -131,9 +125,9 @@ Home = {
             createRecipeEnabled = false;
             callApi("/api/recipe", HTTP_POST, recipe, true, success, failure);
         }
-    },
+    };
 
-    enableAutocomplete: function (recipes) {
+    let enableAutocomplete = function (recipes) {
         let searchBar = getElementById('searchForRecipe');
 
         searchBar.addEventListener("input", function(e) {
@@ -145,13 +139,19 @@ Home = {
                 }
             }
 
-            Home.displayRecipes(matchedRecipes);
+            displayRecipes(matchedRecipes);
         });
-    },
+    };
 
-    removeChildElements: function (element) {
+    let removeChildElements = function (element) {
         while (element.firstChild) {
             element.removeChild(element.firstChild);
         }
+    };
+
+    return {
+        init: function () {
+            addEventListeners();
+        }
     }
-};
+})();

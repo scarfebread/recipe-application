@@ -2,24 +2,20 @@ document.addEventListener("DOMContentLoaded", function() {
     ChangePassword.init();
 });
 
-ChangePassword = {
-    init: function () {
-        this.bindUserActions();
-    },
-
-    bindUserActions: function () {
+ChangePassword = (function () {
+    let addEventListeners = function () {
         let changePasswordButton = getElementById('changePasswordButton');
 
         changePasswordButton.onclick = function () {
-            ChangePassword.changePassword();
+            changePassword();
         };
 
-        this.addEventListener(getElementById('password'));
-        this.addEventListener(getElementById('retypepassword'));
-    },
+        addEventListener(getElementById('password'));
+        addEventListener(getElementById('retypepassword'));
+    };
 
-    changePassword: function () {
-        this.resetErrors();
+    let changePassword = function () {
+        resetErrors();
 
         let password = getValueById('password');
         let repeatPassword = getValueById('retypepassword');
@@ -55,19 +51,25 @@ ChangePassword = {
         };
 
         callApi("/api/change-password", HTTP_POST, passwordDto, false, success, failure);
-    },
+    };
 
-    resetErrors: function () {
+    let resetErrors = function () {
         hideElement("passwordsDoNotMatchError");
         hideElement("passwordChangeError");
         hideElement('passwordTooShortError');
-    },
+    };
 
-    addEventListener: function (element) {
+    let addEventListener = function (element) {
         element.addEventListener("keyup", function (event) {
             if (event.key === "Enter") {
-                ChangePassword.changePassword();
+                changePassword();
             }
         });
-    },
-};
+    };
+
+    return {
+        init: function () {
+            addEventListeners();
+        }
+    }
+})();
