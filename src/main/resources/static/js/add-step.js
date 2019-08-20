@@ -1,4 +1,4 @@
-AddStep  = (function () {
+AddStep = (function () {
     let addButtonListener = function () {
         let addStepButton = getElementById('addStepButton');
 
