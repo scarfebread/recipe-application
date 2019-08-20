@@ -2,26 +2,22 @@ document.addEventListener("DOMContentLoaded", function() {
     PasswordReset.init();
 });
 
-PasswordReset = {
-    init: function () {
-        this.bindUserActions();
-    },
-
-    bindUserActions: function () {
+PasswordReset = (function () {
+    let addEventListeners = function () {
         let submitButton = getElementById('resetPasswordButton');
         submitButton.onclick = function () {
-            PasswordReset.reset();
+            reset();
         };
 
         let input = getElementById('usernameoremail');
         input.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
-                PasswordReset.reset();
+                reset();
             }
         });
-    },
+    };
 
-    reset: function () {
+    let reset = function () {
         hideElement('invalidUsernameOrEmail');
 
         let emailOrUsername = getValueById('usernameoremail');
@@ -52,5 +48,11 @@ PasswordReset = {
         };
 
         callApi("/api/password-reset", HTTP_POST, user, false, success, failure);
+    };
+
+    return {
+        init: function () {
+            addEventListeners();
+        }
     }
-};
+})();

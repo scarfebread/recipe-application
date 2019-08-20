@@ -1,44 +1,63 @@
-ShareRecipe = {
-    enabled: true,
+ShareRecipe = (function () {
+    let enabled = true;
+    let modal = null;
 
-    init: function () {
-        this.bindUserActions();
-    },
-
-    bindUserActions: function () {
+    let addEventListeners = function () {
+        let shareRecipeButton = getElementById('shareRecipeButton');
         let confirmShareRecipe = getElementById('confirmShareButton');
+        let closeShareRecipeModalButton = getElementById('closeShareRecipeModal');
         let input = getElementById('username');
 
         confirmShareRecipe.onclick = function () {
-            ShareRecipe.submit();
+            submit();
         };
 
         input.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
-                ShareRecipe.submit();
+                submit();
             }
         });
-    },
 
-    submit: function () {
+        shareRecipeButton.onclick = function() {
+            modal.style.display = "block";
+        };
+
+        closeShareRecipeModalButton.onclick = function() {
+            closeModal();
+        };
+
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        window.onkeydown = function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        };
+    };
+
+    let submit = function () {
         hideElement('invalidUsernameError');
         hideElement('shareRecipeError');
 
         let username = getValueById('username');
 
         if (validateStringLength(username, 1)) {
-            ShareRecipe.share(username);
+            share(username);
         } else {
             showElement('invalidUsernameError');
         }
-    },
+    };
 
-    share: function (newUser) {
-        if (!this.enabled) {
+    let share = function (newUser) {
+        if (!enabled) {
             return;
         }
 
-        this.enabled = false;
+        enabled = false;
 
         let recipe = {
             id: recipeId,
@@ -51,11 +70,27 @@ ShareRecipe = {
         };
 
         let failure = function(failure) {
-            ShareRecipe.enabled = true;
+            enabled = true;
             getElementById('shareRecipeError').innerText = failure;
             showElement('shareRecipeError');
         };
 
         callApi("/api/recipe/share", HTTP_POST, recipe, false, success, failure);
+    };
+
+    let closeModal = function () {
+        hideElement('invalidUsernameError');
+        hideElement('shareRecipeError');
+        hideElement('postShare');
+        showElement('preShare');
+        modal.style.display = "none";
+        getElementById('username').value = '';
+    };
+
+    return {
+        init: function () {
+            modal = getElementById('shareRecipeModal');
+            addEventListeners();
+        }
     }
-};
+})();

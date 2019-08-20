@@ -1,47 +1,38 @@
-// Constants
 const HTTP_GET = 'GET';
 const HTTP_POST = 'POST';
 const HTTP_DELETE = 'DELETE';
 const HTTP_PUT = 'PUT';
 
-function showElement(id)
-{
+function showElement(id) {
     document.getElementById(id).style.display = "block";
 }
 
-function hideElement(id)
-{
+function hideElement(id) {
     document.getElementById(id).style.display = "none";
 }
 
-function validateEmail(email)
-{
+function validateEmail(email) {
     let validateEmailRegularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return validateEmailRegularExpression.test(email);
 }
 
-function validateStringLength(string, length)
-{
+function validateStringLength(string, length) {
     return string.length >= length;
 }
 
-function validatePasswordMatches(password, repeatPassword)
-{
+function validatePasswordMatches(password, repeatPassword) {
     return password === repeatPassword;
 }
 
-function getElementById(id)
-{
+function getElementById(id) {
     return document.getElementById(id);
 }
 
-function getValueById(id)
-{
+function getValueById(id) {
     return getElementById(id).value;
 }
 
-function callApi(url, method, body, jsonResponse, success, failure)
-{
+function callApi(url, method, body, jsonResponse, success, failure) {
     let request = {
         method: method,
         headers: {
@@ -79,8 +70,7 @@ function callApi(url, method, body, jsonResponse, success, failure)
     );
 }
 
-function getTemplate(id)
-{
+function getTemplate(id) {
     return getElementById(id).content.cloneNode(true);
 }
 
