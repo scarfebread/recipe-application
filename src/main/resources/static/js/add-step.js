@@ -32,9 +32,13 @@ AddStep = (function () {
         let success = function (step) {
             addStepToList(step.id, step.description);
             newStep.value = '';
+
+            EventLog.add('Added step to recipe')
         };
 
-        let failure = function () {};
+        let failure = function (failure) {
+            EventLog.add(`Failed to add step to recipe - ${failure}`)
+        };
 
         callApi('/api/recipe/add-step', HTTP_PUT, body, true, success, failure);
     };
@@ -83,8 +87,12 @@ AddStep = (function () {
                 recipe: recipeId
             };
 
-            let success = function () {};
-            let failure = function () {};
+            let success = function () {
+                EventLog.add('Step updated')
+            };
+            let failure = function (failure) {
+                EventLog.add(`Failed to update step - ${failure}`)
+            };
 
             callApi('/api/recipe/update-step', HTTP_PUT, body, false, success, failure);
         });
@@ -116,9 +124,13 @@ AddStep = (function () {
         let success = function () {
             table.removeChild(stepRow);
             updateStepNumbers();
+
+            EventLog.add('Step deleted')
         };
 
-        let failure = function () {};
+        let failure = function (failure) {
+            EventLog.add(`Failed to remove step - ${failure}`)
+        };
 
         callApi('/api/recipe/delete-step', HTTP_PUT, body, false, success, failure);
     };

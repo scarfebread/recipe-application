@@ -10,9 +10,11 @@
     <link rel="stylesheet" href="/css/inventory.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="/css/ingredient-format-slider.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="/css/ingredient-auto-complete.css" media="screen" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="application/javascript" src="/js/library.js"></script>
     <script type="application/javascript" src="/js/shopping-list.js"></script>
     <script type="application/javascript" src="/js/ingredient-format-slider.js"></script>
+    <script type="application/javascript" src="/js/event-log.js"></script>
     <link rel='shortcut icon' href='/images/favicon.ico' type='image/x-icon'/>
     <script th:inline="javascript">
         /*<![CDATA[*/
@@ -48,7 +50,7 @@
                     </a>
                 </div>
             </div>
-            <a href="/inventory">Inventory</a>
+            <a href="/inventory">Pantry</a>
             <a class="active" href="/shopping-list">Shopping List</a>
             <div class="dropdown">
                 <button class="dropbtn">Account
@@ -109,9 +111,11 @@
         <div class="instructionsContainer">
             <label>Add ingredients to your shopping list.</label>
             <label>The quantity is optional.</label>
-            <label>Once there, you can move to your inventory using the <span class="plusSymbol">+</span> button, or remove by pressing the <span class="deleteSymbol">&times;</span> button.</label>
+            <label>Once there, you can move to your pantry using the <span class="plusSymbol">+</span> button, or remove by pressing the <span class="deleteSymbol">&times;</span> button.</label>
         </div>
     </div>
+
+    <label id="eventLog"></label>
 </div>
 
 </body>

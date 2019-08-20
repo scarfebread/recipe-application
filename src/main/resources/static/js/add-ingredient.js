@@ -49,9 +49,13 @@ AddIngredient = {
             AddIngredient.addIngredientToPage(ingredient);
             AddIngredient.descriptionInput.value = '';
             AddIngredient.quantityInput.value = '';
+
+            EventLog.add(`Ingredient ${ingredient.description} added to recipe`);
         };
 
-        let failure = function(failure) {};
+        let failure = function(failure) {
+            EventLog.add(`Failed to add ingredient - ${failure}`);
+        };
 
         callApi(this.settings.url, HTTP_PUT, ingredient, true, success, failure);
     },
@@ -115,7 +119,7 @@ AddIngredient = {
         ingredientTable.insertBefore(template, ingredientTable.children[ingredientTable.children.length -1]);
 
         DeleteIngredient.addListener(ingredientDelete);
-        ShoppingList.addEventListener(shoppingCartSymbol);
+        ShoppingListIntegration.addEventListener(shoppingCartSymbol);
     },
 
     createParagraph: function () {

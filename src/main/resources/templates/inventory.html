@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Cooking Pot - Inventory</title>
+    <title>The Cooking Pot - Pantry</title>
     <link href='https://fonts.googleapis.com/css?family=Didact Gothic' rel='stylesheet'>
     <link rel="stylesheet" href="/css/library.css" media="screen" type="text/css"/>
     <link rel="stylesheet" href="/css/inventory.css" media="screen" type="text/css"/>
@@ -16,6 +16,7 @@
     <script type="application/javascript" src="/js/inventory.js"></script>
     <script type="application/javascript" src="/js/ingredient-format-slider.js"></script>
     <script type="application/javascript" src="/js/shopping-list-integration.js"></script>
+    <script type="application/javascript" src="/js/event-log.js"></script>
     <script th:inline="javascript">
         /*<![CDATA[*/
         let ingredients = [[${ingredients}]];
@@ -50,7 +51,7 @@
                     </a>
                 </div>
             </div>
-            <a class="active" href="inventory.html">Inventory</a>
+            <a class="active" href="inventory.html">Pantry</a>
             <a href="shopping-list">Shopping List</a>
             <div class="dropdown">
                 <button class="dropbtn">Account
@@ -62,7 +63,7 @@
                     <a href="/delete-account">Delete account</a>
                 </div>
             </div>
-            <label class="pageTitle">Inventory</label>
+            <label class="pageTitle">Pantry</label>
         </div>
     </div>
 
@@ -116,12 +117,14 @@
             </div>
         </div>
         <div class="instructionsContainer">
-            <label>Add ingredients to your ingredient inventory.</label>
+            <label>Add ingredients to your pantry.</label>
             <label>The quantity is optional.</label>
-            <label>Once there, you can add or remove the inventory item from your shopping list using the <i class="fa fa-shopping-cart shoppingCartSymbol"></i> button.</label>
+            <label>Once there, you can add or remove the ingredient from your shopping list using the <i class="fa fa-shopping-cart shoppingCartSymbol"></i> button.</label>
             <label>You can remove by pressing the <span class="close deleteSymbol">&times;</span> button.</label>
         </div>
     </div>
+
+    <label id="eventLog"></label>
 </div>
 
 </body>
