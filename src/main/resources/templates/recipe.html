@@ -21,6 +21,7 @@
     <script type="application/javascript" src="/js/add-ingredient.js"></script>
     <script type="application/javascript" src="/js/add-step.js"></script>
     <script type="application/javascript" src="/js/share-recipe.js"></script>
+    <script type="application/javascript" src="/js/event-log.js"></script>
     <script th:inline="javascript">
     /*<![CDATA[*/
         let recipeId = [[${recipe.id}]];
@@ -61,7 +62,7 @@
                         </a>
                     </div>
                 </div>
-                <a href="/inventory">Inventory</a>
+                <a href="/inventory">Pantry</a>
                 <a href="/shopping-list">Shopping List</a>
                 <div class="dropdown">
                     <button class="dropbtn">Account
@@ -171,7 +172,7 @@
                             <i th:if="${!ingredient.inventoryItems.empty}"
                                class="fa fa-home inventorySymbol ingredientInInventory" aria-hidden="true">
                                 <span class="tooltipText">
-                                    <p>Items in your inventory:</p>
+                                    <p>Items in your pantry:</p>
                                     <p th:each="inventoryIngredient : ${ingredient.inventoryItems}"
                                        th:text="${inventoryIngredient.description + ' ' + inventoryIngredient.metric}"
                                        class="ingredientMetricToolTip">
@@ -185,7 +186,7 @@
                             <i th:if="${ingredient.inventoryItems.empty}"
                                class="fa fa-home inventorySymbol" aria-hidden="true">
                                 <span class="tooltipText">
-                                    <p>Not found in inventory</p>
+                                    <p>Not found in pantry</p>
                                 </span>
                             </i>
                             <i th:if="${ingredient.inShoppingList}"
@@ -257,6 +258,7 @@
             </div>
         </div>
 
+        <label id="eventLog"></label>
     </div>
 
     <div id="shareRecipeModal" class="modal">

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     DeleteIngredient.init();
     AddIngredient.init();
     AddStep.init();
-    ShoppingList.init();
+    ShoppingListIntegration.init();
     IngredientFormatSlider.init();
     ShareRecipe.init();
 
@@ -156,6 +156,8 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     autocomplete(getElementById("ingredientDescription"), ingredients);
+
+    EventLog.add('Recipe loaded');
 });
 
 function updateRecipe() {
@@ -172,9 +174,13 @@ function updateRecipe() {
         difficulty: difficulty.options[difficulty.selectedIndex].value
     };
 
-    let success = function() {};
+    let success = function() {
+        EventLog.add('Recipe updated')
+    };
 
-    let failure = function(failure) {};
+    let failure = function(failure) {
+        EventLog.add('Recipe failed to update')
+    };
 
     callApi("/api/recipe", HTTP_PUT, recipe, false, success, failure);
 }

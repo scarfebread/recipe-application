@@ -36,8 +36,12 @@ DeleteIngredient = {
             recipeId: recipeId
         };
 
-        let success = function() {};
-        let failure = function() {};
+        let success = function() {
+            EventLog.add('Deleted ingredient')
+        };
+        let failure = function(failure) {
+            EventLog.add(`Failed to delete ingredient - ${failure}`)
+        };
 
         callApi(this.settings.url, HTTP_PUT, body, false, success, failure)
     }
