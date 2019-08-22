@@ -24,7 +24,8 @@ export const RecipeEditor = (function () {
         setDisplay('prepTimeLabel', 'inline-block');
         setDisplay('serves', 'none');
         setDisplay('servesLabel', 'inline-block');
-        disableElement('notes');
+        setDisplay('notes', 'none');
+        setDisplay('notesLabel', 'block');
         hideElement('addIngredientRow');
         hideElement('addStepRow');
 
@@ -63,7 +64,8 @@ export const RecipeEditor = (function () {
         setDisplay('prepTimeLabel', 'none');
         setDisplay('serves', 'inline-block');
         setDisplay('servesLabel', 'none');
-        enableElement('notes');
+        setDisplay('notes', 'block');
+        setDisplay('notesLabel', 'none');
         showElement('addIngredientRow');
         showElement('addStepRow');
 
