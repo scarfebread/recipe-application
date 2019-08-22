@@ -60,9 +60,10 @@
                     <a href="/delete-account">Delete account</a>
                 </div>
             </div>
-            <label class="pageTitle">Shopping List</label>
         </div>
     </div>
+
+    <label class="pageTitle">Shopping List</label>
 
     <div class="inventoryContainer" id="inventoryContainer">
         <div class="inventoryItem" th:each="item,iter : ${shoppingList}" th:id="${item.id}">
