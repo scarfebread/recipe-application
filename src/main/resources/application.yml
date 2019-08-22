@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    # Uncomment when running in production mode
+#    url: "jdbc:postgresql://db:5432/postgres"
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: "postgres"
+    password: "U9]zCd(-3Uk4~<|G"
+  jpa:
+    properties:
+      hibernate:
+        default_schema: "the_cooking_pot"
+        jdbc.lob:
+          non_contextual_creation: true
+  mail:
+    host: "relay.plus.net"
+    port: 587
+    username: "scarfebread"
+    password: ",9)+0da#6ome6Fu?"
+    properties:
+      mail:
+        smtp:
+          auth: true

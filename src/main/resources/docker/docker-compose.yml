@@ -1,7 +1,6 @@
 version: '3.1'
 
 services:
-
   db:
     image: postgres
     restart: always
@@ -9,3 +8,5 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: U9]zCd(-3Uk4~<|G
+    volumes:
+      - ../schema/:/docker-entrypoint-initdb.d
