@@ -31,14 +31,14 @@
 
 .shoppingCartSymbol {
     font-size:24px !important;
-    color: #aaaaaa;;
+    color: #949191;
     font-weight: bold;
     padding-right: 5px;
 }
 
 .plusSymbol {
     font-size:35px;
-    color: #aaaaaa;;
+    color: #949191;
     font-weight: bold;
     line-height: 20px;
 }
@@ -47,7 +47,7 @@
     font-size: 35px;
     font-weight: bold;
     line-height: 20px;
-    color: #aaaaaa;
+    color: #949191;
 }
 
 .plusSymbol:hover,
