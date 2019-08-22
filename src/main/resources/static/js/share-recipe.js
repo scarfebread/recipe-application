@@ -25,18 +25,6 @@ export const ShareRecipe = (function () {
         closeShareRecipeModalButton.onclick = function() {
             closeModal();
         };
-
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        };
-
-        window.onkeydown = function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
-            }
-        };
     };
 
     const submit = function () {

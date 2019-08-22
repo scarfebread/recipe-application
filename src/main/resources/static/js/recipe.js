@@ -17,14 +17,16 @@ document.addEventListener("DOMContentLoaded", function() {
     AddStep.init();
     ShoppingListIntegration.init();
     IngredientFormatSlider.init();
-    ShareRecipe.init();
     DeleteRecipe.init();
+    ShareRecipe.init();
     RecipeRating.init();
 
     EventLog.add('Recipe loaded');
 });
 
 export const Recipe = (function () {
+    let instructionsModal;
+
     const addEventListeners = function () {
         const difficulty = getElementById('difficulty');
         const difficultyLabel = getElementById('difficultyLabel');
@@ -35,7 +37,6 @@ export const Recipe = (function () {
         const serves = getElementById('serves');
         const servesLabel = getElementById('servesLabel');
         const notes = getElementById('notes');
-        const instructionsModal = getElementById('instructionsModal');
 
         serves.value = recipeServes;
         difficulty.value = recipeDifficulty;
@@ -71,18 +72,6 @@ export const Recipe = (function () {
         if (displayInstructions) {
             instructionsModal.style.display = "block";
         }
-
-        window.onclick = function(event) {
-            if (event.target === instructionsModal) {
-                closeModal(instructionsModal);
-            }
-        };
-
-        window.onkeydown = function(event) {
-            if (event.key === 'Escape') {
-                closeModal(instructionsModal);
-            }
-        };
     };
 
     const update = function () {
@@ -114,10 +103,39 @@ export const Recipe = (function () {
         modal.style.display = "none";
     };
 
+    const addModalCloseListeners = function () {
+        const deleteRecipeModal = getElementById('deleteRecipeModal');
+        const shareRecipeModal = getElementById('shareRecipeModal');
+
+        window.onclick = function(event) {
+            if (event.target === deleteRecipeModal) {
+                closeModal(deleteRecipeModal);
+            }
+
+            if (event.target === shareRecipeModal) {
+                closeModal(shareRecipeModal);
+            }
+
+            if (event.target === instructionsModal) {
+                closeModal(instructionsModal);
+            }
+        };
+
+        window.onkeydown = function(event) {
+            if (event.key === 'Escape') {
+                closeModal(deleteRecipeModal);
+                closeModal(shareRecipeModal);
+                closeModal(instructionsModal);
+            }
+        };
+    };
+
     return {
         init: function () {
+            instructionsModal = getElementById('instructionsModal');
             autocomplete(getElementById("ingredientDescription"), ingredients);
             addEventListeners();
+            addModalCloseListeners();
         },
 
         update: function () {
