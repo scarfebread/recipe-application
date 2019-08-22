@@ -1,3 +1,8 @@
+import {IngredientFormatSlider} from "./ingredient-format-slider.js";
+import {EventLog} from "./event-log.js";
+import {ShoppingListIntegration} from "./shopping-list-integration.js";
+import {DeleteIngredient} from "./delete-ingredient.js";
+
 export const AddIngredient = (function () {
     const settings = {
         url: "/api/recipe/ingredient",

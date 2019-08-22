@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 export const DeleteAccount = (function () {
     let accountDeleted = false;
+    const modal = getElementById('deleteAccountModal');
 
     const addConfirmDeleteListener = function () {
         const confirmDeleteButton = getElementById('confirmDeleteButton');
@@ -21,29 +22,28 @@ export const DeleteAccount = (function () {
         const cancelDeleteButton = getElementById('cancelDeleteButton');
 
         cancelDeleteButton.onclick = function() {
-            closeModal(modal);
+            closeModal();
         };
 
         closeModalButton.onclick = function() {
-            closeModal(modal);
+            closeModal();
         };
 
         window.onclick = function(event) {
             if (event.target === modal) {
-                closeModal(modal);
+                closeModal();
             }
         };
 
         window.onkeydown = function(event) {
             if (event.key === 'Escape') {
-                closeModal(modal);
+                closeModal();
             }
         };
     };
 
     const addDisplayModalListener = function () {
         const deleteAccountButton = getElementById('deleteAccountButton');
-        const modal = getElementById('deleteAccountModal');
 
         deleteAccountButton.onclick = function() {
             modal.style.display = 'block';
@@ -65,7 +65,7 @@ export const DeleteAccount = (function () {
         callApi('/api/user', HTTP_DELETE, null, false, successCallback, failureCallback);
     };
 
-    const closeModal = function (modal) {
+    const closeModal = function () {
         if (accountDeleted) {
             window.location.href = '/'
         }

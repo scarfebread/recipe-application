@@ -1,3 +1,5 @@
+import {EventLog} from "./event-log.js";
+
 export const AddStep = (function () {
     const addButtonListener = function () {
         const addStepButton = getElementById('addStepButton');

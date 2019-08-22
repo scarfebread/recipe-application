@@ -7,6 +7,7 @@ import {IngredientFormatSlider} from "./ingredient-format-slider.js";
 import {ShareRecipe} from "./share-recipe.js";
 import {DeleteRecipe} from "./delete-recipe.js";
 import {EventLog} from "./event-log.js";
+import {RecipeRating} from "./recipe-rating.js";
 
 document.addEventListener("DOMContentLoaded", function() {
     Recipe.init();

@@ -1,3 +1,5 @@
+import {Recipe} from "./recipe.js";
+
 export const RecipeRating = (function () {
     const addEventListeners = function () {
         const rating1 = getElementById('rating1');
