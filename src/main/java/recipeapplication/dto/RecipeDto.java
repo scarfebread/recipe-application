@@ -2,7 +2,6 @@ package recipeapplication.dto;
 
 public class RecipeDto
 {
-    // TODO do these need validation?
     private Long id;
     private String notes;
     private Long rating;

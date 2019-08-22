@@ -141,7 +141,8 @@
                         <label for="notes">Notes:</label>
                     </div>
                     <div>
-                        <textarea disabled id="notes" th:text="${recipe.notes}"></textarea>
+                        <label id="notesLabel" th:text="${recipe.notes}"></label>
+                        <textarea id="notes" class="hidden" th:text="${recipe.notes}"></textarea>
                     </div>
                 </div>
             </div>

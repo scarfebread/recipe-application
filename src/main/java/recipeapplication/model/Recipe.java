@@ -43,10 +43,6 @@ public class Recipe
     @JoinColumn(name = "recipe")
     private List<Step> steps;
 
-    // TODO this isn't used. Should it be?
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
-    private List<RecentlyViewed> recentlyViewed;
-
     public User getUser()
     {
         return user;
