@@ -2,11 +2,11 @@ document.addEventListener("DOMContentLoaded", function() {
     Signup.init()
 });
 
-Signup = (function () {
+export const Signup = (function () {
     let enabled = true;
         
-    let addEventListeners = function () {
-        let signupButton = getElementById('signupButton');
+    const addEventListeners = function () {
+        const signupButton = getElementById('signupButton');
 
         addEnterKeyListener(getElementById('username'));
         addEnterKeyListener(getElementById('password'));
@@ -18,7 +18,7 @@ Signup = (function () {
         };
     };
 
-    let signup = function () {
+    const signup = function () {
         if (!enabled) {
             return;
         }
@@ -27,10 +27,10 @@ Signup = (function () {
 
         resetErrors();
 
-        let username = getValueById('username');
-        let password = getValueById('password');
-        let repeatPassword = getValueById('retypepassword');
-        let email = getValueById('email');
+        const username = getValueById('username');
+        const password = getValueById('password');
+        const repeatPassword = getValueById('retypepassword');
+        const email = getValueById('email');
 
         let isValid = true;
 
@@ -59,18 +59,18 @@ Signup = (function () {
             return false;
         }
 
-        let user = {
+        const user = {
             username: username,
             password: password,
             email: email
         };
 
-        let success = function() {
+        const success = function() {
             hideElement('preSignupDisplay');
             showElement('postSignupDisplay');
         };
 
-        let failure = function(failure) {
+        const failure = function(failure) {
             document.getElementById("signupError").innerText = failure;
             showElement('signupError');
 
@@ -80,7 +80,7 @@ Signup = (function () {
         callApi("/api/signup", HTTP_POST, user, false, success, failure);
     };
 
-    let resetErrors = function () {
+    const resetErrors = function () {
         hideElement("passwordsDoNotMatchError");
         hideElement("emailNotValid");
         hideElement("signupError");
@@ -88,7 +88,7 @@ Signup = (function () {
         hideElement('passwordTooShortError');
     };
 
-    let addEnterKeyListener = function (element) {
+    const addEnterKeyListener = function (element) {
         element.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 signup();

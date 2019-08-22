@@ -1,15 +1,15 @@
-AddIngredient = (function () {
-    let settings = {
+export const AddIngredient = (function () {
+    const settings = {
         url: "/api/recipe/ingredient",
         inventoryTitleText: 'Items in your inventory:',
         inventoryDefaultText: 'Not found in inventory',
     };
 
-    let descriptionInput = null;
-    let quantityInput = null;
+    let descriptionInput;
+    let quantityInput;
 
-    let bindUserActions = function () {
-        let addIngredientButton = getElementById('addIngredientButton');
+    const bindUserActions = function () {
+        const addIngredientButton = getElementById('addIngredientButton');
 
         addEnterKeyEventListener(descriptionInput);
         addEnterKeyEventListener(quantityInput);
@@ -19,7 +19,7 @@ AddIngredient = (function () {
         };
     };
 
-    let addEnterKeyEventListener = function (element) {
+    const addEnterKeyEventListener = function (element) {
         element.addEventListener("keyup", function (event) {
             if (event.key === "Enter") {
                 createIngredient();
@@ -27,18 +27,18 @@ AddIngredient = (function () {
         });
     };
 
-    let createIngredient = function () {
+    const createIngredient = function () {
         if (!validateStringLength(descriptionInput.value, 1)) {
             return;
         }
 
-        let ingredient = {
+        const ingredient = {
             recipe: recipeId,
             description: descriptionInput.value,
             quantity: quantityInput.value
         };
 
-        let success = function(ingredient) {
+        const success = function(ingredient) {
             addIngredientToPage(ingredient);
             descriptionInput.value = '';
             quantityInput.value = '';
@@ -46,24 +46,24 @@ AddIngredient = (function () {
             EventLog.add(`Ingredient ${ingredient.description} added to recipe`);
         };
 
-        let failure = function(failure) {
+        const failure = function(failure) {
             EventLog.add(`Failed to add ingredient - ${failure}`);
         };
 
         callApi(settings.url, HTTP_PUT, ingredient, true, success, failure);
     };
 
-    let addIngredientToPage = function (ingredient) {
-        let template = getTemplate('ingredientTemplate');
+    const addIngredientToPage = function (ingredient) {
+        const template = getTemplate('ingredientTemplate');
 
-        let ingredientRow = template.querySelector('.ingredientRow');
-        let descriptionColumn = template.querySelector('.ingredientColumn');
-        let metricColumn = template.querySelector('.metric');
-        let imperialColumn = template.querySelector('.imperial');
-        let ingredientDelete = template.querySelector('.ingredientDelete');
-        let shoppingCartSymbol = template.querySelector('.shoppingCartSymbol');
-        let tooltipText = template.querySelector('.tooltipText');
-        let inventorySymbol = template.querySelector('.inventorySymbol');
+        const ingredientRow = template.querySelector('.ingredientRow');
+        const descriptionColumn = template.querySelector('.ingredientColumn');
+        const metricColumn = template.querySelector('.metric');
+        const imperialColumn = template.querySelector('.imperial');
+        const ingredientDelete = template.querySelector('.ingredientDelete');
+        const shoppingCartSymbol = template.querySelector('.shoppingCartSymbol');
+        const tooltipText = template.querySelector('.tooltipText');
+        const inventorySymbol = template.querySelector('.inventorySymbol');
 
         descriptionColumn.innerText = ingredient.description;
         metricColumn.innerText = ingredient.metric;
@@ -80,16 +80,16 @@ AddIngredient = (function () {
 
         if (ingredient.inventoryItems.length) {
             inventorySymbol.classList.add('ingredientInInventory');
-            let inventoryItemsTitle = createParagraph();
+            const inventoryItemsTitle = createParagraph();
             inventoryItemsTitle.innerText = settings.inventoryTitleText;
             tooltipText.appendChild(inventoryItemsTitle);
 
             Array.from(ingredient.inventoryItems).forEach(function (item) {
-                let metric = createParagraph();
+                const metric = createParagraph();
                 metric.innerText = `${item.description} ${item.metric}`;
                 metric.className = 'ingredientMetricToolTip';
 
-                let imperial = createParagraph();
+                const imperial = createParagraph();
                 imperial.innerText = `${item.description} ${item.imperial}`;
                 imperial.className = 'ingredientImperialToolTip';
 
@@ -103,19 +103,19 @@ AddIngredient = (function () {
                 tooltipText.appendChild(imperial);
             });
         } else {
-            let inventoryItemsText = createParagraph();
+            const inventoryItemsText = createParagraph();
             inventoryItemsText.innerText = settings.inventoryDefaultText;
             tooltipText.appendChild(inventoryItemsText);
         }
 
-        let ingredientTable = getElementById('ingredientTable').children[0];
+        const ingredientTable = getElementById('ingredientTable').children[0];
         ingredientTable.insertBefore(template, ingredientTable.children[ingredientTable.children.length -1]);
 
         DeleteIngredient.addListener(ingredientDelete);
         ShoppingListIntegration.addEventListener(shoppingCartSymbol);
     };
 
-    let createParagraph = function () {
+    const createParagraph = function () {
         return document.createElement('p');
     };
 

@@ -2,14 +2,14 @@ document.addEventListener("DOMContentLoaded", function() {
     PasswordReset.init();
 });
 
-PasswordReset = (function () {
-    let addEventListeners = function () {
-        let submitButton = getElementById('resetPasswordButton');
+export const PasswordReset = (function () {
+    const addEventListeners = function () {
+        const submitButton = getElementById('resetPasswordButton');
         submitButton.onclick = function () {
             reset();
         };
 
-        let input = getElementById('usernameoremail');
+        const input = getElementById('usernameoremail');
         input.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 reset();
@@ -17,12 +17,12 @@ PasswordReset = (function () {
         });
     };
 
-    let reset = function () {
+    const reset = function () {
         hideElement('invalidUsernameOrEmail');
 
-        let emailOrUsername = getValueById('usernameoremail');
+        const emailOrUsername = getValueById('usernameoremail');
 
-        let user = {
+        const user = {
             username: null,
             password: null,
             email: null
@@ -37,12 +37,12 @@ PasswordReset = (function () {
             return false;
         }
 
-        let success = function() {
+        const success = function() {
             hideElement('passwordResetForm');
             showElement('postPasswordResetDisplay');
         };
 
-        let failure = function() {
+        const failure = function() {
             hideElement('passwordResetForm');
             showElement('postPasswordResetDisplay');
         };

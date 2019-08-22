@@ -1,3 +1,7 @@
+import {ShoppingListIntegration} from "./shopping-list-integration.js";
+import {IngredientFormatSlider} from "./ingredient-format-slider.js";
+import {EventLog} from "./event-log.js";
+
 document.addEventListener("DOMContentLoaded", function() {
     Inventory.init();
     ShoppingListIntegration.init();
@@ -6,8 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
     EventLog.add('Pantry loaded');
 });
 
-Inventory = (function () {
-    let addEventListeners = function () {
+export const Inventory = (function () {
+    const addEventListeners = function () {
         getElementById('addInventoryItem').onclick = function() {
             createInventoryItem();
         };
@@ -23,10 +27,10 @@ Inventory = (function () {
         autocomplete(getElementById('ingredient'), ingredients);
     };
 
-    let addDeleteEventListener = function (element) {
+    const addDeleteEventListener = function (element) {
         element.addEventListener('click', function () {
-            let inventoryItem = element.parentNode.parentNode;
-            let container = inventoryItem.parentNode;
+            const inventoryItem = element.parentNode.parentNode;
+            const container = inventoryItem.parentNode;
 
             container.removeChild(inventoryItem);
 
@@ -34,33 +38,33 @@ Inventory = (function () {
         });
     };
 
-    let deleteInventoryItem = function (id) {
-        let body = {'id': id};
+    const deleteInventoryItem = function (id) {
+        const body = {'id': id};
 
-        let success = function () {
+        const success = function () {
             EventLog.add('Ingredient deleted')
         };
-        let failure = function (failure) {
+        const failure = function (failure) {
             EventLog.add(`Failed to delete ingredient - ${failure}`)
         };
 
         callApi('/api/inventory', HTTP_DELETE, body, false, success, failure)
     };
 
-    let createInventoryItem = function () {
-        let ingredient = getValueById('ingredient');
-        let quantity = getValueById('quantity');
+    const createInventoryItem = function () {
+        const ingredient = getValueById('ingredient');
+        const quantity = getValueById('quantity');
 
         if (!validateStringLength(ingredient, 1)) {
             return;
         }
 
-        let inventoryItem = {
+        const inventoryItem = {
             'ingredient': ingredient,
             'quantity': quantity
         };
 
-        let success = function(data) {
+        const success = function(data) {
             displayInventoryItem(data);
 
             getElementById('ingredient').value = '';
@@ -69,14 +73,14 @@ Inventory = (function () {
             EventLog.add(data.ingredient.description + ' added to pantry')
         };
 
-        let failure = function (error) {
+        const failure = function (error) {
             EventLog.add(`Failed to add ingredient to pantry - ${error}`)
         };
 
         callApi('/api/inventory', HTTP_POST, inventoryItem, true, success, failure);
     };
 
-    let addCreateInventoryItemEnterKeyEventListener = function (element) {
+    const addCreateInventoryItemEnterKeyEventListener = function (element) {
         element.addEventListener("keyup", function (event) {
             if (event.key === "Enter") {
                 createInventoryItem();
@@ -84,14 +88,14 @@ Inventory = (function () {
         });
     };
 
-    let displayInventoryItem = function (item) {
-        let template = getTemplate('inventoryTemplate');
+    const displayInventoryItem = function (item) {
+        const template = getTemplate('inventoryTemplate');
 
-        let descriptionLabel = template.querySelector('.description');
-        let metricLabel = template.querySelector('.metric');
-        let imperialLabel = template.querySelector('.imperial');
-        let shoppingCartSymbol = template.querySelector('.shoppingCartSymbol');
-        let deleteSymbol = template.querySelector('.deleteSymbol');
+        const descriptionLabel = template.querySelector('.description');
+        const metricLabel = template.querySelector('.metric');
+        const imperialLabel = template.querySelector('.imperial');
+        const shoppingCartSymbol = template.querySelector('.shoppingCartSymbol');
+        const deleteSymbol = template.querySelector('.deleteSymbol');
 
         descriptionLabel.innerHTML = item.ingredient.description;
         shoppingCartSymbol.setAttribute('data-ingredientid', item.ingredient.id);
@@ -107,21 +111,21 @@ Inventory = (function () {
             }
         }
 
-        let inventoryContainer = getElementById('inventoryContainer');
+        const inventoryContainer = getElementById('inventoryContainer');
         inventoryContainer.appendChild(template);
 
         addDeleteEventListener(deleteSymbol);
         ShoppingListIntegration.addEventListener(shoppingCartSymbol);
     };
 
-    let enableSearchAutoComplete = function () {
-        let searchBar = getElementById('searchForIngredient');
+    const enableSearchAutoComplete = function () {
+        const searchBar = getElementById('searchForIngredient');
 
         searchBar.addEventListener("input", function() {
-            let searchText = this.value;
-            let inventoryItems = document.getElementsByClassName('inventoryItem');
+            const searchText = this.value;
+            const inventoryItems = document.getElementsByClassName('inventoryItem');
             Array.from(inventoryItems).forEach(function (element) {
-                let description = element.querySelector("*").querySelector("*").innerHTML;
+                const description = element.querySelector("*").querySelector("*").innerHTML;
 
                 if (description.substr(0, searchText.length).toUpperCase() === searchText.toUpperCase()) {
                     element.style.display = 'block';

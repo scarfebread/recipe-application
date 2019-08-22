@@ -1,41 +1,41 @@
-DeleteIngredient = (function () {
-    let settings = {
+export const DeleteIngredient = (function () {
+    const settings = {
         url: '/api/recipe/delete-ingredient',
         deleteButton: 'ingredientDelete',
         ingredientIdAttribute: 'data-ingredientid'
     };
 
-    let addEventListeners = function () {
-        let ingredientDeleteButtons = document.getElementsByClassName(settings.deleteButton);
+    const addEventListeners = function () {
+        const ingredientDeleteButtons = document.getElementsByClassName(settings.deleteButton);
 
         Array.from(ingredientDeleteButtons).forEach(function(deleteButton) {
             addListener(deleteButton);
         });
     };
 
-    let addListener = function(deleteButton) {
+    const addListener = function(deleteButton) {
         deleteButton.addEventListener('click', function () {
-            let row = deleteButton.parentNode.parentNode;
-            let table = row.parentNode;
+            const row = deleteButton.parentNode.parentNode;
+            const table = row.parentNode;
 
             table.removeChild(row);
 
-            let ingredientId = row.getAttribute(settings.ingredientIdAttribute);
+            const ingredientId = row.getAttribute(settings.ingredientIdAttribute);
 
             deleteIngredient(ingredientId);
         });
     };
 
-    let deleteIngredient = function (ingredientId) {
-        let body = {
+    const deleteIngredient = function (ingredientId) {
+        const body = {
             ingredientId: ingredientId,
             recipeId: recipeId
         };
 
-        let success = function() {
+        const success = function() {
             EventLog.add('Deleted ingredient')
         };
-        let failure = function(failure) {
+        const failure = function(failure) {
             EventLog.add(`Failed to delete ingredient - ${failure}`)
         };
 

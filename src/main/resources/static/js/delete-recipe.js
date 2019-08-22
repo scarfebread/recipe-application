@@ -1,10 +1,10 @@
-DeleteRecipe = (function () {
+export const DeleteRecipe = (function () {
     let deleted = false;
-    let modal = null;
+    let modal;
 
-    let addEventListeners = function () {
-        let closeDeleteRecipeModalButton = getElementById('closeDeleteRecipeModal');
-        let deleteRecipeButton = getElementById('deleteRecipeButton');
+    const addEventListeners = function () {
+        const closeDeleteRecipeModalButton = getElementById('closeDeleteRecipeModal');
+        const deleteRecipeButton = getElementById('deleteRecipeButton');
 
         addConfirmDeleteRecipeListener();
 
@@ -29,8 +29,8 @@ DeleteRecipe = (function () {
         };
     };
 
-    let addConfirmDeleteRecipeListener = function () {
-        let confirmDeleteRecipe = getElementById('confirmDeleteButton');
+    const addConfirmDeleteRecipeListener = function () {
+        const confirmDeleteRecipe = getElementById('confirmDeleteButton');
         confirmDeleteRecipe.onclick = function () {
             confirmDeleteRecipe.disabled = true;
 
@@ -44,19 +44,19 @@ DeleteRecipe = (function () {
         };
     };
 
-    let deleteRecipe = function () {
+    const deleteRecipe = function () {
         let recipe = {
             id: recipeId
         };
 
-        let success = function() {
+        const success = function() {
             hideElement('preDelete');
             showElement('postDelete');
 
             deleted = true;
         };
 
-        let failure = function(failure) {
+        const failure = function(failure) {
             getElementById('deleteRecipeError').innerText = failure;
             showElement('deleteRecipeError');
         };
@@ -64,7 +64,7 @@ DeleteRecipe = (function () {
         callApi("/api/recipe", HTTP_DELETE, recipe, false, success, failure);
     };
 
-    let closeModal = function () {
+    const closeModal = function () {
         if (deleted) {
             window.location.href = '/';
         }

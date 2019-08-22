@@ -1,6 +1,6 @@
-IngredientFormatSlider = (function () {
-    let addEventListeners = function () {
-        let ingredientFormatButton = getElementById('ingredientFormatButton');
+export const IngredientFormatSlider = (function () {
+    const addEventListeners = function () {
+        const ingredientFormatButton = getElementById('ingredientFormatButton');
 
         ingredientFormatButton.onclick = function() {
             IngredientFormatSlider.metric = !IngredientFormatSlider.metric;
@@ -22,7 +22,7 @@ IngredientFormatSlider = (function () {
                 ingredientToolTipDisplayClass = 'ingredientImperialToolTip';
             }
 
-            let displayProperty = null;
+            let displayProperty;
 
             Array.from(document.getElementsByClassName(hideClass)).forEach(function(element) {
                 if (!displayProperty) {

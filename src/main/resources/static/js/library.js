@@ -12,7 +12,7 @@ function hideElement(id) {
 }
 
 function validateEmail(email) {
-    let validateEmailRegularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const validateEmailRegularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return validateEmailRegularExpression.test(email);
 }
 
@@ -33,7 +33,7 @@ function getValueById(id) {
 }
 
 function callApi(url, method, body, jsonResponse, success, failure) {
-    let request = {
+    const request = {
         method: method,
         headers: {
             "Content-Type": "application/json"
@@ -134,7 +134,7 @@ function autocomplete(input, array) {
         }
     }
     function closeAllLists(elmnt) {
-        let x = document.getElementsByClassName("autocomplete-items");
+        const x = document.getElementsByClassName("autocomplete-items");
         for (let i = 0; i < x.length; i++) {
             if (elmnt !== x[i] && elmnt !== input) {
                 x[i].parentNode.removeChild(x[i]);

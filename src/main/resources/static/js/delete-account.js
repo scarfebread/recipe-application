@@ -2,11 +2,11 @@ document.addEventListener("DOMContentLoaded", function() {
     DeleteAccount.init();
 });
 
-DeleteAccount = (function () {
+export const DeleteAccount = (function () {
     let accountDeleted = false;
 
-    let addConfirmDeleteListener = function () {
-        let confirmDeleteButton = getElementById('confirmDeleteButton');
+    const addConfirmDeleteListener = function () {
+        const confirmDeleteButton = getElementById('confirmDeleteButton');
         confirmDeleteButton.onclick = function () {
             if (accountDeleted) {
                 return;
@@ -16,9 +16,9 @@ DeleteAccount = (function () {
         };
     };
 
-    let addCloseModalListeners = function () {
-        let closeModalButton = document.getElementsByClassName("close")[0];
-        let cancelDeleteButton = getElementById('cancelDeleteButton');
+    const addCloseModalListeners = function () {
+        const closeModalButton = document.getElementsByClassName("close")[0];
+        const cancelDeleteButton = getElementById('cancelDeleteButton');
 
         cancelDeleteButton.onclick = function() {
             closeModal(modal);
@@ -41,23 +41,23 @@ DeleteAccount = (function () {
         };
     };
 
-    let addDisplayModalListener = function () {
-        let deleteAccountButton = getElementById('deleteAccountButton');
-        let modal = getElementById('deleteAccountModal');
+    const addDisplayModalListener = function () {
+        const deleteAccountButton = getElementById('deleteAccountButton');
+        const modal = getElementById('deleteAccountModal');
 
         deleteAccountButton.onclick = function() {
             modal.style.display = 'block';
         };
     };
 
-    let deleteAccount = function () {
-        let successCallback = function() {
+    const deleteAccount = function () {
+        const successCallback = function() {
             accountDeleted = true;
             hideElement('preAccountDeleted');
             showElement('postAccountDeleted');
         };
 
-        let failureCallback = function (failure) {
+        const failureCallback = function (failure) {
             getElementById('deleteAccountError').innerText = failure;
             showElement('deleteAccountError');
         };
@@ -65,7 +65,7 @@ DeleteAccount = (function () {
         callApi('/api/user', HTTP_DELETE, null, false, successCallback, failureCallback);
     };
 
-    let closeModal = function (modal) {
+    const closeModal = function (modal) {
         if (accountDeleted) {
             window.location.href = '/'
         }

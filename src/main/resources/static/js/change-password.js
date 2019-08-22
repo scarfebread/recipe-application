@@ -2,9 +2,9 @@ document.addEventListener("DOMContentLoaded", function() {
     ChangePassword.init();
 });
 
-ChangePassword = (function () {
-    let addEventListeners = function () {
-        let changePasswordButton = getElementById('changePasswordButton');
+export const ChangePassword = (function () {
+    const addEventListeners = function () {
+        const changePasswordButton = getElementById('changePasswordButton');
 
         changePasswordButton.onclick = function () {
             changePassword();
@@ -14,11 +14,11 @@ ChangePassword = (function () {
         addEventListener(getElementById('retypepassword'));
     };
 
-    let changePassword = function () {
+    const changePassword = function () {
         resetErrors();
 
-        let password = getValueById('password');
-        let repeatPassword = getValueById('retypepassword');
+        const password = getValueById('password');
+        const repeatPassword = getValueById('retypepassword');
 
         let isValid = true;
 
@@ -36,16 +36,16 @@ ChangePassword = (function () {
             return false;
         }
 
-        let passwordDto = {
+        const passwordDto = {
             password: password
         };
 
-        let success = function() {
+        const success = function() {
             hideElement('preChangePasswordDisplay');
             showElement('postChangePasswordDisplay');
         };
 
-        let failure = function(failure) {
+        const failure = function(failure) {
             getElementById("passwordChangeError").innerText = failure;
             showElement('passwordChangeError');
         };
@@ -53,13 +53,13 @@ ChangePassword = (function () {
         callApi("/api/change-password", HTTP_POST, passwordDto, false, success, failure);
     };
 
-    let resetErrors = function () {
+    const resetErrors = function () {
         hideElement("passwordsDoNotMatchError");
         hideElement("passwordChangeError");
         hideElement('passwordTooShortError');
     };
 
-    let addEventListener = function (element) {
+    const addEventListener = function (element) {
         element.addEventListener("keyup", function (event) {
             if (event.key === "Enter") {
                 changePassword();
