@@ -231,7 +231,7 @@ public class RecipeServiceTest
         ingredients.add(new Ingredient("ShoppingListItemDto", "Quantity", loggedInUser));
 
         List<Step> steps = new ArrayList<>();
-        steps.add(new Step(recipe, "Step"));
+        steps.add(new Step("Step"));
 
         recipe.setIngredients(ingredients);
         recipe.setSteps(steps);

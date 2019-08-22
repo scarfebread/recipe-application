@@ -127,7 +127,7 @@ export const AddStep = (function () {
             table.removeChild(stepRow);
             updateStepNumbers();
 
-            EventLog.add('Step deconsted')
+            EventLog.add('Step deleted')
         };
 
         const failure = function (failure) {
