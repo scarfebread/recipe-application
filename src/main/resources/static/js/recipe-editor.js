@@ -1,6 +1,6 @@
-RecipeEditor = (function () {
-    let editButton = null;
-    let lockButton = null;
+export const RecipeEditor = (function () {
+    let editButton;
+    let lockButton;
 
     let addEventListeners = function () {
         editButton.onclick = function () {

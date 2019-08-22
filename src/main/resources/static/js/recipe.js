@@ -1,3 +1,13 @@
+import {AddIngredient} from "./add-ingredient.js";
+import {RecipeEditor} from "./recipe-editor.js";
+import {DeleteIngredient} from "./delete-ingredient.js";
+import {AddStep} from "./add-step.js";
+import {ShoppingListIntegration} from "./shopping-list-integration.js";
+import {IngredientFormatSlider} from "./ingredient-format-slider.js";
+import {ShareRecipe} from "./share-recipe.js";
+import {DeleteRecipe} from "./delete-recipe.js";
+import {EventLog} from "./event-log.js";
+
 document.addEventListener("DOMContentLoaded", function() {
     Recipe.init();
     RecipeEditor.init();
@@ -13,18 +23,18 @@ document.addEventListener("DOMContentLoaded", function() {
     EventLog.add('Recipe loaded');
 });
 
-Recipe = (function () {
-    let addEventListeners = function () {
-        let difficulty = getElementById('difficulty');
-        let difficultyLabel = getElementById('difficultyLabel');
-        let cookTime = getElementById('cookTime');
-        let prepTime = getElementById('prepTime');
-        let cookTimeLabel = getElementById('cookTimeLabel');
-        let prepTimeLabel = getElementById('prepTimeLabel');
-        let serves = getElementById('serves');
-        let servesLabel = getElementById('servesLabel');
-        let notes = getElementById('notes');
-        let instructionsModal = getElementById('instructionsModal');
+export const Recipe = (function () {
+    const addEventListeners = function () {
+        const difficulty = getElementById('difficulty');
+        const difficultyLabel = getElementById('difficultyLabel');
+        const cookTime = getElementById('cookTime');
+        const prepTime = getElementById('prepTime');
+        const cookTimeLabel = getElementById('cookTimeLabel');
+        const prepTimeLabel = getElementById('prepTimeLabel');
+        const serves = getElementById('serves');
+        const servesLabel = getElementById('servesLabel');
+        const notes = getElementById('notes');
+        const instructionsModal = getElementById('instructionsModal');
 
         serves.value = recipeServes;
         difficulty.value = recipeDifficulty;
@@ -74,11 +84,11 @@ Recipe = (function () {
         };
     };
 
-    let update = function () {
-        let serves = getElementById('serves');
-        let difficulty = getElementById('difficulty');
+    const update = function () {
+        const serves = getElementById('serves');
+        const difficulty = getElementById('difficulty');
 
-        let recipe = {
+        const recipe = {
             id: recipeId,
             notes: getValueById('notes'),
             rating: recipeRating,
@@ -88,18 +98,18 @@ Recipe = (function () {
             difficulty: difficulty.options[difficulty.selectedIndex].value
         };
 
-        let success = function() {
+        const success = function() {
             EventLog.add('Recipe updated')
         };
 
-        let failure = function(failure) {
+        const failure = function(failure) {
             EventLog.add('Recipe failed to update')
         };
 
         callApi("/api/recipe", HTTP_PUT, recipe, false, success, failure);
     };
 
-    let closeModal = function (modal) {
+    const closeModal = function (modal) {
         modal.style.display = "none";
     };
 

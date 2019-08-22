@@ -1,12 +1,14 @@
-ShoppingListIntegration = (function () {
-    let bindUserActions = function () {
-        let shoppingCartSymbols = document.getElementsByClassName('shoppingCartSymbol');
+import {EventLog} from "./event-log.js";
+
+export const ShoppingListIntegration = (function () {
+    const bindUserActions = function () {
+        const shoppingCartSymbols = document.getElementsByClassName('shoppingCartSymbol');
         Array.from(shoppingCartSymbols).forEach(function (element) {
             addEventListener(element);
         });
     };
 
-    let addEventListener = function (element) {
+    const addEventListener = function (element) {
         element.addEventListener('click', function () {
             if (element.classList.contains('ingredientInShoppingList')) {
                 remove(element);
@@ -16,30 +18,30 @@ ShoppingListIntegration = (function () {
         });
     };
 
-    let add = function (element) {
-        let ingredientId = element.getAttribute('data-ingredientid');
+    const add = function (element) {
+        const ingredientId = element.getAttribute('data-ingredientid');
 
-        let success = function () {
+        const success = function () {
             element.setAttribute('data-ingredientid', ingredientId);
             element.classList.add('ingredientInShoppingList');
             EventLog.add('Added ingredient to shopping list');
         };
 
-        let failure = function (failure) {
+        const failure = function (failure) {
             EventLog.add(`Failed to add to shopping list - ${failure}`);
         };
 
         callApi(`/api/shopping-list/add/${ingredientId}`, HTTP_POST, null, false, success, failure);
     };
 
-    let remove = function (element) {
-        let ingredientId = element.getAttribute('data-ingredientid');
+    const remove = function (element) {
+        const ingredientId = element.getAttribute('data-ingredientid');
 
-        let success = function () {
+        const success = function () {
             element.classList.remove('ingredientInShoppingList');
             EventLog.add('Removed ingredient from shopping list');
         };
-        let failure = function (failure) {
+        const failure = function (failure) {
             EventLog.add(`Unable to remove from shopping list - ${failure}`);
         };
 

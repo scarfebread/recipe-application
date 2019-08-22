@@ -1,10 +1,10 @@
-RecipeRating = (function () {
-    let addEventListeners = function () {
-        let rating1 = getElementById('rating1');
-        let rating2 = getElementById('rating2');
-        let rating3 = getElementById('rating3');
-        let rating4 = getElementById('rating4');
-        let rating5 = getElementById('rating5');
+export const RecipeRating = (function () {
+    const addEventListeners = function () {
+        const rating1 = getElementById('rating1');
+        const rating2 = getElementById('rating2');
+        const rating3 = getElementById('rating3');
+        const rating4 = getElementById('rating4');
+        const rating5 = getElementById('rating5');
 
         rating1.onclick = function () {
             recipeRating = 1;
@@ -37,10 +37,10 @@ RecipeRating = (function () {
         };
     };
 
-    let displayRating = function () {
-        let starRating = getElementById('starRating');
+    const displayRating = function () {
+        const starRating = getElementById('starRating');
 
-        let children = starRating.children;
+        const children = starRating.children;
         for (let i = 0; i < children.length; i++) {
             let star = children[i];
 

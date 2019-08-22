@@ -1,14 +1,14 @@
-AddStep = (function () {
-    let addButtonListener = function () {
-        let addStepButton = getElementById('addStepButton');
+export const AddStep = (function () {
+    const addButtonListener = function () {
+        const addStepButton = getElementById('addStepButton');
 
         addStepButton.onclick = function () {
             createStep();
         };
     };
 
-    let addSubmitListener = function () {
-        let stepInput = getElementById('newStep');
+    const addSubmitListener = function () {
+        const stepInput = getElementById('newStep');
 
         stepInput.addEventListener("keyup", function (event) {
             if (event.key === "Enter") {
@@ -17,42 +17,42 @@ AddStep = (function () {
         });
     };
 
-    let createStep = function () {
-        let newStep = getElementById('newStep');
+    const createStep = function () {
+        const newStep = getElementById('newStep');
 
         if (!validateStringLength(newStep.value, 1)) {
             return;
         }
 
-        let body = {
+        const body = {
             description: newStep.value,
             recipe: recipeId
         };
 
-        let success = function (step) {
+        const success = function (step) {
             addStepToList(step.id, step.description);
             newStep.value = '';
 
             EventLog.add('Added step to recipe')
         };
 
-        let failure = function (failure) {
+        const failure = function (failure) {
             EventLog.add(`Failed to add step to recipe - ${failure}`)
         };
 
         callApi('/api/recipe/add-step', HTTP_PUT, body, true, success, failure);
     };
 
-    let addStepToList = function (stepId, description) {
-        let stepTable = getElementById('stepTable').children[0];
+    const addStepToList = function (stepId, description) {
+        const stepTable = getElementById('stepTable').children[0];
 
-        let template = getTemplate('stepTemplate');
+        const template = getTemplate('stepTemplate');
 
-        let stepNumber = template.querySelector('.stepNumber');
-        let stepColumn = template.querySelector('.stepColumn');
-        let stepRow = template.querySelector('.stepRow');
-        let stepActionColumn = template.querySelector('.stepActionColumn');
-        let stepDelete = template.querySelector('.stepDelete');
+        const stepNumber = template.querySelector('.stepNumber');
+        const stepColumn = template.querySelector('.stepColumn');
+        const stepRow = template.querySelector('.stepRow');
+        const stepActionColumn = template.querySelector('.stepActionColumn');
+        const stepDelete = template.querySelector('.stepDelete');
 
         stepNumber.innerText = getNextStepNumber() + '.';
         stepColumn.innerText = description;
@@ -65,7 +65,7 @@ AddStep = (function () {
         addDeleteListener(stepDelete);
     };
 
-    let addEditListener = function (step) {
+    const addEditListener = function (step) {
         step.addEventListener("keydown", function (event) {
             if (event.key === "Enter") {
                 event.preventDefault();
@@ -74,23 +74,23 @@ AddStep = (function () {
         });
 
         step.addEventListener('blur', function () {
-            let stepRow = step.parentNode;
+            const stepRow = step.parentNode;
 
             if (!validateStringLength(step.innerHTML, 1)) {
                 deleteStep(stepRow);
                 return;
             }
 
-            let body = {
+            const body = {
                 id: stepRow.getAttribute('data-stepid'),
                 description : step.innerHTML,
                 recipe: recipeId
             };
 
-            let success = function () {
+            const success = function () {
                 EventLog.add('Step updated')
             };
-            let failure = function (failure) {
+            const failure = function (failure) {
                 EventLog.add(`Failed to update step - ${failure}`)
             };
 
@@ -98,14 +98,14 @@ AddStep = (function () {
         });
     };
 
-    let addEditListeners = function () {
-        let steps = document.getElementsByClassName('stepColumn');
+    const addEditListeners = function () {
+        const steps = document.getElementsByClassName('stepColumn');
         Array.from(steps).forEach(function(element) {
             addEditListener(element);
         });
     };
 
-    let addDeleteListener = function (deleteButton) {
+    const addDeleteListener = function (deleteButton) {
         deleteButton.addEventListener('click', function () {
             deleteStep(
                 deleteButton.parentNode.parentNode
@@ -113,44 +113,44 @@ AddStep = (function () {
         });
     };
 
-    let deleteStep = function (stepRow) {
-        let table = stepRow.parentNode;
+    const deleteStep = function (stepRow) {
+        const table = stepRow.parentNode;
 
-        let body = {
+        const body = {
             stepId: stepRow.getAttribute('data-stepid'),
             recipeId: recipeId
         };
 
-        let success = function () {
+        const success = function () {
             table.removeChild(stepRow);
             updateStepNumbers();
 
-            EventLog.add('Step deleted')
+            EventLog.add('Step deconsted')
         };
 
-        let failure = function (failure) {
+        const failure = function (failure) {
             EventLog.add(`Failed to remove step - ${failure}`)
         };
 
         callApi('/api/recipe/delete-step', HTTP_PUT, body, false, success, failure);
     };
 
-    let addDeleteListeners = function () {
-        let steps = document.getElementsByClassName('stepDelete');
+    const addDeleteListeners = function () {
+        const steps = document.getElementsByClassName('stepDelete');
         Array.from(steps).forEach(function(element) {
             addDeleteListener(element);
         });
     };
 
-    let getNextStepNumber = function () {
-        let steps = document.querySelectorAll('.stepColumn');
+    const getNextStepNumber = function () {
+        const steps = document.querySelectorAll('.stepColumn');
 
         return steps.length + 1;
     };
 
-    let updateStepNumbers = function () {
+    const updateStepNumbers = function () {
         let stepNumber = 1;
-        let stepNumbers = document.querySelectorAll('.stepNumber');
+        const stepNumbers = document.querySelectorAll('.stepNumber');
 
         Array.from(stepNumbers).forEach(function (step) {
             step.innerHTML = stepNumber + '.';

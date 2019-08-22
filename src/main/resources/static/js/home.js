@@ -2,14 +2,14 @@ document.addEventListener("DOMContentLoaded", function() {
     Home.init();
 });
 
-Home = (function () {
+export const Home = (function () {
     let createRecipeEnabled = true;
 
-    let addEventListeners = function () {
-        let modal = getElementById('createRecipeModal');
-        let createRecipeButton = getElementById("createRecipeButton");
-        let closeModalButton = document.getElementsByClassName("close")[0];
-        let confirmRecipeButton = getElementById('confirmRecipeButton');
+    const addEventListeners = function () {
+        const modal = getElementById('createRecipeModal');
+        const createRecipeButton = getElementById("createRecipeButton");
+        const closeModalButton = document.getElementsByClassName("close")[0];
+        const confirmRecipeButton = getElementById('confirmRecipeButton');
 
         createRecipeButton.onclick = function() {
             modal.style.display = "block";
@@ -44,34 +44,34 @@ Home = (function () {
         getRecipes();
     };
 
-    let getRecipes = function () {
-        let success = function(recipes) {
+    const getRecipes = function () {
+        const success = function(recipes) {
             displayRecipes(recipes);
             enableAutocomplete(recipes);
         };
 
-        let failure = function(failure) {};
+        const failure = function(failure) {};
 
         callApi("/api/recipe", HTTP_GET, null, true, success, failure);
     };
 
-    let displayRecipes = function (recipes) {
-        let allRecipes = getElementById('allRecipes');
+    const displayRecipes = function (recipes) {
+        const allRecipes = getElementById('allRecipes');
 
         removeChildElements(allRecipes);
 
-        for (let i in recipes) {
+        for (const i in recipes) {
             displayRecipe(recipes[i]);
         }
     };
 
-    let displayRecipe = function (recipe) {
-        let template = getTemplate('recipeTemplate');
+    const displayRecipe = function (recipe) {
+        const template = getTemplate('recipeTemplate');
 
-        let recipeLink = template.querySelector('.recipeLink');
-        let totalTime = template.querySelector('.totalTime');
-        let recipeTitle = template.querySelector('.recipeTitle');
-        let stars = template.querySelectorAll('.star');
+        const recipeLink = template.querySelector('.recipeLink');
+        const totalTime = template.querySelector('.totalTime');
+        const recipeTitle = template.querySelector('.recipeTitle');
+        const stars = template.querySelectorAll('.star');
 
         recipeLink.href = `/recipe?id=${recipe.id}`;
         totalTime.innerText = `Total time: ${recipe.totalTime}`;
@@ -84,7 +84,7 @@ Home = (function () {
         getElementById('allRecipes').appendChild(template);
     };
 
-    let closeModal = function (modal) {
+    const closeModal = function (modal) {
         hideElement('invalidRecipeNameError');
         hideElement('postRecipeCreated');
         showElement('preRecipeCreated');
@@ -92,10 +92,10 @@ Home = (function () {
         getElementById('recipeName').value = '';
     };
 
-    let createRecipe = function () {
+    const createRecipe = function () {
         hideElement('invalidRecipeNameError');
 
-        let recipe = {
+        const recipe = {
             title: getValueById('recipeName')
         };
 
@@ -104,7 +104,7 @@ Home = (function () {
             return;
         }
 
-        let success = function(response) {
+        const success = function(response) {
             getElementById('newRecipe').href = `/recipe?id=${response.id}`;
 
             hideElement('preRecipeCreated');
@@ -114,7 +114,7 @@ Home = (function () {
             createRecipeEnabled = true;
         };
 
-        let failure = function(failure) {
+        const failure = function(failure) {
             getElementById('createRecipeError').innerText = failure;
             showElement('createRecipeError');
 
@@ -127,11 +127,11 @@ Home = (function () {
         }
     };
 
-    let enableAutocomplete = function (recipes) {
-        let searchBar = getElementById('searchForRecipe');
+    const enableAutocomplete = function (recipes) {
+        const searchBar = getElementById('searchForRecipe');
 
-        searchBar.addEventListener("input", function(e) {
-            let matchedRecipes = [];
+        searchBar.addEventListener("input", function() {
+            const matchedRecipes = [];
 
             for (let i = 0; i < recipes.length; i++) {
                 if (recipes[i].title.substr(0, this.value.length).toUpperCase() === this.value.toUpperCase()) {
@@ -143,7 +143,7 @@ Home = (function () {
         });
     };
 
-    let removeChildElements = function (element) {
+    const removeChildElements = function (element) {
         while (element.firstChild) {
             element.removeChild(element.firstChild);
         }
