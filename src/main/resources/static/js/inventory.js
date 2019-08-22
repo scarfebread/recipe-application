@@ -91,12 +91,14 @@ export const Inventory = (function () {
     const displayInventoryItem = function (item) {
         const template = getTemplate('inventoryTemplate');
 
+        const inventoryItem = template.querySelector('.inventoryItem');
         const descriptionLabel = template.querySelector('.description');
         const metricLabel = template.querySelector('.metric');
         const imperialLabel = template.querySelector('.imperial');
         const shoppingCartSymbol = template.querySelector('.shoppingCartSymbol');
         const deleteSymbol = template.querySelector('.deleteSymbol');
 
+        inventoryItem.id = item.id;
         descriptionLabel.innerHTML = item.ingredient.description;
         shoppingCartSymbol.setAttribute('data-ingredientid', item.ingredient.id);
 

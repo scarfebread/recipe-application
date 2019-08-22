@@ -1,3 +1,5 @@
+import {EventLog} from "./event-log.js";
+
 export const DeleteIngredient = (function () {
     const settings = {
         url: '/api/recipe/delete-ingredient',
