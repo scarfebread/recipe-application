@@ -1,8 +1,6 @@
-DROP SCHEMA IF EXISTS recipe CASCADE;
+CREATE SCHEMA the_cooking_pot;
 
-CREATE SCHEMA recipe;
-
-CREATE TABLE recipe.users (
+CREATE TABLE the_cooking_pot.users (
   id SERIAL PRIMARY KEY,
   username VARCHAR,
   password VARCHAR,
@@ -10,16 +8,16 @@ CREATE TABLE recipe.users (
   new_user BOOL
 );
 
-CREATE TABLE recipe.password_reset_tokens (
+CREATE TABLE the_cooking_pot.password_reset_tokens (
   id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES recipe.users(id),
+  user_id INT REFERENCES the_cooking_pot.users(id),
   token VARCHAR,
   expiry_date DATE
 );
 
-CREATE TABLE recipe.recipes (
+CREATE TABLE the_cooking_pot.recipes (
   id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES recipe.users(id),
+  user_id INT REFERENCES the_cooking_pot.users(id),
   title VARCHAR NOT NULL,
   shared_by VARCHAR,
   rating INT,
@@ -31,40 +29,40 @@ CREATE TABLE recipe.recipes (
   difficulty VARCHAR
 );
 
-CREATE TABLE recipe.ingredients (
+CREATE TABLE the_cooking_pot.ingredients (
   id SERIAL PRIMARY KEY,
   description VARCHAR NOT NULL,
   metric VARCHAR NOT NULL,
   imperial VARCHAR NOT NULL,
-  user_id INT REFERENCES recipe.users(id)
+  user_id INT REFERENCES the_cooking_pot.users(id)
 );
 
-CREATE TABLE recipe.recipe_ingredients (
+CREATE TABLE the_cooking_pot.recipe_ingredients (
   id SERIAL PRIMARY KEY,
-  recipe INT REFERENCES recipe.recipes(id),
-  ingredient INT REFERENCES recipe.ingredients(id)
+  recipe INT REFERENCES the_cooking_pot.recipes(id),
+  ingredient INT REFERENCES the_cooking_pot.ingredients(id)
 );
 
-CREATE TABLE recipe.steps (
+CREATE TABLE the_cooking_pot.steps (
   id SERIAL PRIMARY KEY,
-  recipe INT REFERENCES recipe.recipes(id),
+  recipe INT REFERENCES the_cooking_pot.recipes(id),
   description VARCHAR NOT NULL
 );
 
-CREATE TABLE recipe.recently_viewed (
+CREATE TABLE the_cooking_pot.recently_viewed (
   id SERIAL PRIMARY KEY,
-  recipe INT REFERENCES recipe.recipes(id),
-  user_id INT REFERENCES recipe.users(id)
+  recipe INT REFERENCES the_cooking_pot.recipes(id),
+  user_id INT REFERENCES the_cooking_pot.users(id)
 );
 
-CREATE TABLE recipe.inventory (
+CREATE TABLE the_cooking_pot.inventory (
   id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES recipe.users(id),
-  ingredient_id INT REFERENCES recipe.ingredients(id)
+  user_id INT REFERENCES the_cooking_pot.users(id),
+  ingredient_id INT REFERENCES the_cooking_pot.ingredients(id)
 );
 
-CREATE TABLE recipe.shopping_list (
+CREATE TABLE the_cooking_pot.shopping_list (
   id SERIAL PRIMARY KEY,
-  user_id INT REFERENCES recipe.users(id),
-  ingredient_id INT REFERENCES recipe.ingredients(id)
+  user_id INT REFERENCES the_cooking_pot.users(id),
+  ingredient_id INT REFERENCES the_cooking_pot.ingredients(id)
 );
