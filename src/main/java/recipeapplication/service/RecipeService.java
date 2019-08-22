@@ -191,7 +191,7 @@ public class RecipeService
     {
         Recipe recipe = getRecipe(stepDto.getRecipe());
 
-        Step step = new Step(recipe, stepDto.getDescription());
+        Step step = new Step(stepDto.getDescription());
 
         recipe.addStep(step);
 

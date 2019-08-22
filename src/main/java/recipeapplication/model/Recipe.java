@@ -39,7 +39,8 @@ public class Recipe
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "recipe")
     private List<Step> steps;
 
     // TODO this isn't used. Should it be?

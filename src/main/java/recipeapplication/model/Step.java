@@ -10,17 +10,12 @@ public class Step
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "recipe")
-    private Recipe recipe;
-
     private String description;
 
     public Step() {}
 
-    public Step(Recipe recipe, String description)
+    public Step(String description)
     {
-        this.recipe = recipe;
         this.description = description;
     }
 
