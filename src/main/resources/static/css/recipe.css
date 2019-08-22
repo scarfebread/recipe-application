@@ -251,7 +251,7 @@ input[type="time"]::-webkit-clear-button {
 
 .shoppingCartSymbol {
     font-size:24px !important;
-    color: #aaaaaa;;
+    color: #949191;
     font-weight: bold;
     padding-right: 5px;
 }
@@ -273,7 +273,7 @@ input[type="time"]::-webkit-clear-button {
 
 .inventorySymbol {
     font-size:24px !important;
-    color: #aaaaaa;;
+    color: #949191;
     font-weight: bold;
     padding-right: 5px;
     cursor: pointer;

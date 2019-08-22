@@ -8,7 +8,7 @@ ShoppingListIntegration = (function () {
 
     let addEventListener = function (element) {
         element.addEventListener('click', function () {
-            if (element.classList.contains('ingredientInShoppingListIntegration')) {
+            if (element.classList.contains('ingredientInShoppingList')) {
                 remove(element);
             } else {
                 add(element);
@@ -21,7 +21,7 @@ ShoppingListIntegration = (function () {
 
         let success = function () {
             element.setAttribute('data-ingredientid', ingredientId);
-            element.classList.add('ingredientInShoppingListIntegration');
+            element.classList.add('ingredientInShoppingList');
             EventLog.add('Added ingredient to shopping list');
         };
 
@@ -36,7 +36,7 @@ ShoppingListIntegration = (function () {
         let ingredientId = element.getAttribute('data-ingredientid');
 
         let success = function () {
-            element.classList.remove('ingredientInShoppingListIntegration');
+            element.classList.remove('ingredientInShoppingList');
             EventLog.add('Removed ingredient from shopping list');
         };
         let failure = function (failure) {

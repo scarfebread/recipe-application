@@ -140,7 +140,7 @@ body {
 }
 
 .close {
-    color: #aaaaaa;
+    color: #949191;
     font-size: 28px;
     font-weight: bold;
 }
@@ -167,7 +167,7 @@ body {
 }
 
 .modal-content {
-    background-color: rgba(221, 221, 221, 0.8);
+    background-color: rgba(221, 221, 221, 1);
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
