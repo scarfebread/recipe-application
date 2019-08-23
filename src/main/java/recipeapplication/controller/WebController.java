@@ -92,14 +92,14 @@ public class WebController
         }
         catch (RecipeDoesNotExistException e)
         {
-            return "invalid_recipe.html";
+            return "invalid-recipe.html";
         }
     }
 
     @GetMapping("/reset-password")
     public String resetPassword()
     {
-        return "reset_password.html";
+        return "reset-password.html";
     }
 
     @GetMapping("/change-password-with-token")
@@ -109,11 +109,11 @@ public class WebController
         {
             userService.processPasswordResetToken(token);
 
-            return "change_password_with_token.html";
+            return "change-password-with-token.html";
         }
         catch (InvalidPasswordTokenException e)
         {
-            return "invalid_token.html";
+            return "invalid-token.html";
         }
     }
 
@@ -123,7 +123,7 @@ public class WebController
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
         model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
 
-        return "change_password.html";
+        return "change-password.html";
     }
 
     @GetMapping("/delete-account")
@@ -132,7 +132,7 @@ public class WebController
         model.addAttribute("user", authService.getLoggedInUser().getUsername());
         model.addAttribute("recentlyViewed", recipeService.getRecentlyViewed());
 
-        return "delete_account.html";
+        return "delete-account.html";
     }
 
     @GetMapping("/shopping-list")
@@ -143,7 +143,7 @@ public class WebController
         model.addAttribute("shoppingList", shoppingListService.getShoppingList());
         model.addAttribute("ingredients", inventoryService.getIngredients());
 
-        return "shopping_list.html";
+        return "shopping-list.html";
     }
 
     @GetMapping("/inventory")

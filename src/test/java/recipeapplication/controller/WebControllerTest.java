@@ -81,13 +81,13 @@ public class WebControllerTest
     @Test
     public void shouldGetChangePasswordTemplateForValidChangePasswordToken()
     {
-        assertEquals("change_password_with_token.html", controller.changePassword(VALID_TOKEN));
+        assertEquals("change-password-with-token.html", controller.changePassword(VALID_TOKEN));
     }
 
     @Test
     public void shouldGetErrorTemplateForInvalidChangePasswordToken()
     {
-        assertEquals("invalid_token.html", controller.changePassword(INVALID_TOKEN));
+        assertEquals("invalid-token.html", controller.changePassword(INVALID_TOKEN));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class WebControllerTest
 
         String result = controller.deleteAccount(model);
 
-        assertEquals("delete_account.html", result);
+        assertEquals("delete-account.html", result);
 
         verify(model).addAttribute("user", USERNAME);
         verify(model).addAttribute("recentlyViewed", recentlyViewed);
@@ -110,7 +110,7 @@ public class WebControllerTest
 
         String result = controller.changePasswordLoggedIn(model);
 
-        assertEquals("change_password.html", result);
+        assertEquals("change-password.html", result);
 
         verify(model).addAttribute("user", USERNAME);
         verify(model).addAttribute("recentlyViewed", recentlyViewed);
@@ -121,7 +121,7 @@ public class WebControllerTest
     {
         when(recipeService.getRecipe(any())).thenThrow(RecipeDoesNotExistException.class);
 
-        assertEquals("invalid_recipe.html", controller.recipe(1L, mock(Model.class)));
+        assertEquals("invalid-recipe.html", controller.recipe(1L, mock(Model.class)));
     }
 
     @Test
@@ -184,7 +184,7 @@ public class WebControllerTest
 
         Model model = mock(Model.class);
 
-        assertEquals("shopping_list.html", controller.shoppingList(model));
+        assertEquals("shopping-list.html", controller.shoppingList(model));
 
         verify(model).addAttribute("recentlyViewed", recentlyViewed);
         verify(model).addAttribute("user", USERNAME);
