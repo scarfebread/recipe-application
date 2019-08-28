@@ -244,8 +244,6 @@ public class RecipeServiceTest
 
         verify(recipeRepository).save(argumentCaptor.capture());
         verify(entityManager).detach(recipe);
-        verify(entityManager).detach(ingredients.get(0));
-        verify(entityManager).detach(steps.get(0));
 
         Recipe sharedRecipe = argumentCaptor.getValue();
 
@@ -260,8 +258,17 @@ public class RecipeServiceTest
         assertEquals(SERVES, sharedRecipe.getServes());
         assertEquals(loggedInUser.getUsername() , sharedRecipe.getSharedBy());
         assertEquals(userToShareWith, sharedRecipe.getUser());
-        assertEquals(ingredients, sharedRecipe.getIngredients());
-        assertEquals(steps, sharedRecipe.getSteps());
+
+        Ingredient expectedIngredient = ingredients.get(0);
+        Ingredient actualIngredient = sharedRecipe.getIngredients().get(0);
+        Step expectedStep = steps.get(0);
+        Step actualStep = sharedRecipe.getSteps().get(0);
+
+        assertEquals(expectedIngredient.getDescription(), actualIngredient.getDescription());
+        assertEquals(expectedIngredient.getMetric(), actualIngredient.getMetric());
+        assertEquals(expectedIngredient.getImperial(), actualIngredient.getImperial());
+        assertEquals(userToShareWith, actualIngredient.getUser());
+        assertEquals(expectedStep.getDescription(), actualStep.getDescription());
     }
 
     @Test

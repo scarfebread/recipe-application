@@ -43,6 +43,9 @@ public class Recipe
     @JoinColumn(name = "recipe")
     private List<Step> steps;
 
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    private List<RecentlyViewed> recentlyViewed;
+
     public User getUser()
     {
         return user;

@@ -13,6 +13,7 @@ import recipeapplication.repository.RecentlyViewedRepository;
 import recipeapplication.repository.RecipeRepository;
 import recipeapplication.utility.RecipeTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -122,17 +123,24 @@ public class RecipeService
         recipe.setSharedBy(authService.getLoggedInUser().getUsername());
         recipe.setUser(user);
 
+        List<Ingredient> ingredients = new ArrayList<>();
         for (Ingredient ingredient : recipe.getIngredients())
         {
-            entityManager.detach(ingredient);
-            ingredient.setId(null);
+            ingredients.add(
+                    new Ingredient(ingredient.getDescription(), ingredient.getMetric(), user)
+            );
         }
 
+        List<Step> steps = new ArrayList<>();
         for (Step step : recipe.getSteps())
         {
-            entityManager.detach(step);
-            step.setId(null);
+            steps.add(
+                    new Step(step.getDescription())
+            );
         }
+
+        recipe.setIngredients(ingredients);
+        recipe.setSteps(steps);
 
         recipeRepository.save(recipe);
     }
