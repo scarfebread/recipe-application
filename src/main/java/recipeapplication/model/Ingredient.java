@@ -98,4 +98,12 @@ public class Ingredient
     {
         this.inventoryItems = inventoryItems;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
