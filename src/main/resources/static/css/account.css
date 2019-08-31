@@ -67,4 +67,10 @@ input {
         padding-left: 12%;
         padding-right: 12%;
     }
+
+    .pageTitle {
+        width: 95%;
+        white-space: inherit;
+        float: none;
+    }
 }
