@@ -1,8 +1,6 @@
 spring:
   datasource:
-    # Uncomment when running in production mode
-#    url: "jdbc:postgresql://db:5432/postgres"
-    url: "jdbc:postgresql://localhost:5432/postgres"
+    url: "jdbc:postgresql://db:5432/postgres"
     username: "postgres"
     password: "U9]zCd(-3Uk4~<|G"
   jpa:
