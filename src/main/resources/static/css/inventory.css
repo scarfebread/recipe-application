@@ -12,7 +12,7 @@
 }
 
 .addIngredientContainer {
-    width: 330px;
+    width: 335px;
     display:table-cell;
     padding-right: 20px;
 }
@@ -142,5 +142,19 @@
     .instructionsContainer {
         padding-top: 15px;
         float: left;
+    }
+}
+
+@media (max-width: 500px) and (orientation: portrait) {
+    .container {
+        margin: 0;
+        width: 90%;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    body {
+        background: url("../images/carrots.jpg") no-repeat;
+        background-size: 1300px auto;
     }
 }
