@@ -2,23 +2,22 @@ package recipeapplication.utility
 
 private const val DEFAULT_VALUE = "00:00"
 
-fun combineCookAndPrepTime(cookTime: String, prepTime: String): String? {
-    var cookTime = cookTime
-    var prepTime = prepTime
+fun combineCookAndPrepTime(cookTime: String, prepTime: String): String {
     if (cookTime.isEmpty() && prepTime.isEmpty()) {
         return DEFAULT_VALUE
     }
     if (cookTime.isEmpty()) {
-        cookTime = DEFAULT_VALUE
+        return prepTime
     } else if (prepTime.isEmpty()) {
-        prepTime = DEFAULT_VALUE
+        return cookTime
     }
-    cookTime = cookTime.replace(":", "")
-    prepTime = prepTime.replace(":", "")
 
-    return addColonToTime(
-            addCookAndPrepTime(cookTime, prepTime)
+    val totalTime = addCookAndPrepTime(
+            cookTime.replace(":", ""),
+            prepTime.replace(":", "")
     )
+
+    return addColonToTime(totalTime)
 }
 
 private fun zeroPadTime4DP(string: String): String {
