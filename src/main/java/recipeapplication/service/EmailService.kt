@@ -10,20 +10,21 @@ import kotlin.concurrent.thread
 @Service
 class EmailService @Autowired constructor(private val mailSender: JavaMailSender) {
     fun sendPasswordReset(user: User, token: String, serverName: String) {
-        val message = SimpleMailMessage()
-        message.subject = SUBJECT
-        message.from = FROM_EMAIL
-        message.setTo(user.email)
+        val message = SimpleMailMessage().apply {
+            subject = SUBJECT
+            from = FROM_EMAIL
+            setTo(user.email)
 
-        message.text = """
-            Dear ${user.username},
+            text = """
+                Dear ${user.username},
+                    
+                A password reset was requested. Please follow the following link to reset your password:
+                http://${serverName}/change-password-with-token?token=${token}
                 
-            A password reset was requested. Please follow the following link to reset your password:
-            http://${serverName}/change-password-with-token?token=${token}
-            
-            Regards,
-            The Cooking Pot
-        """.trimIndent()
+                Regards,
+                The Cooking Pot
+            """.trimIndent()
+        }
 
         thread { mailSender.send(message) }
     }
