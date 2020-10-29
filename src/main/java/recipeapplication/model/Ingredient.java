@@ -1,10 +1,12 @@
 package recipeapplication.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import recipeapplication.utility.IngredientConverter;
 
 import javax.persistence.*;
 import java.util.List;
+
+import static recipeapplication.utility.IngredientConverterKt.toImperial;
+import static recipeapplication.utility.IngredientConverterKt.toMetric;
 
 @Entity
 @Table(name = "ingredients")
@@ -32,8 +34,8 @@ public class Ingredient
     public Ingredient(String description, String quantity, User user)
     {
         this.description = description;
-        this.metric = IngredientConverter.toMetric(quantity);
-        this.imperial = IngredientConverter.toImperial(quantity);
+        this.metric = toMetric(quantity);
+        this.imperial = toImperial(quantity);
         this.user = user;
     }
 

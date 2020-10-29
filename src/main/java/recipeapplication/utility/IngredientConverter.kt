@@ -9,42 +9,36 @@ private const val GRAM = "g"
 private const val KILOGRAM = "kg"
 private const val POUND = "lbs"
 
-fun toImperial(quantity: String) : String {
-    val words = quantity.split(" ").toMutableList() // TODO this is not immutable!
-    words.forEachIndexed { index, word ->
-        try {
-            if (word.toLowerCase().endsWith(KILOGRAM)) {
+fun toImperial(ingredient: String) : String {
+    return convertMeasurements(ingredient) { word ->
+        when (true) {
+            word.toLowerCase().endsWith(KILOGRAM) -> {
                 val value = (word extractValue  KILOGRAM) * KILOGRAM_TO_POUND
-                words[index] = roundOneDecimalPlace(value).toString() + POUND
-            } else if (word.toLowerCase().endsWith(GRAM)) {
-                val value = (word extractValue  GRAM) / OUNCE_TO_GRAM
-                words[index] = roundOneDecimalPlace(value).toString() + OUNCE
+                roundOneDecimalPlace(value).toString() + POUND
             }
-        } catch (e: NumberFormatException) {
-            // If a number cannot be extracted we move on to the next word
+            word.toLowerCase().endsWith(GRAM) -> {
+                val value = (word extractValue  GRAM) / OUNCE_TO_GRAM
+                roundOneDecimalPlace(value).toString() + OUNCE
+            }
+            else -> word
         }
     }
-
-    return words.joinToString(separator = " ")
 }
 
-fun toMetric(quantity: String): String {
-    val words = quantity.split(" ").toMutableList() // TODO this is not immutable!
-    words.forEachIndexed { index, word ->
-        try {
-            if (word.toLowerCase().endsWith(POUND)) {
+fun toMetric(ingredient: String): String {
+    return convertMeasurements(ingredient) { word ->
+        when (true) {
+            word.toLowerCase().endsWith(POUND) -> {
                 val value = (word extractValue  POUND) / KILOGRAM_TO_POUND
-                words[index] = roundOneDecimalPlace(value).toString() + KILOGRAM
-            } else if (word.toLowerCase().endsWith(OUNCE)) {
-                val value = ((word extractValue OUNCE) * OUNCE_TO_GRAM).roundToInt()
-                words[index] = value.toString() + GRAM
+                roundOneDecimalPlace(value).toString() + KILOGRAM
             }
-        } catch (e: NumberFormatException) {
-            // If a number cannot be extracted we move on to the next word
+            word.toLowerCase().endsWith(OUNCE) -> {
+                val value = ((word extractValue OUNCE) * OUNCE_TO_GRAM).roundToInt()
+                value.toString() + GRAM
+            }
+            else -> word
         }
     }
-
-    return words.joinToString(separator = " ")
 }
 
 private infix fun String.extractValue(measurement: String): Double {
@@ -53,4 +47,15 @@ private infix fun String.extractValue(measurement: String): Double {
 
 private fun roundOneDecimalPlace(value: Double): Double {
     return (value * 10.0).roundToInt() / 10.0
+}
+
+private fun convertMeasurements(ingredient: String, convert: (String) -> String) : String {
+    val words = ingredient.split(" ")
+    return words.joinToString(separator = " ") { word ->
+        try {
+            convert(word)
+        } catch (e: NumberFormatException) {
+            word
+        }
+    }
 }

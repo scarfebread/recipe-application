@@ -7,7 +7,7 @@ import javax.transaction.Transactional
 
 @Service
 @Transactional
-class IngredientService @Autowired constructor(private val ingredientRepository: IngredientRepository, private val authService: AuthService) {
+open class IngredientService @Autowired constructor(private val ingredientRepository: IngredientRepository, private val authService: AuthService) {
     fun deleteAll() {
         ingredientRepository.deleteAllByUser(
                 authService.loggedInUser

@@ -11,7 +11,6 @@ import recipeapplication.model.*;
 import recipeapplication.repository.IngredientRepository;
 import recipeapplication.repository.RecentlyViewedRepository;
 import recipeapplication.repository.RecipeRepository;
-import recipeapplication.utility.RecipeTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,8 @@ import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+import static recipeapplication.utility.RecipeTimeKt.combineCookAndPrepTime;
 
 @Service
 @Transactional
@@ -98,7 +99,7 @@ public class RecipeService
         recipe.setServes(recipeDto.getServes());
         recipe.setCookTime(recipeDto.getCookTime());
         recipe.setPrepTime(recipeDto.getPrepTime());
-        recipe.setTotalTime(RecipeTime.combineCookAndPrepTime(recipeDto.getCookTime(), recipeDto.getPrepTime()));
+        recipe.setTotalTime(combineCookAndPrepTime(recipeDto.getCookTime(), recipeDto.getPrepTime()));
         recipe.setDifficulty(recipeDto.getDifficulty());
 
         recipeRepository.save(recipe);
