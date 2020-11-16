@@ -85,16 +85,12 @@ public class UserServiceTest
     @Test(expected = UserNotFoundException.class)
     public void shouldThrowUserNotFoundExceptionWhenNoUsernameOrEmailInRequest() throws UserNotFoundException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
-
         userService.createPasswordResetToken("", new UserDto());
     }
 
     @Test(expected = UserNotFoundException.class)
     public void shouldThrowUserNotFoundExceptionWhenUsernameDoesNotExist() throws UserNotFoundException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
-
         UserDto userDto = new UserDto();
         userDto.setUsername(INVALID_USERNAME);
 
@@ -104,8 +100,6 @@ public class UserServiceTest
     @Test(expected = UserNotFoundException.class)
     public void shouldThrowUserNotFoundExceptionWhenEmailDoesNotExist() throws UserNotFoundException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
-
         UserDto userDto = new UserDto();
         userDto.setEmail(INVALID_EMAIL);
 
@@ -115,8 +109,6 @@ public class UserServiceTest
     @Test
     public void shouldCreatePasswordResetTokenForValidUsername() throws UserNotFoundException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, emailService, passwordEncoder, authService);
-
         UserDto userDto = new UserDto();
         userDto.setUsername(VALID_USERNAME);
 
@@ -134,8 +126,6 @@ public class UserServiceTest
     @Test
     public void shouldCreatePasswordResetTokenForValidEmail() throws UserNotFoundException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, emailService, passwordEncoder, authService);
-
         UserDto userDto = new UserDto();
         userDto.setEmail(VALID_EMAIL);
 
@@ -153,24 +143,18 @@ public class UserServiceTest
     @Test(expected = InvalidPasswordTokenException.class)
     public void shouldThrowInvalidPasswordTokenExceptionWhenTokenDoesNotExist() throws InvalidPasswordTokenException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
-
         userService.processPasswordResetToken(INVALID_TOKEN);
     }
 
     @Test(expected = InvalidPasswordTokenException.class)
     public void shouldThrowInvalidPasswordTokenExceptionWhenTokenIsExpired() throws InvalidPasswordTokenException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
-
         userService.processPasswordResetToken(EXPIRED_TOKEN);
     }
 
     @Test
     public void shouldEnablePasswordResetForValidToken() throws InvalidPasswordTokenException
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository, null, passwordEncoder, authService);
-
         ArgumentCaptor<RecipeUserDetails> argumentCaptor = ArgumentCaptor.forClass(RecipeUserDetails.class);
 
         userService.processPasswordResetToken(VALID_TOKEN);
@@ -186,8 +170,6 @@ public class UserServiceTest
     @Test
     public void shouldChangePasswordSuccessfully()
     {
-        UserService userService = new UserService(userRepository, passwordTokenRepository,  null, passwordEncoder, authService);
-
         User user = new User();
 
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);

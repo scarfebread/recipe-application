@@ -152,7 +152,7 @@ public class InventoryServiceTest
         inventoryItems.add(inventoryItem1);
         inventoryItems.add(inventoryItem2);
 
-        Ingredient searchIngredient = new Ingredient("DESCRIPTION", null, null);
+        Ingredient searchIngredient = new Ingredient("DESCRIPTION", "", new User());
 
         when(inventoryRepository.findByIngredientDescription(searchIngredient.getDescription())).thenReturn(inventoryItems);
 
@@ -165,7 +165,7 @@ public class InventoryServiceTest
     @Test
     public void shouldGetSimilarIngredientsWithNoResults()
     {
-        Ingredient searchIngredient = new Ingredient("DESCRIPTION", null, null);
+        Ingredient searchIngredient = new Ingredient("DESCRIPTION", "", new User());
 
         when(inventoryRepository.findByIngredientDescription(searchIngredient.getDescription())).thenReturn(new ArrayList<>());
 

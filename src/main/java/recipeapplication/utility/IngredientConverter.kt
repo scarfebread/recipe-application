@@ -11,7 +11,7 @@ private const val POUND = "lbs"
 
 fun toImperial(ingredient: String) : String {
     return convertMeasurements(ingredient) { word ->
-        when (true) {
+        when {
             word.toLowerCase().endsWith(KILOGRAM) -> {
                 val value = (word extractValue  KILOGRAM) * KILOGRAM_TO_POUND
                 roundOneDecimalPlace(value).toString() + POUND
@@ -27,7 +27,7 @@ fun toImperial(ingredient: String) : String {
 
 fun toMetric(ingredient: String): String {
     return convertMeasurements(ingredient) { word ->
-        when (true) {
+        when {
             word.toLowerCase().endsWith(POUND) -> {
                 val value = (word extractValue  POUND) / KILOGRAM_TO_POUND
                 roundOneDecimalPlace(value).toString() + KILOGRAM

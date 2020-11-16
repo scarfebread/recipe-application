@@ -22,7 +22,7 @@ class AuthService {
         }
     }
 
-    fun authenticateUser(userDetails: RecipeUserDetails?, role: Role) {
+    fun authenticateUser(userDetails: RecipeUserDetails, role: Role) {
         val auth: Authentication = UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,

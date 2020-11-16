@@ -17,7 +17,7 @@ class EmailService @Autowired constructor(private val mailSender: JavaMailSender
 
             text = """
                 Dear ${user.username},
-                    
+                
                 A password reset was requested. Please follow the following link to reset your password:
                 http://${serverName}/change-password-with-token?token=${token}
                 
