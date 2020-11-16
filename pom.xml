@@ -90,6 +90,13 @@
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk</artifactId>
+            <version>1.10.2</version>
+            <scope>test</scope>
+        </dependency>
+
 
         <!-- TODO remove these dependencies -->
         <dependency>
