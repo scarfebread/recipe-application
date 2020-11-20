@@ -1,7 +1,7 @@
 package recipeapplication.utility
 
-import junit.framework.TestCase.assertEquals
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class RecipeTimeTest {
     @Test

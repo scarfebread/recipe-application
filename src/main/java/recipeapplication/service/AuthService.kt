@@ -1,7 +1,6 @@
 package recipeapplication.service
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -23,11 +22,11 @@ class AuthService {
     }
 
     fun authenticateUser(userDetails: RecipeUserDetails, role: Role) {
-        val auth: Authentication = UsernamePasswordAuthenticationToken(
+        SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,
-                listOf(SimpleGrantedAuthority(role.toString())))
-        SecurityContextHolder.getContext().authentication = auth
+                listOf(SimpleGrantedAuthority(role.toString()))
+        )
     }
 
     fun disableUserSession() {
