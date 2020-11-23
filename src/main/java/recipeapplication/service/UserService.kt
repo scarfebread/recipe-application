@@ -21,8 +21,8 @@ class UserService @Autowired constructor(
         private val passwordTokenRepository: PasswordTokenRepository,
         private val emailService: EmailService,
         private val passwordEncoder: PasswordEncoder,
-        private val authService: AuthService) {
-
+        private val authService: AuthService
+) {
     @Throws(UserNotFoundException::class)
     fun createPasswordResetToken(serverName: String, userDto: UserDto) {
         val result = when {
