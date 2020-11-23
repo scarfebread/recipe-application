@@ -180,7 +180,7 @@ open class RecipeService @Autowired constructor(
         val recipe = getRecipe(stepDto.recipeId)
         val step = recipe.steps.firstOrNull { step -> step.id == stepDto.stepId }
 
-        if (step != null) {
+        if (step != null) { // TODO sounds like this should throw an exception rather than be null safe
             recipe.steps.remove(step)
             recipeRepository.save(recipe)
         }
@@ -191,7 +191,7 @@ open class RecipeService @Autowired constructor(
         val recipe = getRecipe(stepDto.recipe)
         val step = recipe.steps.firstOrNull { step -> step.id == stepDto.id }
 
-        if (step != null) { // TODO can I make this non null without catching an exception?
+        if (step != null) { // TODO sounds like this should throw an exception rather than be null safe
             step.description = stepDto.description
             recipeRepository.save(recipe)
         }
