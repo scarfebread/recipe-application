@@ -34,6 +34,7 @@ public class RecipeServiceTest
     private static final String PREP_TIME = "02:04";
     private static final String TOTAL_TIME = "03:25";
     private static final String DIFFICULTY = "DIFFICULTY";
+    private static final Long RECIPE_ID = 532L;
 
     private RecipeRepository recipeRepository;
     private IngredientRepository ingredientRepository;
@@ -68,6 +69,8 @@ public class RecipeServiceTest
         recipeDto.setTitle("Test recipe");
 
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+
+        when(recipeRepository.save(any(Recipe.class))).thenReturn(new Recipe());
 
         recipeService.createRecipe(recipeDto);
 
@@ -161,6 +164,7 @@ public class RecipeServiceTest
     public void shouldUpdateRecipeSuccessfully() throws Exception
     {
         RecipeDto recipeDto = new RecipeDto();
+        recipeDto.setId(RECIPE_ID);
         recipeDto.setNotes(NOTES);
         recipeDto.setCookTime(COOK_TIME);
         recipeDto.setPrepTime(PREP_TIME);

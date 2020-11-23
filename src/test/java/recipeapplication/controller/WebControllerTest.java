@@ -27,6 +27,7 @@ public class WebControllerTest
     private static final String VALID_TOKEN = "VALID_TOKEN";
     private static final String INVALID_TOKEN = "INVALID_TOKEN";
     private static final String USERNAME = "USERNAME";
+    private static final Long RECIPE_ID = 4325L;
 
     private WebController controller;
     private RecipeService recipeService;
@@ -119,9 +120,9 @@ public class WebControllerTest
     @Test
     public void shouldReturnInvalidRecipePageWhenRecipeDoesNotExist() throws Exception
     {
-        when(recipeService.getRecipe(any())).thenThrow(RecipeDoesNotExistException.class);
+        when(recipeService.getRecipe(RECIPE_ID)).thenThrow(RecipeDoesNotExistException.class);
 
-        assertEquals("invalid-recipe.html", controller.recipe(1L, mock(Model.class)));
+        assertEquals("invalid-recipe.html", controller.recipe(RECIPE_ID, mock(Model.class)));
     }
 
     @Test
