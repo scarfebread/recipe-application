@@ -21,8 +21,9 @@ public class SignupControllerTest
         Errors errors = mock(Errors.class);
 
         when(errors.hasErrors()).thenReturn(true);
+        SignupService signupService = mock(SignupService.class);
 
-        ResponseEntity response = new SignupController(null).signup(null, errors);
+        ResponseEntity response = new SignupController(signupService).signup(new UserDto(), errors);
 
         assertEquals(400, response.getStatusCode().value());
         assertEquals("Invalid user information supplied", response.getBody());
