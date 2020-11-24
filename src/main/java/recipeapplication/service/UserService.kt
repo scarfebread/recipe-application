@@ -51,7 +51,7 @@ class UserService @Autowired constructor(
 
         val user = passwordResetToken.get().user
         val recipeUserDetails = RecipeUserDetails(user)
-        recipeUserDetails.isChangePasswordAccess = true
+        recipeUserDetails.changePasswordAccess = true
         authService.authenticateUser(recipeUserDetails, Role.CHANGE_PASSWORD)
     }
 

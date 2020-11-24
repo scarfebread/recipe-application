@@ -15,8 +15,8 @@ class AuthService {
 
     fun disablePasswordReset() {
         val user = SecurityContextHolder.getContext().authentication.principal as RecipeUserDetails
-        if (user.isChangePasswordAccess) {
-            user.isChangePasswordAccess = false
+        if (user.changePasswordAccess) {
+            user.changePasswordAccess = false
             SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken(user, null)
         }
     }

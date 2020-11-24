@@ -152,7 +152,7 @@ class UserServiceTest {
         verify { authService.authenticateUser(capture(processedUserDetails), Role.CHANGE_PASSWORD) }
 
         assertEquals(VALID_USERNAME, processedUserDetails.captured.username)
-        assertTrue(processedUserDetails.captured.isChangePasswordAccess)
+        assertTrue(processedUserDetails.captured.changePasswordAccess)
     }
 
     @Test

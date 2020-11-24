@@ -2,16 +2,11 @@ package recipeapplication.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import recipeapplication.model.User;
 import recipeapplication.security.RecipeUserDetails;
 import recipeapplication.security.Role;
-
-import java.util.Collections;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -48,7 +43,7 @@ public class AuthServiceTest
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
 
-        assertFalse(((RecipeUserDetails) securityContext.getAuthentication().getPrincipal()).isChangePasswordAccess());
+        assertFalse(((RecipeUserDetails) securityContext.getAuthentication().getPrincipal()).getChangePasswordAccess());
         assertEquals(0, securityContext.getAuthentication().getAuthorities().size());
     }
 
@@ -63,7 +58,7 @@ public class AuthServiceTest
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
 
-        assertFalse(((RecipeUserDetails) securityContext.getAuthentication().getPrincipal()).isChangePasswordAccess());
+        assertFalse(((RecipeUserDetails) securityContext.getAuthentication().getPrincipal()).getChangePasswordAccess());
         assertEquals(1, securityContext.getAuthentication().getAuthorities().size());
     }
 
