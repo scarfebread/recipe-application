@@ -17,7 +17,7 @@ import recipeapplication.service.UserService;
 import java.util.List;
 
 @Controller
-public class WebController
+public class WebController // TODO I should have a custom error page
 {
     private UserService userService;
     private RecipeService recipeService;
