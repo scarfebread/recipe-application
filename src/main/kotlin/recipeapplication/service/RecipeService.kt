@@ -67,7 +67,7 @@ open class RecipeService @Autowired constructor(
     @Throws(RecipeDoesNotExistException::class)
     fun deleteRecipe(recipeDto: RecipeDto) {
         getRecipe(recipeDto.id)
-        recipeRepository.deleteById(recipeDto.id)
+        recipeRepository.deleteById(recipeDto.id) // TODO ERROR: update or delete on table "ingredients" violates foreign key constraint "inventory_ingredient_id_fkey" on table "inventory""
     }
 
     @Throws(RecipeDoesNotExistException::class)

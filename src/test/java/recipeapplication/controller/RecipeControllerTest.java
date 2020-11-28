@@ -51,7 +51,7 @@ public class RecipeControllerTest
     @Test
     public void shouldReturnInvalidRecipeWhenCreateRecipeHasErrors()
     {
-        ResponseEntity response = recipeController.createRecipe(null, errors);
+        ResponseEntity response = recipeController.createRecipe(new CreateRecipeDto(), errors);
 
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Invalid recipe", response.getBody());
@@ -260,7 +260,7 @@ public class RecipeControllerTest
     @Test
     public void shouldReturnInvalidIngredientWheInvalidIngredientSupplied()
     {
-        ResponseEntity response = recipeController.addIngredient(null, errors);
+        ResponseEntity response = recipeController.addIngredient(new IngredientDto(), errors);
 
         assertEquals("Invalid ingredient", response.getBody());
         assertEquals(400, response.getStatusCodeValue());
@@ -338,7 +338,7 @@ public class RecipeControllerTest
     @Test
     public void shouldReturnInvalidStepWhenAddingInvalidStep()
     {
-        ResponseEntity response = recipeController.addStep(null, errors);
+        ResponseEntity response = recipeController.addStep(new CreateStepDto(), errors);
 
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Invalid step", response.getBody());
@@ -374,7 +374,7 @@ public class RecipeControllerTest
     @Test
     public void shouldReturnInvalidStepWhenUpdatingInvalidStep()
     {
-        ResponseEntity response = recipeController.updateStep(null, errors);
+        ResponseEntity response = recipeController.updateStep(new UpdateStepDto(), errors);
 
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Invalid step supplied", response.getBody());
@@ -409,7 +409,7 @@ public class RecipeControllerTest
     @Test
     public void shouldReturnInvalidStepWhenDeletingInvalidStep()
     {
-        ResponseEntity response = recipeController.deleteStep(null, errors);
+        ResponseEntity response = recipeController.deleteStep(new DeleteStepDto(), errors);
 
         assertEquals(400, response.getStatusCodeValue());
         assertEquals("Invalid step supplied", response.getBody());
