@@ -46,7 +46,7 @@ public class PasswordControllerTest
 
         PasswordController passwordController = new PasswordController(userService, authService);
 
-        ResponseEntity response =  passwordController.createPasswordReset(request, null);
+        ResponseEntity response =  passwordController.createPasswordReset(request, new UserDto());
 
         assertEquals(201, response.getStatusCodeValue());
         assertEquals("Created", response.getBody());
@@ -65,19 +65,6 @@ public class PasswordControllerTest
         assertEquals("Created", response.getBody());
 
         verify(userService).createPasswordResetToken(String.format("%s:%s", SERVER_NAME, SERVER_PORT), userDto);
-    }
-
-    @Test
-    public void shouldGet400ResponseChangingPasssordWhenNoUserIsLoggedIn()
-    {
-        when(authService.getLoggedInUser()).thenReturn(null);
-
-        PasswordController passwordController = new PasswordController(userService, authService);
-
-        ResponseEntity response = passwordController.changePassword(new PasswordDto(), errors);
-
-        assertEquals(400, response.getStatusCodeValue());
-        assertEquals("Invalid session", response.getBody());
     }
 
     @Test
