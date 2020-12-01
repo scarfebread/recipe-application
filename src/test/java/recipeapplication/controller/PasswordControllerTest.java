@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import recipeapplication.dto.PasswordDto;
+import recipeapplication.dto.PasswordResetDto;
 import recipeapplication.dto.UserDto;
 import recipeapplication.exception.UserNotFoundException;
 import recipeapplication.model.User;
@@ -46,7 +47,7 @@ public class PasswordControllerTest
 
         PasswordController passwordController = new PasswordController(userService, authService);
 
-        ResponseEntity response =  passwordController.createPasswordReset(request, new UserDto());
+        ResponseEntity response =  passwordController.createPasswordReset(request, new PasswordResetDto());
 
         assertEquals(201, response.getStatusCodeValue());
         assertEquals("Created", response.getBody());
@@ -57,14 +58,14 @@ public class PasswordControllerTest
     {
         PasswordController passwordController = new PasswordController(userService, authService);
 
-        UserDto userDto = new UserDto();
+        PasswordResetDto passwordResetDto = new PasswordResetDto();
 
-        ResponseEntity response =  passwordController.createPasswordReset(request, userDto);
+        ResponseEntity response =  passwordController.createPasswordReset(request, passwordResetDto);
 
         assertEquals(201, response.getStatusCodeValue());
         assertEquals("Created", response.getBody());
 
-        verify(userService).createPasswordResetToken(String.format("%s:%s", SERVER_NAME, SERVER_PORT), userDto);
+        verify(userService).createPasswordResetToken(String.format("%s:%s", SERVER_NAME, SERVER_PORT), passwordResetDto);
     }
 
     @Test

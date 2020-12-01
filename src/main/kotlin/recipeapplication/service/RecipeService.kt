@@ -66,14 +66,14 @@ open class RecipeService @Autowired constructor(
 
     @Throws(RecipeDoesNotExistException::class)
     fun deleteRecipe(recipeDto: RecipeDto) {
-        getRecipe(recipeDto.id)
-        recipeRepository.deleteById(recipeDto.id) // TODO ERROR: update or delete on table "ingredients" violates foreign key constraint "inventory_ingredient_id_fkey" on table "inventory""
+        getRecipe(recipeDto.id!!)
+        recipeRepository.deleteById(recipeDto.id!!) // TODO ERROR: update or delete on table "ingredients" violates foreign key constraint "inventory_ingredient_id_fkey" on table "inventory""
     }
 
     @Throws(RecipeDoesNotExistException::class)
     fun updateRecipe(recipeDto: RecipeDto) {
         recipeRepository.save(
-                getRecipe(recipeDto.id).apply {
+                getRecipe(recipeDto.id!!).apply {
                     notes = recipeDto.notes
                     rating = recipeDto.rating
                     serves = recipeDto.serves
@@ -91,7 +91,7 @@ open class RecipeService @Autowired constructor(
             throw SameUsernameException()
         }
 
-        val recipe = getRecipe(recipeDto.id)
+        val recipe = getRecipe(recipeDto.id!!)
 
         // Clone the existing recipe
         Hibernate.initialize(recipe.ingredients)

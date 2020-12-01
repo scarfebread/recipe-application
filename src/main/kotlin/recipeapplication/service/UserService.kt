@@ -3,7 +3,7 @@ package recipeapplication.service
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import recipeapplication.dto.UserDto
+import recipeapplication.dto.PasswordResetDto
 import recipeapplication.exception.InvalidPasswordTokenException
 import recipeapplication.exception.UserNotFoundException
 import recipeapplication.model.PasswordResetToken
@@ -24,11 +24,11 @@ class UserService @Autowired constructor(
         private val authService: AuthService
 ) {
     @Throws(UserNotFoundException::class)
-    fun createPasswordResetToken(serverName: String, userDto: UserDto) {
+    fun createPasswordResetToken(serverName: String, passwordResetDto: PasswordResetDto) {
         val result = when {
-            userDto.username != null -> userRepository.findByUsername(userDto.username)
-            userDto.email != null -> userRepository.findByEmail(userDto.email)
-            else -> throw UserNotFoundException() // TODO should these ever be null?
+            passwordResetDto.username != null -> userRepository.findByUsername(passwordResetDto.username!!)
+            passwordResetDto.email != null -> userRepository.findByEmail(passwordResetDto.email!!)
+            else -> throw UserNotFoundException()
         }
 
         if (!result.isPresent) {

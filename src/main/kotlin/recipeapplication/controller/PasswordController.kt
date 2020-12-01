@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import recipeapplication.dto.PasswordDto
-import recipeapplication.dto.UserDto
+import recipeapplication.dto.PasswordResetDto
 import recipeapplication.exception.UserNotFoundException
 import recipeapplication.service.AuthService
 import recipeapplication.service.UserService
@@ -19,11 +19,11 @@ import javax.validation.Valid
 @RequestMapping("/api")
 class PasswordController @Autowired constructor(private val userService: UserService, private val authService: AuthService) {
     @PostMapping("/password-reset")
-    fun createPasswordReset(request: HttpServletRequest, @RequestBody userDto: UserDto): ResponseEntity<*> {
+    fun createPasswordReset(request: HttpServletRequest, @RequestBody passwordResetDto: PasswordResetDto): ResponseEntity<*> {
         val serverName = "${request.serverName}:${request.serverPort}"
 
         try {
-            userService.createPasswordResetToken(serverName, userDto)
+            userService.createPasswordResetToken(serverName, passwordResetDto)
         } catch (e: UserNotFoundException) {
             // We don't show the client that the user doesn't exist for security reasons
         }

@@ -153,7 +153,7 @@ class RecipeController @Autowired constructor(private val recipeService: RecipeS
         }
 
         return try {
-            val user = userService.getUser(recipeDto.newUser)
+            val user = userService.getUser(recipeDto.newUser!!)
             recipeService.shareRecipe(recipeDto, user)
             ResponseEntity.status(201).body("Created")
         } catch (e: RecipeDoesNotExistException) {

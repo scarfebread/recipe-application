@@ -7,7 +7,7 @@ import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 import org.springframework.security.crypto.password.PasswordEncoder
-import recipeapplication.dto.UserDto
+import recipeapplication.dto.PasswordResetDto
 import recipeapplication.exception.InvalidPasswordTokenException
 import recipeapplication.exception.UserNotFoundException
 import recipeapplication.model.PasswordResetToken
@@ -80,14 +80,14 @@ class UserServiceTest {
 
     @Test(expected = UserNotFoundException::class)
     fun `Should throw UserNotFoundException when no username or email in request`() {
-        userService.createPasswordResetToken("", UserDto())
+        userService.createPasswordResetToken("", PasswordResetDto())
     }
 
     @Test(expected = UserNotFoundException::class)
     fun `Should throw UserNotFoundException when username does not exist`() {
         userService.createPasswordResetToken(
                 SERVER_NAME,
-                UserDto().apply { username = INVALID_USERNAME }
+                PasswordResetDto().apply { username = INVALID_USERNAME }
         )
     }
 
@@ -95,17 +95,17 @@ class UserServiceTest {
     fun `Should throw UserNotFoundException when email does not exist`() {
         userService.createPasswordResetToken(
                 SERVER_NAME,
-                UserDto().apply { email = INVALID_EMAIL }
+                PasswordResetDto().apply { email = INVALID_EMAIL }
         )
     }
 
     @Test
     fun `Should create password reset token for valid username`() {
-        val userDto = UserDto().apply { username = VALID_USERNAME }
+        val passwordResetDto = PasswordResetDto().apply { username = VALID_USERNAME }
 
         every { passwordTokenRepository.save(any()) } returns PasswordResetToken()
 
-        userService.createPasswordResetToken(SERVER_NAME, userDto)
+        userService.createPasswordResetToken(SERVER_NAME, passwordResetDto)
 
         val savedToken = slot<PasswordResetToken>()
 
@@ -118,11 +118,11 @@ class UserServiceTest {
 
     @Test
     fun `Should create password reset token for valid email address`() {
-        val userDto = UserDto().apply { email = VALID_EMAIL }
+        val passwordResetDto = PasswordResetDto().apply { email = VALID_EMAIL }
 
         every { passwordTokenRepository.save(any()) } returns PasswordResetToken()
 
-        userService.createPasswordResetToken(SERVER_NAME, userDto)
+        userService.createPasswordResetToken(SERVER_NAME, passwordResetDto)
 
         val savedToken = slot<PasswordResetToken>()
 

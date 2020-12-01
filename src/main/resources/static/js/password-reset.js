@@ -24,7 +24,6 @@ export const PasswordReset = (function () {
 
         const user = {
             username: null,
-            password: null,
             email: null
         };
 
