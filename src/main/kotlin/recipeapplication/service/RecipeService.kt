@@ -113,7 +113,7 @@ open class RecipeService @Autowired constructor(
         if (recentlyViewed.isEmpty() || recentlyViewed[0].recipe.id != recipe.id) {
             recentlyViewedRepository.save(
                     RecentlyViewed().apply {
-                        setRecipe(recipe)
+                        this.recipe = recipe
                         user = recipe.user
                     }
             )
