@@ -517,11 +517,14 @@ public class RecipeServiceTest
     public void shouldUpdateStepSuccessfully() throws Exception
     {
         Step step1 = new Step();
-        step1.setId(1L);
         Step step2 = new Step();
-        step2.setId(2L);
         Step step3 = new Step();
+        step1.setId(1L);
+        step2.setId(2L);
         step3.setId(3L);
+        step1.setDescription("NOT_UPDATED");
+        step2.setDescription("NOT_UPDATED");
+        step3.setDescription("NOT_UPDATED");
 
         Recipe recipe = new Recipe();
         recipe.addStep(step1);
@@ -543,9 +546,9 @@ public class RecipeServiceTest
 
         List<Step> result = argumentCaptor.getValue().getSteps();
 
-        assertNull(result.get(0).getDescription());
+        assertEquals(step1.getDescription(), result.get(0).getDescription());
         assertEquals(stepDto.getDescription(), result.get(1).getDescription());
-        assertNull(result.get(2).getDescription());
+        assertEquals(step3.getDescription(), result.get(2).getDescription());
     }
 
     @Test
