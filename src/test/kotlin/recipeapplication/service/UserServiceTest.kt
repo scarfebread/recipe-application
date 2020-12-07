@@ -62,7 +62,7 @@ class UserServiceTest {
 
         val validPasswordResetToken = PasswordResetToken().apply {
             setExpiryDate(oneHourInTheFuture.time)
-            setUser(user)
+            this.user = user
         }
 
         val expiredPasswordResetToken = PasswordResetToken().apply {

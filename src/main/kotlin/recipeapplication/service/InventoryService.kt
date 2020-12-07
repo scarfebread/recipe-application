@@ -49,7 +49,7 @@ class InventoryService @Autowired constructor(
 
         val inventoryItem = InventoryItem().apply {
             user = authService.loggedInUser
-            setIngredient(ingredient)
+            this.ingredient = ingredient
         }
 
         inventoryRepository.save(inventoryItem)
