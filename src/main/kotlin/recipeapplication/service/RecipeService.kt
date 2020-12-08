@@ -101,9 +101,9 @@ open class RecipeService @Autowired constructor(
         recipe.apply {
             id = null
             sharedBy = authService.loggedInUser.username
-            setUser(user)
-            ingredients = recipe.ingredients.map { ingredient -> Ingredient(ingredient.description, ingredient.metric, user) }
-            steps = recipe.steps.map { step -> Step(step.description) }
+            this.user = user
+            ingredients = recipe.ingredients.map { ingredient -> Ingredient(ingredient.description, ingredient.metric, user) }.toMutableList()
+            steps = recipe.steps.map { step -> Step(step.description) }.toMutableList()
         }
 
         recipeRepository.save(recipe)
