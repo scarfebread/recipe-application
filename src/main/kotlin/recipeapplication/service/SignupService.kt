@@ -25,7 +25,7 @@ class SignupService @Autowired constructor(private val userRepository: UserRepos
             username = userDto.username
             email = userDto.email
             password = passwordEncoder.encode(userDto.password)
-            isNewUser = true
+            newUser = true
         }
 
         userRepository.save(user)

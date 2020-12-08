@@ -199,7 +199,7 @@ class UserServiceTest {
 
     @Test
     fun `Should turn off instructions if the user is new`() {
-        val user = User().apply { isNewUser = true }
+        val user = User().apply { newUser = true }
 
         every { authService.loggedInUser } returns user
         every { userRepository.save(user) } returns user
@@ -210,12 +210,12 @@ class UserServiceTest {
 
         verify { userRepository.save(capture(submittedUser)) }
 
-        assertFalse(submittedUser.captured.isNewUser)
+        assertFalse(submittedUser.captured.newUser)
     }
 
     @Test
     fun `Should not turn off instructions if the user is new`() {
-        val user = User().apply { isNewUser = false }
+        val user = User().apply { newUser = false }
 
         every { authService.loggedInUser } returns user
 

@@ -88,6 +88,6 @@ public class SignupServiceTest
         assertEquals(USER, argumentCaptor.getValue().getUsername());
         assertEquals(EMAIL, argumentCaptor.getValue().getEmail());
         assertEquals(ENCODED_PASSWORD, argumentCaptor.getValue().getPassword());
-        assertTrue(argumentCaptor.getValue().isNewUser());
+        assertTrue(argumentCaptor.getValue().getNewUser());
     }
 }

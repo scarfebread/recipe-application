@@ -79,8 +79,8 @@ class UserService @Autowired constructor(
 
     fun turnOffInstructions() {
         val user = authService.loggedInUser
-        if (user.isNewUser) {
-            user.isNewUser = false
+        if (user.newUser) {
+            user.newUser = false
             userRepository.save(user)
         }
     }

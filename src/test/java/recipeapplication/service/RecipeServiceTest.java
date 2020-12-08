@@ -197,9 +197,12 @@ public class RecipeServiceTest
         RecipeDto recipeDto = new RecipeDto();
         recipeDto.setId(2L);
 
+        User userToShareWith = new User();
+        userToShareWith.setUsername("another user");
+
         when(recipeRepository.findByIdAndUser(recipeDto.getId(), loggedInUser)).thenReturn(Optional.empty());
 
-        recipeService.shareRecipe(recipeDto, new User());
+        recipeService.shareRecipe(recipeDto, userToShareWith);
     }
 
     @Test(expected = SameUsernameException.class)
@@ -216,6 +219,7 @@ public class RecipeServiceTest
     {
         User userToShareWith = new User();
         userToShareWith.setId(1L);
+        userToShareWith.setUsername("another user");
 
         RecipeDto recipeDto = new RecipeDto();
         recipeDto.setId(1L);

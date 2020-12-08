@@ -54,7 +54,7 @@ class WebController // TODO I should have a custom error page
                 addAttribute("recentlyViewed", recipeService.recentlyViewed)
                 addAttribute("user", authService.loggedInUser.username)
                 addAttribute("ingredients", inventoryService.ingredients)
-                addAttribute("displayInstructions", authService.loggedInUser.isNewUser)
+                addAttribute("displayInstructions", authService.loggedInUser.newUser)
             }
             
             "recipe.html"
