@@ -15,6 +15,8 @@ open class MvcConfig : WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/css/")
         registry.addResourceHandler("/js/**")
                 .addResourceLocations("classpath:/static/js/")
+        registry.addResourceHandler("/react/**")
+                .addResourceLocations("classpath:/static/react/")
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/static/images/")
                 .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS))

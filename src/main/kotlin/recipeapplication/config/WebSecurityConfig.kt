@@ -19,7 +19,7 @@ open class WebSecurityConfig @Autowired constructor(private val userDetailsServi
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/api/password-reset", "/api/signup", "/signup", "/reset-password", "/change-password-with-token", "/api/signup", "/css/**", "/images/**", "/js/**")
+                .antMatchers("/api/password-reset", "/api/signup", "/signup", "/reset-password", "/change-password-with-token", "/api/signup", "/css/**", "/images/**", "/js/**", "/react/**")
                 .permitAll()
                 .antMatchers("/", "/recipe", "/shopping-list", "/inventory", "/delete-account", "/change-password").hasAuthority(Role.USER.toString())
                 .antMatchers("/api/change-password").hasAnyAuthority(Role.CHANGE_PASSWORD.toString(), Role.USER.toString())

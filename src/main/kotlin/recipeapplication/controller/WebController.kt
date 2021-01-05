@@ -121,4 +121,9 @@ class WebController // TODO I should have a custom error page
 
         return "inventory.html"
     }
+
+    @GetMapping("/react-test")
+    fun react(): String {
+        return "change-password-react.html"
+    }
 }
