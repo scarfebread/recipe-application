@@ -102,7 +102,11 @@
             <version>1.10.2</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
 
         <!-- TODO remove these dependencies -->
         <dependency>
@@ -248,14 +252,6 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
-<!--                    This fails with error 139. Added manual execution below.-->
-<!--                    <execution>-->
-<!--                        <id>webpack build</id>-->
-<!--                        <goals>-->
-<!--                            <goal>webpack</goal>-->
-<!--                        </goals>-->
-<!--                        <phase>generate-resources</phase>-->
-<!--                    </execution>-->
                 </executions>
             </plugin>
             <plugin>

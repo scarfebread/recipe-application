@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
+import Header from "./Header";
+import ChangePassword from "./ChangePassword";
 
-export default function App() {
-    const [count, setCount] = useState(0);
-    return (
+const App = () => (
+    <div className="container">
         <div>
-            This is a sample stateful and server-side
-            rendered React application.
-            <br />
-            <br />
-            Here is a button that will track
-            how many times you click it:
-            <br />
-            <br />
-            <button onClick={() => setCount(count + 2)}>{count}</button>
+            <Header/>
+            <ChangePassword/>
         </div>
-    );
-}
+    </div>
+);
+
+export default App;

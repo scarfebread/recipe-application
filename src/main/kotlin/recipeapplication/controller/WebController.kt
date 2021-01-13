@@ -123,7 +123,12 @@ class WebController // TODO I should have a custom error page
     }
 
     @GetMapping("/react-test")
-    fun react(): String {
+    fun react(model: Model): String {
+        model.apply {
+            addAttribute("loggedInUser", authService.loggedInUser.username)
+            addAttribute("recentlyViewedRecipes", recipeService.recentlyViewed)
+        }
+
         return "change-password-react.html"
     }
 }

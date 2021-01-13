@@ -21,7 +21,7 @@ open class WebSecurityConfig @Autowired constructor(private val userDetailsServi
             .authorizeRequests()
                 .antMatchers("/api/password-reset", "/api/signup", "/signup", "/reset-password", "/change-password-with-token", "/api/signup", "/css/**", "/images/**", "/js/**", "/react/**")
                 .permitAll()
-                .antMatchers("/", "/recipe", "/shopping-list", "/inventory", "/delete-account", "/change-password").hasAuthority(Role.USER.toString())
+                .antMatchers("/", "/recipe", "/shopping-list", "/inventory", "/delete-account", "/change-password", "/react-test").hasAuthority(Role.USER.toString())
                 .antMatchers("/api/change-password").hasAnyAuthority(Role.CHANGE_PASSWORD.toString(), Role.USER.toString())
                 .and()
             .formLogin()
