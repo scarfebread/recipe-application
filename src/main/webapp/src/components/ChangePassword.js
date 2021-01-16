@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import ApiClient from "./ApiClient";
+import ApiClient from "../utility/ApiClient";
 
 const ChangePassword = () => {
     const [form, setForm] = useState({password: '', retypepassword: ''});

@@ -5,12 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev:server": "nodemon --exec babel-node src/server/server.js --ignore dist/",
     "dev:bundler": "webpack -w --mode=development"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
