@@ -81,8 +81,8 @@ class WebController // TODO I should have a custom error page
     @GetMapping("/change-password")
     fun changePasswordLoggedIn(model: Model): String {
         model.apply {
-            addAttribute("user", authService.loggedInUser.username)
-            addAttribute("recentlyViewed", recipeService.recentlyViewed)
+            addAttribute("loggedInUser", authService.loggedInUser.username)
+            addAttribute("recentlyViewedRecipes", recipeService.recentlyViewed)
         }
 
         return "change-password.html"
@@ -120,15 +120,5 @@ class WebController // TODO I should have a custom error page
         }
 
         return "inventory.html"
-    }
-
-    @GetMapping("/react-test")
-    fun react(model: Model): String {
-        model.apply {
-            addAttribute("loggedInUser", authService.loggedInUser.username)
-            addAttribute("recentlyViewedRecipes", recipeService.recentlyViewed)
-        }
-
-        return "change-password-react.html"
     }
 }
