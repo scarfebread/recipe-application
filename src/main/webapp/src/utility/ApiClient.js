@@ -26,7 +26,14 @@ const ApiClient = (() => {
                     return;
                 }
 
-                success();
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    return response.json().then(data => {
+                        success(data);
+                    });
+                } else {
+                    success();
+                }
             }
         ).catch(
             function (error) {

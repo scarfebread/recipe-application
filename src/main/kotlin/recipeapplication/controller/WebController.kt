@@ -32,6 +32,17 @@ class WebController // TODO I should have a custom error page
         return "home.html"
     }
 
+    @GetMapping("/react")
+    fun homeReact(model: Model): String {
+        model.apply {
+            addAttribute("loggedInUser", authService.loggedInUser.username)
+            addAttribute("recipes", recipeService.recipes)
+            addAttribute("recentlyViewedRecipes", recipeService.recentlyViewed)
+        }
+
+        return "home_react.html"
+    }
+
     @GetMapping("/signup")
     fun signup(): String {
         return "signup.html"

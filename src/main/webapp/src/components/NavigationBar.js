@@ -1,13 +1,15 @@
 import React from 'react';
 
-const NavigationBar = () => (
+const NavigationBar = (props) => (
     <div className="navbar">
-        <a href="/">Home</a>
-        <div className="dropdown">
+        <a href="/" className={props.activeMenu === 'home' ? 'active' : ''}>
+            Home
+        </a>
+        <div className={props.activeMenu === 'recipes' ? 'dropdown active' : 'dropdown'}>
             <button className="dropbtn">Recipes
                 <i className="fa fa-caret-down caretDown"/>
             </button>
-            <div id="recipeDropdown" className="dropdown-content">
+            <div className="dropdown-content">
                 <label>Recent recipes:</label>
                 {
                     recentlyViewedRecipes.map((recentlyViewedRecipe) => (
@@ -18,10 +20,13 @@ const NavigationBar = () => (
                 }
             </div>
         </div>
-        <a href="/inventory">Pantry</a>
-        <a href="/shopping-list">Shopping List</a>
-        <div className="dropdown active">
-            <button className="dropbtn active">Account
+        <a href="/inventory" className={props.activeMenu === 'pantry' ? 'active' : ''}>
+            Pantry</a>
+        <a href="/shopping-list" className={props.activeMenu === 'shoppingList' ? 'active' : ''}>
+            Shopping List
+        </a>
+        <div className={props.activeMenu === 'account' ? 'dropdown active' : 'dropdown'}>
+            <button className={props.activeMenu === 'account' ? 'dropbtn active' : 'dropbtn'}>Account
                 <i className="fa fa-caret-down caretDown"/>
             </button>
             <div className="dropdown-content">
