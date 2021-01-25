@@ -1,45 +1,13 @@
-import React, {useEffect, useState, createRef} from 'react';
+import React, {useState} from 'react';
 import ApiClient from "../utility/ApiClient";
+import useModal from "../utility/Modal";
 
 const CreateRecipe = (props) => {
     const [recipeName, setRecipeName] = useState('');
     const [createdRecipe, setCreatedRecipe] = useState();
-    const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState();
-    const modal = createRef();
+    const [modal, shouldShowModal, showModal, hideModal] = useModal(() => {setError(null)});
     let submitted = false;
-
-    useEffect(() => {
-        const handleClickOffModal = (event) => {
-            if (showModal && event.target === modal.current) {
-                setShowModal(false)
-            }
-        }
-
-        window.onclick = function(event) {
-            handleClickOffModal(event);
-        };
-
-        return () => {
-            window.removeEventListener('onclick', handleClickOffModal)
-        }
-    });
-
-    useEffect(() => {
-        const handleEscapeKey = (event) => {
-            if (event.key === 'Escape' && showModal) {
-                setShowModal(false)
-            }
-        }
-
-        window.onkeydown = function(event) {
-            handleEscapeKey(event);
-        };
-
-        return () => {
-            window.removeEventListener('onkeydown', handleEscapeKey)
-        }
-    });
 
     const createRecipe = () => {
         if (submitted) {
@@ -47,7 +15,6 @@ const CreateRecipe = (props) => {
         }
 
         submitted = true;
-
         setError(null);
 
         if (recipeName.length === 0) {
@@ -72,7 +39,7 @@ const CreateRecipe = (props) => {
     const renderModal = () => (
         <div ref={modal} className="modal">
             <div className="modal-content">
-                <span className="close modalClose" onClick={() => setShowModal(false)}>&times;</span>
+                <span className="close modalClose" onClick={() => hideModal()}>&times;</span>
                 {!createdRecipe &&
                     <div>
                         <label htmlFor="recipeName">Enter the recipe title</label><br/>
@@ -108,10 +75,10 @@ const CreateRecipe = (props) => {
 
     return (
         <>
-            <button className="button" onClick={() => setShowModal(true)}>
+            <button className="button" onClick={() => showModal()}>
                 CREATE NEW RECIPE
             </button>
-            {showModal && renderModal()}
+            {shouldShowModal && renderModal()}
         </>
     );
 }
