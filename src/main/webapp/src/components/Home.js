@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import CreateRecipe from "./CreateRecipe";
+import RecipeSummary from "./RecipeSummary";
 
 const Home = () => {
-    const [recipes, setRecipes] = useState([]);
+    const [recipes, setRecipes] = useState(preLoadedRecipes);
 
     const addRecipe = (recipe) => {
         recipes.push(recipe);
@@ -10,9 +11,21 @@ const Home = () => {
     }
 
     return (
-        <div className="createAndSearch">
-            <CreateRecipe recipes={recipes} addRecipe={addRecipe} />
-        </div>
+        <>
+            <div className="createAndSearch">
+                <CreateRecipe recipes={recipes} addRecipe={addRecipe} />
+            </div>
+            <div>
+                <div>
+                    <h2>Your recipes:</h2>
+                </div>
+                <div>
+                    {recipes.map(recipe =>
+                        <RecipeSummary recipe={recipe} />
+                    )}
+                </div>
+            </div>
+        </>
     );
 }
 
