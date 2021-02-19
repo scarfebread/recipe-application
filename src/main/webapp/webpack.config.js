@@ -1,7 +1,8 @@
 module.exports = {
     entry: {
         'change-password': './src/change-password.js',
-        'home': './src/home.js'
+        'home': './src/home.js',
+        'login': './src/login.js',
     },
     output: {
         path: __dirname,
