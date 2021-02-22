@@ -25,3 +25,5 @@ oauth:
     client_secret: "2d2iybNvUus0mU4f3Fip1Vn97mQRVCmsL-MU5tL3"
     redirect_uri: "http://localhost:8080/auth/okta-redirect"
     token_endpoint: "https://dev-25996170.okta.com/oauth2/default/v1/token"
+    auth_endpoint: "https://dev-25996170.okta.com/oauth2/default/v1/authorize"
+    pkce_challenge_method: "S256"
