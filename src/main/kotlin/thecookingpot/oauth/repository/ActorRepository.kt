@@ -5,13 +5,16 @@ import thecookingpot.oauth.model.Actor
 
 @Service
 class ActorRepository {
-    private val actors = listOf<Actor>()
+    private val actors = mutableListOf<Actor>()
 
-    fun getActorByState(state: String): Actor {
+    fun findActorByState(state: String): Actor {
         return actors.first { actor -> actor.state == state }
     }
 
     fun createActor(): Actor {
-        return Actor()
+        Actor().also { actor ->
+            actors.add(actor)
+            return actor
+        }
     }
 }

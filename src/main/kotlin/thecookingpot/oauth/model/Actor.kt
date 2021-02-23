@@ -7,6 +7,7 @@ class Actor {
     val pkceCodeVerifier: String
     val pkceCodeChallenge: String
     val state: String
+    lateinit var token: Token
 
     init {
         generatePkceCode().also { pkceCode ->

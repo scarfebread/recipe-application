@@ -12,10 +12,11 @@ fun generatePkceCode(): PkceCode {
     }
 }
 
-private fun hashCode(code: String): String {
+fun hashCode(code: String): String {
     MessageDigest.getInstance("SHA-256").also { messageDigest ->
-        return Base64.getUrlEncoder().encodeToString(
-                messageDigest.digest(code.toByteArray(Charsets.UTF_8))
+        messageDigest.update(code.toByteArray())
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(
+                messageDigest.digest()
         )
     }
 }

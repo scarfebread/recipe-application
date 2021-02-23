@@ -113,8 +113,8 @@ public class WebControllerTest
 
         assertEquals("change-password.html", result);
 
-        verify(model).addAttribute("user", USERNAME);
-        verify(model).addAttribute("recentlyViewed", recentlyViewed);
+        verify(model).addAttribute("loggedInUser", USERNAME);
+        verify(model).addAttribute("recentlyViewedRecipes", recentlyViewed);
     }
 
     @Test

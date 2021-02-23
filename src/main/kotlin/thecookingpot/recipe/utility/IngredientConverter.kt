@@ -49,7 +49,7 @@ private fun roundOneDecimalPlace(value: Double): Double {
     return (value * 10.0).roundToInt() / 10.0
 }
 
-private inline fun convertMeasurements(ingredient: String, crossinline convert: (String) -> String) : String {
+private inline fun convertMeasurements(ingredient: String, crossinline convert: (String) -> String): String {
     val words = ingredient.split(" ")
     return words.joinToString(separator = " ") { word ->
         try {

@@ -15,9 +15,10 @@ class AuthWebController
         private val authService: OktaOAuthService,
         private val actorRepository: ActorRepository,
         private val oktaProperties: OktaProperties) {
+
     @GetMapping("/okta-login")
     fun loginWithOkta(): String {
-        val actor = actorRepository.createActor();
+        val actor = actorRepository.createActor()
 
         // TODO don't do the redirect like this
         return "redirect:${oktaProperties.authEndpoint}?" +
