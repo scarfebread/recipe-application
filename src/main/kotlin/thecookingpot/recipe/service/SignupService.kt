@@ -8,9 +8,11 @@ import thecookingpot.recipe.exception.EmailExistsException
 import thecookingpot.recipe.exception.UsernameExistsException
 import thecookingpot.recipe.model.User
 import thecookingpot.recipe.repository.UserRepository
+import thecookingpot.security.RecipeUserDetails
+import thecookingpot.security.Role
 
 @Service
-class SignupService @Autowired constructor(private val userRepository: UserRepository, private val passwordEncoder: PasswordEncoder) {
+class SignupService @Autowired constructor(private val userRepository: UserRepository, private val passwordEncoder: PasswordEncoder, private val authService: AuthService) {
     @Throws(UsernameExistsException::class, EmailExistsException::class)
     fun registerNewUser(userDto: UserDto) {
         if (usernameAlreadyRegistered(userDto.username)) {
@@ -29,6 +31,8 @@ class SignupService @Autowired constructor(private val userRepository: UserRepos
         }
 
         userRepository.save(user)
+
+        authService.authenticateUser(RecipeUserDetails(user), Role.USER)
     }
 
     private fun usernameAlreadyRegistered(username: String): Boolean {

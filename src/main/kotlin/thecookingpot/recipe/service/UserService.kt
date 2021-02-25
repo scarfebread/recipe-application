@@ -84,5 +84,4 @@ class UserService @Autowired constructor(
             userRepository.save(user)
         }
     }
-
 }

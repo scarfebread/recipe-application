@@ -9,11 +9,14 @@ import thecookingpot.recipe.exception.EmailExistsException;
 import thecookingpot.recipe.exception.UsernameExistsException;
 import thecookingpot.recipe.model.User;
 import thecookingpot.recipe.repository.UserRepository;
+import thecookingpot.security.RecipeUserDetails;
+import thecookingpot.security.Role;
 
 import java.util.Optional;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,17 +30,19 @@ public class SignupServiceTest
 ;
     private UserRepository userRepository;
     private SignupService signupService;
+    private AuthService authService;
 
     @Before
     public void setup()
     {
         userRepository = mock(UserRepository.class);
+        authService = mock(AuthService.class);
 
         PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
 
         when(passwordEncoder.encode(PASSWORD)).thenReturn(ENCODED_PASSWORD);
 
-        signupService = new SignupService(userRepository, passwordEncoder);
+        signupService = new SignupService(userRepository, passwordEncoder, authService);
     }
 
     @Test(expected = UsernameExistsException.class)
@@ -79,15 +84,18 @@ public class SignupServiceTest
         when(userRepository.findByUsername(USER)).thenReturn(Optional.empty());
         when(userRepository.findByUsername(EMAIL)).thenReturn(Optional.empty());
 
-        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
+        ArgumentCaptor<User> repositoryCaptor = ArgumentCaptor.forClass(User.class);
+        ArgumentCaptor<RecipeUserDetails> authServiceCaptor = ArgumentCaptor.forClass(RecipeUserDetails.class);
 
         signupService.registerNewUser(userDto);
 
-        verify(userRepository).save(argumentCaptor.capture());
+        verify(userRepository).save(repositoryCaptor.capture());
+        verify(authService).authenticateUser(authServiceCaptor.capture(), eq(Role.USER));
 
-        assertEquals(USER, argumentCaptor.getValue().getUsername());
-        assertEquals(EMAIL, argumentCaptor.getValue().getEmail());
-        assertEquals(ENCODED_PASSWORD, argumentCaptor.getValue().getPassword());
-        assertTrue(argumentCaptor.getValue().getNewUser());
+        assertEquals(USER, repositoryCaptor.getValue().getUsername());
+        assertEquals(EMAIL, repositoryCaptor.getValue().getEmail());
+        assertEquals(ENCODED_PASSWORD, repositoryCaptor.getValue().getPassword());
+        assertEquals(repositoryCaptor.getValue(), authServiceCaptor.getValue().getUser());
+        assertTrue(repositoryCaptor.getValue().getNewUser());
     }
 }

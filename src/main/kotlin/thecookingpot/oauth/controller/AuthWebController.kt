@@ -7,6 +7,8 @@ import thecookingpot.oauth.config.OktaProperties
 import thecookingpot.oauth.exception.OAuthException
 import thecookingpot.oauth.repository.ActorRepository
 import thecookingpot.oauth.service.OktaOAuthService
+import thecookingpot.recipe.service.AuthService
+import thecookingpot.security.Role
 
 @Controller
 @RequestMapping(path = ["/auth/"])
@@ -14,7 +16,8 @@ class AuthWebController
 @Autowired constructor(
         private val authService: OktaOAuthService,
         private val actorRepository: ActorRepository,
-        private val oktaProperties: OktaProperties) {
+        private val oktaProperties: OktaProperties,
+        private val recipeAuthService: AuthService) {
 
     @GetMapping("/okta-login")
     fun loginWithOkta(): String {
@@ -35,6 +38,16 @@ class AuthWebController
     fun oktaLoginRedirect(@RequestParam code: String, @RequestParam state: String): String {
         return try {
             authService.processOktaAuthorisationCode(code, state)
+
+            // TODO auto login
+//            val user = RecipeUserDetails(
+//                User().apply {
+//                    username = "oauth"
+//                    newUser = false
+//                }
+//            )
+//            recipeAuthService.authenticateUser(user, Role.USER);
+
             "home.html"
         } catch (e: OAuthException) {
             "login.html"

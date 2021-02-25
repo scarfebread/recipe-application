@@ -18,15 +18,25 @@ class OAuthClient {
             actor: Actor,
             authorisationCode: String,
     ) {
-        val response = callTokenEndpoint(
-            clientId,
-            clientSecret,
-            redirectUri,
-            tokenEndpoint,
-            actor,
-            GrantType.AUTH_CODE,
-            authorisationCode
-        )
+        val tokenRequest = LinkedMultiValueMap<String, String>().apply {
+            add("grant_type", GrantType.AUTH_CODE.toString())
+            add("redirect_uri", redirectUri)
+            add("client_id", clientId)
+            add("client_secret", clientSecret)
+            add("code_verifier", actor.pkceCodeVerifier)
+            add("code", authorisationCode)
+        }
+
+        val response = try {
+            httpClient.formEncodedPost(
+                tokenEndpoint,
+                tokenRequest,
+                TokenResponse::class.java
+            )
+        } catch (e: HttpStatusCodeException) {
+            // TODO this is being swallowed somehow
+            throw OAuthException(e)
+        }
 
         // TODO process this
         println(response.access_token)
@@ -39,36 +49,14 @@ class OAuthClient {
         tokenEndpoint: String,
         actor: Actor,
     ) {
-        val response = callTokenEndpoint(
-            clientId,
-            clientSecret,
-            redirectUri,
-            tokenEndpoint,
-            actor,
-            GrantType.REFRESH_TOKEN,
-            actor.token.refreshToken
-        )
-    }
-
-    fun callTokenEndpoint(
-        clientId: String,
-        clientSecret: String,
-        redirectUri: String,
-        tokenEndpoint: String,
-        actor: Actor,
-        grantType: GrantType,
-        code: String,
-    ): TokenResponse {
         val tokenRequest = LinkedMultiValueMap<String, String>().apply {
-            add("grant_type", grantType.toString())
-            add("redirect_uri", redirectUri)
+            add("grant_type", GrantType.REFRESH_TOKEN.toString())
             add("client_id", clientId)
             add("client_secret", clientSecret)
-            add("code_verifier", actor.pkceCodeVerifier)
-            add("code", code)
+            add("code", actor.token.refreshToken)
         }
 
-        return try {
+        val response = try {
             httpClient.formEncodedPost(
                 tokenEndpoint,
                 tokenRequest,
