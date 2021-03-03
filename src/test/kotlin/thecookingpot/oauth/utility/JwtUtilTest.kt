@@ -1,0 +1,15 @@
+package thecookingpot.oauth.utility
+
+import org.junit.Test
+import kotlin.test.assertEquals
+
+class JwtUtilTest {
+    @Test
+    fun `should get email address from JWT`() {
+        val token = "eyJraWQiOiIwT1Fhczh1V2tQTDkybDMzQ0lPb1NlRW5ZYWNpNm9mQXN1cFZLY0pNRHU4IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiIwMHU2dzY5amFxVW5rRnhDNjVkNiIsImVtYWlsIjoiamFtZXMuc2NhcmZlQGxpdmUuY28udWsiLCJ2ZXIiOjEsImlzcyI6Imh0dHBzOi8vZGV2LTI1OTk2MTcwLm9rdGEuY29tL29hdXRoMi9kZWZhdWx0IiwiYXVkIjoiMG9hN2UxYW5taU9nUGFqSXg1ZDYiLCJpYXQiOjE2MTQ3MTYzOTMsImV4cCI6MTYxNDcxOTk5MywianRpIjoiSUQuWmNOWjMxSWxqTU13dGw0MmpOY0QzbjRSX3MtMjVEX1pxci10TFlwTkhFcyIsImFtciI6WyJwd2QiXSwiaWRwIjoiMG9hNnc5c3h2eG04RFZYOEo1ZDYiLCJhdXRoX3RpbWUiOjE2MTQ3MTE4NTEsImF0X2hhc2giOiJJQklORnBHTHRlbThRYUlQQm1rSWxRIn0.Ip3pIQ0WE1hfklLy7WbgPBOE9IF7mr1_0VvT3ovaigday4uohNSV1_eCryybNdjP6bFCWcjiogau0UShDxEoWPyBo6LjfpX5haAL58e_O0ZuCQVDy0T_DKM2u2BuGN6K82qQHHjZ6Q0jMzJnuIyFeIRuZ3aBkfAFlRIPXNiiRal89WvIwNIF5gABG7k71yyHRIFqTEQSz0PY8rOheT2D_qTW0ENtnwFKqkYxvV4qCAAHC4zT9M4Ok4CkCGleVWCT_giPif6q-N-6H5hdm-novHqxr2FpflW_BPrnjFsBJA495l4lNMSkLSvf0oxVlA9iQsQKqlFWmuTqUFBCGKSLFg"
+
+        val decodedJwt = decodeJwt(token)
+
+        assertEquals("james.scarfe@live.co.uk", decodedJwt.email)
+    }
+}

@@ -11,8 +11,7 @@ import thecookingpot.recipe.model.User;
 import thecookingpot.recipe.repository.UserRepository;
 import thecookingpot.security.RecipeUserDetails;
 import thecookingpot.security.Role;
-
-import java.util.Optional;
+import thecookingpot.security.service.AuthService;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -53,7 +52,7 @@ public class SignupServiceTest
         userDto.setUsername(USER);
         userDto.setEmail(EMAIL);
 
-        when(userRepository.findByUsername(USER)).thenReturn(Optional.of(new User()));
+        when(userRepository.findByUsername(USER)).thenReturn(new User());
 
         signupService.registerNewUser(userDto);
     }
@@ -66,8 +65,8 @@ public class SignupServiceTest
         userDto.setUsername(USER);
         userDto.setEmail(EMAIL);
 
-        when(userRepository.findByEmail(USER)).thenReturn(Optional.empty());
-        when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(new User()));
+        when(userRepository.findByEmail(USER)).thenReturn(null);
+        when(userRepository.findByEmail(EMAIL)).thenReturn(new User());
 
         signupService.registerNewUser(userDto);
     }
@@ -81,8 +80,8 @@ public class SignupServiceTest
         userDto.setPassword(PASSWORD);
         userDto.setEmail(EMAIL);
 
-        when(userRepository.findByUsername(USER)).thenReturn(Optional.empty());
-        when(userRepository.findByUsername(EMAIL)).thenReturn(Optional.empty());
+        when(userRepository.findByUsername(USER)).thenReturn(null);
+        when(userRepository.findByUsername(EMAIL)).thenReturn(null);
 
         ArgumentCaptor<User> repositoryCaptor = ArgumentCaptor.forClass(User.class);
         ArgumentCaptor<RecipeUserDetails> authServiceCaptor = ArgumentCaptor.forClass(RecipeUserDetails.class);

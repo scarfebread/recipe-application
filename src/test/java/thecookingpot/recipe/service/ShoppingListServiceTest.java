@@ -11,6 +11,7 @@ import thecookingpot.recipe.model.ShoppingListItem;
 import thecookingpot.recipe.model.User;
 import thecookingpot.recipe.repository.IngredientRepository;
 import thecookingpot.recipe.repository.ShoppingListRepository;
+import thecookingpot.security.service.AuthService;
 
 import java.util.ArrayList;
 import java.util.List;

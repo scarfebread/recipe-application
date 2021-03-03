@@ -10,6 +10,7 @@ import thecookingpot.recipe.model.User
 import thecookingpot.recipe.repository.UserRepository
 import thecookingpot.security.RecipeUserDetails
 import thecookingpot.security.Role
+import thecookingpot.security.service.AuthService
 
 @Service
 class SignupService @Autowired constructor(private val userRepository: UserRepository, private val passwordEncoder: PasswordEncoder, private val authService: AuthService) {
@@ -36,10 +37,10 @@ class SignupService @Autowired constructor(private val userRepository: UserRepos
     }
 
     private fun usernameAlreadyRegistered(username: String): Boolean {
-        return userRepository.findByUsername(username).isPresent
+        return userRepository.findByUsername(username) != null
     }
 
     private fun emailAlreadyRegistered(email: String): Boolean {
-        return userRepository.findByEmail(email).isPresent
+        return userRepository.findByEmail(email) != null
     }
 }

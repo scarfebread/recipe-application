@@ -10,6 +10,7 @@ import thecookingpot.recipe.model.InventoryItem;
 import thecookingpot.recipe.model.User;
 import thecookingpot.recipe.repository.IngredientRepository;
 import thecookingpot.recipe.repository.InventoryRepository;
+import thecookingpot.security.service.AuthService;
 
 import java.util.ArrayList;
 import java.util.List;

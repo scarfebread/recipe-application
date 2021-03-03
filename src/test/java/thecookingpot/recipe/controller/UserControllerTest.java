@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 import thecookingpot.recipe.service.*;
+import thecookingpot.security.service.AuthService;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;

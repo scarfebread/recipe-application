@@ -8,15 +8,18 @@ import org.springframework.web.bind.annotation.RequestParam
 import thecookingpot.recipe.exception.InvalidPasswordTokenException
 import thecookingpot.recipe.exception.RecipeDoesNotExistException
 import thecookingpot.recipe.service.*
+import thecookingpot.security.service.AuthService
 
 @Controller
 class WebController // TODO I should have a custom error page
-@Autowired constructor(
+    @Autowired constructor(
         private val userService: UserService,
         private val recipeService: RecipeService,
         private val inventoryService: InventoryService,
         private val shoppingListService: ShoppingListService,
-        private val authService: AuthService) {
+        private val authService: AuthService
+    ) {
+
     @GetMapping("/login")
     fun login(): String {
         return "login.html"

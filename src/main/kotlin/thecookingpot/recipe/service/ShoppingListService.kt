@@ -9,6 +9,7 @@ import thecookingpot.recipe.model.Ingredient
 import thecookingpot.recipe.model.ShoppingListItem
 import thecookingpot.recipe.repository.IngredientRepository
 import thecookingpot.recipe.repository.ShoppingListRepository
+import thecookingpot.security.service.AuthService
 
 @Service
 class ShoppingListService @Autowired constructor(

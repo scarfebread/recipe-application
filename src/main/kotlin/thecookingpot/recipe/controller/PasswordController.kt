@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 import thecookingpot.recipe.dto.PasswordDto
 import thecookingpot.recipe.dto.PasswordResetDto
 import thecookingpot.recipe.exception.UserNotFoundException
-import thecookingpot.recipe.service.AuthService
+import thecookingpot.security.service.AuthService
 import thecookingpot.recipe.service.UserService
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid

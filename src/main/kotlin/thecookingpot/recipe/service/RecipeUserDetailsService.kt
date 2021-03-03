@@ -12,7 +12,7 @@ import thecookingpot.security.RecipeUserDetails
 class RecipeUserDetailsService @Autowired constructor(private val userRepository: UserRepository) : UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails {
         return RecipeUserDetails(
-                userRepository.findByUsername(username).orElseThrow { UsernameNotFoundException(username) }
+            userRepository.findByUsername(username) ?: throw UsernameNotFoundException(username)
         )
     }
 }

@@ -6,10 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import thecookingpot.recipe.model.User;
 import thecookingpot.recipe.repository.UserRepository;
 
-import java.util.Optional;
-
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,8 +22,8 @@ public class RecipeUserDetailsServiceTest
     {
         UserRepository userRepository = mock(UserRepository.class);
 
-        when(userRepository.findByUsername(VALID_USER)).thenReturn(Optional.of(new User()));
-        when(userRepository.findByUsername(INVALID_USER)).thenReturn(Optional.empty());
+        when(userRepository.findByUsername(VALID_USER)).thenReturn(new User());
+        when(userRepository.findByUsername(INVALID_USER)).thenReturn(null);
 
         service = new RecipeUserDetailsService(userRepository);
     }

@@ -10,11 +10,12 @@ import thecookingpot.oauth.repository.ActorRepository
 class OktaOAuthService @Autowired constructor(
     private val oAuthClient: OAuthClient,
     private val properties: OktaProperties,
-    private val actorRepository: ActorRepository) {
+    private val actorRepository: ActorRepository,
+    private val oAuthIntegrationService: OAuthIntegrationService) {
 
     // TODO naming
     fun processOktaAuthorisationCode(code: String, state: String) {
-        oAuthClient.processAuthorisationCode(
+        val idToken = oAuthClient.processAuthorisationCode(
             properties.clientId,
             properties.clientSecret,
             properties.redirectUri,
@@ -22,5 +23,7 @@ class OktaOAuthService @Autowired constructor(
             actorRepository.findActorByState(state),
             code
         )
+
+        oAuthIntegrationService.login(idToken)
     }
 }

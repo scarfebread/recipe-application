@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import thecookingpot.recipe.service.*
+import thecookingpot.security.service.AuthService
 import javax.transaction.Transactional
 
 @RestController

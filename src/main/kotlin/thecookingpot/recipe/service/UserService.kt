@@ -12,6 +12,7 @@ import thecookingpot.recipe.repository.PasswordTokenRepository
 import thecookingpot.recipe.repository.UserRepository
 import thecookingpot.security.RecipeUserDetails
 import thecookingpot.security.Role
+import thecookingpot.security.service.AuthService
 import java.util.*
 import kotlin.jvm.Throws
 
@@ -29,16 +30,12 @@ class UserService @Autowired constructor(
             passwordResetDto.username != null -> userRepository.findByUsername(passwordResetDto.username!!)
             passwordResetDto.email != null -> userRepository.findByEmail(passwordResetDto.email!!)
             else -> throw UserNotFoundException()
-        }
-
-        if (!result.isPresent) {
-            throw UserNotFoundException()
-        }
+        } ?: throw UserNotFoundException()
 
         val token = UUID.randomUUID().toString()
-        val passwordResetToken = PasswordResetToken(token, result.get())
+        val passwordResetToken = PasswordResetToken(token, result)
         passwordTokenRepository.save(passwordResetToken)
-        emailService.sendPasswordReset(result.get(), token, serverName)
+        emailService.sendPasswordReset(result, token, serverName)
     }
 
     @Throws(InvalidPasswordTokenException::class)
@@ -50,8 +47,9 @@ class UserService @Autowired constructor(
         }
 
         val user = passwordResetToken.get().user
-        val recipeUserDetails = RecipeUserDetails(user)
-        recipeUserDetails.changePasswordAccess = true
+        val recipeUserDetails = RecipeUserDetails(user).apply {
+            changePasswordAccess = true
+        }
         authService.authenticateUser(recipeUserDetails, Role.CHANGE_PASSWORD)
     }
 
@@ -62,26 +60,28 @@ class UserService @Autowired constructor(
         authService.disablePasswordReset()
     }
 
-    @Throws(UserNotFoundException::class) // TODO can I get rid of these when the client is Kotlin?
+    @Throws(UserNotFoundException::class) // TODO can I get rid of these when the unit tests are Kotlin?
     fun getUser(username: String): User {
-        val user = userRepository.findByUsername(username)
-        if (!user.isPresent) {
-            throw UserNotFoundException()
-        }
-        return user.get()
+        return userRepository.findByUsername(username) ?: throw UserNotFoundException()
     }
 
     fun deleteAccount() {
         userRepository.delete(
-                authService.loggedInUser
+            authService.loggedInUser
         )
     }
 
     fun turnOffInstructions() {
-        val user = authService.loggedInUser
-        if (user.newUser) {
-            user.newUser = false
-            userRepository.save(user)
+        authService.loggedInUser.run {
+            if (newUser) {
+                newUser = false
+                userRepository.save(this)
+            }
         }
+
+    }
+
+    fun getUserByEmail(emailAddress: String): User? {
+        return userRepository.findByEmail(emailAddress)
     }
 }

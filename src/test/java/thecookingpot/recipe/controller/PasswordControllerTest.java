@@ -8,7 +8,7 @@ import thecookingpot.recipe.dto.PasswordDto;
 import thecookingpot.recipe.dto.PasswordResetDto;
 import thecookingpot.recipe.exception.UserNotFoundException;
 import thecookingpot.recipe.model.User;
-import thecookingpot.recipe.service.AuthService;
+import thecookingpot.security.service.AuthService;
 import thecookingpot.recipe.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;

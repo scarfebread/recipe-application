@@ -16,6 +16,7 @@ import thecookingpot.recipe.repository.PasswordTokenRepository
 import thecookingpot.recipe.repository.UserRepository
 import thecookingpot.security.RecipeUserDetails
 import thecookingpot.security.Role
+import thecookingpot.security.service.AuthService
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -51,10 +52,10 @@ class UserServiceTest {
         passwordEncoder = mockk()
         authService = mockk(relaxed = true)
 
-        every { userRepository.findByUsername(INVALID_USERNAME) } returns Optional.empty()
-        every { userRepository.findByEmail(INVALID_EMAIL) } returns Optional.empty()
-        every { userRepository.findByUsername(VALID_USERNAME) } returns Optional.of(User())
-        every { userRepository.findByEmail(VALID_EMAIL) } returns Optional.of(User())
+        every { userRepository.findByUsername(INVALID_USERNAME) } returns null
+        every { userRepository.findByEmail(INVALID_EMAIL) } returns null
+        every { userRepository.findByUsername(VALID_USERNAME) } returns User()
+        every { userRepository.findByEmail(VALID_EMAIL) } returns User()
 
         val user = User().apply { username = VALID_USERNAME }
         val oneHourAgo = Calendar.getInstance().apply { add(Calendar.HOUR_OF_DAY, -1) }
@@ -181,7 +182,7 @@ class UserServiceTest {
     fun `Should get user when valid username provided`() {
         val user = User()
 
-        every { userRepository.findByUsername(VALID_USERNAME) } returns Optional.of(user)
+        every { userRepository.findByUsername(VALID_USERNAME) } returns user
 
         assertEquals(user, userService.getUser(VALID_USERNAME))
     }

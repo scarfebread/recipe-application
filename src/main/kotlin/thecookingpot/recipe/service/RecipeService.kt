@@ -12,17 +12,18 @@ import thecookingpot.recipe.repository.IngredientRepository
 import thecookingpot.recipe.repository.RecentlyViewedRepository
 import thecookingpot.recipe.repository.RecipeRepository
 import thecookingpot.recipe.utility.combineCookAndPrepTime
+import thecookingpot.security.service.AuthService
 import javax.persistence.EntityManager
 import javax.transaction.Transactional
 
 @Service
 @Transactional
 open class RecipeService @Autowired constructor(
-        private val recipeRepository: RecipeRepository,
-        private val ingredientRepository: IngredientRepository,
-        private val authService: AuthService,
-        private val recentlyViewedRepository: RecentlyViewedRepository,
-        private val entityManager: EntityManager
+    private val recipeRepository: RecipeRepository,
+    private val ingredientRepository: IngredientRepository,
+    private val authService: AuthService,
+    private val recentlyViewedRepository: RecentlyViewedRepository,
+    private val entityManager: EntityManager
 ) {
     companion object {
         private const val DEFAULT_DIFFICULTY = "Medium"

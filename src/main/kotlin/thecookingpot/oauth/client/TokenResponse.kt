@@ -7,4 +7,5 @@ class TokenResponse {
     lateinit var access_token: String
     lateinit var refresh_token: String
     lateinit var scope: String
+    lateinit var id_token: String
 }

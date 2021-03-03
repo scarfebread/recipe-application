@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import thecookingpot.recipe.model.User;
 import thecookingpot.recipe.repository.IngredientRepository;
+import thecookingpot.security.service.AuthService;
 
 import static org.mockito.Mockito.*;
 

@@ -8,6 +8,7 @@ import thecookingpot.recipe.model.Ingredient
 import thecookingpot.recipe.model.InventoryItem
 import thecookingpot.recipe.repository.IngredientRepository
 import thecookingpot.recipe.repository.InventoryRepository
+import thecookingpot.security.service.AuthService
 
 @Service
 class InventoryService @Autowired constructor(

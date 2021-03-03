@@ -1,4 +1,4 @@
-package thecookingpot.recipe.service;
+package thecookingpot.security.service;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import thecookingpot.recipe.model.User;
 import thecookingpot.security.RecipeUserDetails;
 import thecookingpot.security.Role;
+import thecookingpot.security.service.AuthService;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertFalse;

@@ -12,7 +12,7 @@ class ActorRepository {
     }
 
     fun createActor(): Actor {
-        Actor().also { actor ->
+        Actor().let { actor ->
             actors.add(actor)
             return actor
         }

@@ -12,6 +12,7 @@ import thecookingpot.recipe.model.*;
 import thecookingpot.recipe.repository.IngredientRepository;
 import thecookingpot.recipe.repository.RecentlyViewedRepository;
 import thecookingpot.recipe.repository.RecipeRepository;
+import thecookingpot.security.service.AuthService;
 
 import java.util.ArrayList;
 import java.util.List;

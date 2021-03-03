@@ -13,6 +13,7 @@ import thecookingpot.recipe.exception.InvalidPasswordTokenException;
 import thecookingpot.recipe.exception.RecipeDoesNotExistException;
 import thecookingpot.recipe.model.*;
 import thecookingpot.recipe.service.*;
+import thecookingpot.security.service.AuthService;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
