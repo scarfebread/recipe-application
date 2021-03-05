@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import thecookingpot.oauth.client.OAuthClient
 import thecookingpot.oauth.config.OktaProperties
+import thecookingpot.oauth.model.Token
 import thecookingpot.oauth.repository.ActorRepository
+import thecookingpot.oauth.utility.decodeJwt
 
 @Service
 class OktaOAuthService @Autowired constructor(
@@ -15,15 +17,24 @@ class OktaOAuthService @Autowired constructor(
 
     // TODO naming
     fun processOktaAuthorisationCode(code: String, state: String) {
-        val idToken = oAuthClient.processAuthorisationCode(
+        val actor = actorRepository.findActorByState(state);
+        val tokenResponse = oAuthClient.processAuthorisationCode(
             properties.clientId,
             properties.clientSecret,
             properties.redirectUri,
             properties.tokenEndpoint,
-            actorRepository.findActorByState(state),
+            actor,
             code
         )
 
-        oAuthIntegrationService.login(idToken)
+        actor.token = Token(
+            tokenResponse.expires_in,
+            tokenResponse.access_token,
+            tokenResponse.refresh_token,
+            tokenResponse.scope,
+            decodeJwt(tokenResponse.id_token)
+        )
+
+        oAuthIntegrationService.login(actor.token.idToken)
     }
 }

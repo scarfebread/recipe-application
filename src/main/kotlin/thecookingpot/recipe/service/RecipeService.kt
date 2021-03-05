@@ -165,15 +165,11 @@ open class RecipeService @Autowired constructor(
     @Throws(RecipeDoesNotExistException::class, IngredientDoesNotExistException::class)
     fun deleteIngredient(ingredientDto: DeleteIngredientDto) {
         val recipe = getRecipe(ingredientDto.recipeId)
-        val ingredient = ingredientRepository.findByIdAndUser(ingredientDto.ingredientId, authService.loggedInUser)
-
-        if (!ingredient.isPresent) { // TODO can Kotlin remove the need for Optional?
-            throw IngredientDoesNotExistException()
-        }
-
-        if (recipe.ingredients.remove(ingredient.get())) {
-            recipeRepository.save(recipe)
-        }
+        ingredientRepository.findByIdAndUser(ingredientDto.ingredientId, authService.loggedInUser)?.let { ingredient ->
+            if (recipe.ingredients.remove(ingredient)) {
+                recipeRepository.save(recipe)
+            }
+        } ?: throw IngredientDoesNotExistException()
     }
 
     @Throws(RecipeDoesNotExistException::class)

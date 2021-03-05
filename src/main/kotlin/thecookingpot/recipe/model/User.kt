@@ -12,4 +12,5 @@ class User {
     lateinit var password: String
     lateinit var email: String
     var newUser = true
+    var oAuthUser = false
 }

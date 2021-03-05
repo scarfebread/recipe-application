@@ -15,7 +15,7 @@ import thecookingpot.security.service.AuthService
 @Service
 class SignupService @Autowired constructor(private val userRepository: UserRepository, private val passwordEncoder: PasswordEncoder, private val authService: AuthService) {
     @Throws(UsernameExistsException::class, EmailExistsException::class)
-    fun registerNewUser(userDto: UserDto) {
+    fun registerNewUser(userDto: UserDto, oAuthUser: Boolean = false) {
         if (usernameAlreadyRegistered(userDto.username)) {
             throw UsernameExistsException()
         }
@@ -24,15 +24,20 @@ class SignupService @Autowired constructor(private val userRepository: UserRepos
             throw EmailExistsException()
         }
 
-        val user = User().apply {
-            username = userDto.username
-            email = userDto.email
-            password = passwordEncoder.encode(userDto.password)
-            newUser = true
-        }
+        registerNewUser(
+            User().apply {
+                username = userDto.username
+                email = userDto.email
+                password = passwordEncoder.encode(userDto.password)
+                newUser = true
+                // TODO is this a bit hacky?
+                this.oAuthUser = oAuthUser
+            }
+        )
+    }
 
+    private fun registerNewUser(user: User) {
         userRepository.save(user)
-
         authService.authenticateUser(RecipeUserDetails(user), Role.USER)
     }
 

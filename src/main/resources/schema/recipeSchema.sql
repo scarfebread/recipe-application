@@ -8,6 +8,14 @@ CREATE TABLE the_cooking_pot.users (
   new_user BOOL
 );
 
+CREATE TABLE the_cooking_pot.oauth (
+  id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES the_cooking_pot.users(id),
+  access_token VARCHAR,
+  refresh_token VARCHAR,
+  auth_provider VARCHAR
+);
+
 CREATE TABLE the_cooking_pot.password_reset_tokens (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES the_cooking_pot.users(id),

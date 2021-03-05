@@ -106,7 +106,7 @@ public class ShoppingListServiceTest
     {
         Long ingredientId = 12345L;
 
-        when(ingredientRepository.findByIdAndUser(ingredientId, user)).thenReturn(Optional.empty());
+        when(ingredientRepository.findByIdAndUser(ingredientId, user)).thenReturn(null);
 
         shoppingListService.addToShoppingList(ingredientId);
     }
@@ -114,10 +114,10 @@ public class ShoppingListServiceTest
     @Test
     public void shouldAddIngredientToShoppingListWhenIngredientExists() throws Exception
     {
-        Long ingredientId = 12345L;
+        long ingredientId = 12345L;
         Ingredient ingredient = new Ingredient();
 
-        when(ingredientRepository.findByIdAndUser(ingredientId, user)).thenReturn(Optional.of(ingredient));
+        when(ingredientRepository.findByIdAndUser(ingredientId, user)).thenReturn(ingredient);
 
         ArgumentCaptor<ShoppingListItem> argumentCaptor = ArgumentCaptor.forClass(ShoppingListItem.class);
 
@@ -134,7 +134,7 @@ public class ShoppingListServiceTest
     @Test(expected = ShoppingListItemNotFoundException.class)
     public void shouldThrowShoppingListItemNotFoundExceptionWhenRemovingNonExistentShoppingListItem() throws Exception
     {
-        Long ingredientId = 12345L;
+        long ingredientId = 12345L;
 
         when(shoppingListRepository.findByIngredientIdAndUser(ingredientId, user)).thenReturn(Optional.empty());
 
@@ -144,7 +144,7 @@ public class ShoppingListServiceTest
     @Test
     public void shouldRemoveShoppingListItemWhenShoppingListItemExists() throws Exception
     {
-        Long ingredientId = 12345L;
+        long ingredientId = 12345L;
         ShoppingListItem shoppingListItem = new ShoppingListItem();
 
         when(shoppingListRepository.findByIngredientIdAndUser(ingredientId, user)).thenReturn(Optional.of(shoppingListItem));

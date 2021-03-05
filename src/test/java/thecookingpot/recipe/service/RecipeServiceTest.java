@@ -428,7 +428,7 @@ public class RecipeServiceTest
         ingredientDto.setIngredientId(12345L);
         ingredientDto.setRecipeId(54321L);
 
-        when(ingredientRepository.findByIdAndUser(ingredientDto.getIngredientId(), loggedInUser)).thenReturn(Optional.empty());
+        when(ingredientRepository.findByIdAndUser(ingredientDto.getIngredientId(), loggedInUser)).thenReturn(null);
         when(recipeRepository.findByIdAndUser(ingredientDto.getRecipeId(), loggedInUser)).thenReturn(Optional.of(new Recipe()));
 
         recipeService.deleteIngredient(ingredientDto);
@@ -448,7 +448,7 @@ public class RecipeServiceTest
         recipe.addIngredient(ingredient);
         recipe.addIngredient(anotherIngredient);
 
-        when(ingredientRepository.findByIdAndUser(ingredientDto.getIngredientId(), loggedInUser)).thenReturn(Optional.of(ingredient));
+        when(ingredientRepository.findByIdAndUser(ingredientDto.getIngredientId(), loggedInUser)).thenReturn(ingredient);
         when(recipeRepository.findByIdAndUser(ingredientDto.getRecipeId(), loggedInUser)).thenReturn(Optional.of(recipe));
 
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);
@@ -476,7 +476,7 @@ public class RecipeServiceTest
         Recipe recipe = new Recipe();
         recipe.addIngredient(anotherIngredient);
 
-        when(ingredientRepository.findByIdAndUser(ingredientDto.getIngredientId(), loggedInUser)).thenReturn(Optional.of(ingredient));
+        when(ingredientRepository.findByIdAndUser(ingredientDto.getIngredientId(), loggedInUser)).thenReturn(ingredient);
         when(recipeRepository.findByIdAndUser(ingredientDto.getRecipeId(), loggedInUser)).thenReturn(Optional.of(recipe));
 
         recipeService.deleteIngredient(ingredientDto);

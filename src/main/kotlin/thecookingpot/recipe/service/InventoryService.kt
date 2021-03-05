@@ -44,7 +44,7 @@ class InventoryService @Autowired constructor(
 
     fun createInventoryItem(ingredient: Ingredient) {
         // If a inventory item already exists for the same ingredient we will ignore the request to avoid duplicates
-        if (inventoryRepository.findByIngredientAndUser(ingredient, authService.loggedInUser).isPresent) {
+        inventoryRepository.findByIngredientAndUser(ingredient, authService.loggedInUser)?.let {
             return
         }
 
@@ -58,13 +58,7 @@ class InventoryService @Autowired constructor(
 
     @Throws(InventoryItemNotFoundException::class)
     private fun getInventoryItem(inventoryItemDto: InventoryItemDto): InventoryItem {
-        val inventoryItem = inventoryRepository.findByIdAndUser(inventoryItemDto.id, authService.loggedInUser)
-
-        if (!inventoryItem.isPresent) {
-            throw InventoryItemNotFoundException()
-        }
-
-        return inventoryItem.get()
+        return inventoryRepository.findByIdAndUser(inventoryItemDto.id, authService.loggedInUser) ?: throw InventoryItemNotFoundException()
     }
 
     fun getSimilarIngredients(ingredient: Ingredient): List<Ingredient> {

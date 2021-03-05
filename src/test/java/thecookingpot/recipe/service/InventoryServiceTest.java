@@ -61,7 +61,7 @@ public class InventoryServiceTest
         InventoryItemDto inventoryItemDto = new InventoryItemDto();
         inventoryItemDto.setId(54321L);
 
-        when(inventoryRepository.findByIdAndUser(inventoryItemDto.getId(), user)).thenReturn(Optional.empty());
+        when(inventoryRepository.findByIdAndUser(inventoryItemDto.getId(), user)).thenReturn(null);
 
         inventoryService.deleteInventoryItem(inventoryItemDto);
     }
@@ -74,7 +74,7 @@ public class InventoryServiceTest
 
         InventoryItem inventoryItem = new InventoryItem();
 
-        when(inventoryRepository.findByIdAndUser(inventoryItemDto.getId(), user)).thenReturn(Optional.of(inventoryItem));
+        when(inventoryRepository.findByIdAndUser(inventoryItemDto.getId(), user)).thenReturn(inventoryItem);
 
         inventoryService.deleteInventoryItem(inventoryItemDto);
 
@@ -104,7 +104,7 @@ public class InventoryServiceTest
     {
         Ingredient ingredient = new Ingredient("INGREDIENT", "QUANTITY", user);
 
-        when(inventoryRepository.findByIngredientAndUser(ingredient, user)).thenReturn(Optional.of(new InventoryItem()));
+        when(inventoryRepository.findByIngredientAndUser(ingredient, user)).thenReturn(new InventoryItem());
 
         inventoryService.createInventoryItem(ingredient);
 

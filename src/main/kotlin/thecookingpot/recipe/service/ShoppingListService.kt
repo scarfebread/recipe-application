@@ -48,10 +48,10 @@ class ShoppingListService @Autowired constructor(
     @Throws(IngredientDoesNotExistException::class)
     fun addToShoppingList(ingredientId: Long) {
         shoppingListRepository.save(
-                ShoppingListItem().apply {
-                    user = authService.loggedInUser
-                    ingredient = ingredientRepository.findByIdAndUser(ingredientId, authService.loggedInUser).orElseThrow { IngredientDoesNotExistException() }
-                }
+            ShoppingListItem().apply {
+                user = authService.loggedInUser
+                ingredient = ingredientRepository.findByIdAndUser(ingredientId, authService.loggedInUser) ?: throw IngredientDoesNotExistException()
+            }
         )
     }
 

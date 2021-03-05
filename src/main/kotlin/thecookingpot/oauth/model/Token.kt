@@ -4,7 +4,8 @@ class Token (
     private val expiresIn: String,
     val accessToken: String,
     val refreshToken: String,
-    val scope: String) {
+    val scope: String,
+    val idToken: IdToken) {
 
     fun isValid(): Boolean {
         // TODO

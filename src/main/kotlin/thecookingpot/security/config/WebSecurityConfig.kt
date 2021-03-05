@@ -12,10 +12,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import thecookingpot.security.Role
 import thecookingpot.recipe.service.RecipeUserDetailsService
+import thecookingpot.security.OAuthLogoutHandler
 
 @Configuration
 @EnableWebSecurity
-open class WebSecurityConfig @Autowired constructor(private val userDetailsService: RecipeUserDetailsService) : WebSecurityConfigurerAdapter() {
+class WebSecurityConfig @Autowired constructor(
+    private val userDetailsService: RecipeUserDetailsService,
+    private val logoutHandler: OAuthLogoutHandler) : WebSecurityConfigurerAdapter() {
+
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
             .authorizeRequests()
@@ -31,7 +35,7 @@ open class WebSecurityConfig @Autowired constructor(private val userDetailsServi
             .exceptionHandling()
                 .accessDeniedPage("/login")
                 .and()
-            .logout().logoutSuccessUrl("/login").deleteCookies("JSESSIONID").invalidateHttpSession(true)
+            .logout().logoutSuccessHandler(logoutHandler).logoutSuccessUrl("/login").deleteCookies("JSESSIONID").invalidateHttpSession(true)
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
@@ -39,7 +43,7 @@ open class WebSecurityConfig @Autowired constructor(private val userDetailsServi
     }
 
     @Bean
-    open fun authenticationProvider(): DaoAuthenticationProvider {
+    fun authenticationProvider(): DaoAuthenticationProvider {
         val authProvider = DaoAuthenticationProvider()
         authProvider.setUserDetailsService(userDetailsService)
         authProvider.setPasswordEncoder(encoder())
@@ -47,8 +51,7 @@ open class WebSecurityConfig @Autowired constructor(private val userDetailsServi
     }
 
     @Bean
-    open fun encoder(): PasswordEncoder {
+    fun encoder(): PasswordEncoder {
         return BCryptPasswordEncoder(11)
     }
-
 }
