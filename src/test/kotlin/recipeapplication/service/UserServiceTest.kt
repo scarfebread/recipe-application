@@ -14,8 +14,6 @@ import recipeapplication.model.PasswordResetToken
 import recipeapplication.model.User
 import recipeapplication.repository.PasswordTokenRepository
 import recipeapplication.repository.UserRepository
-import recipeapplication.security.RecipeUserDetails
-import recipeapplication.security.Role
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -75,7 +73,7 @@ class UserServiceTest {
 
         every { passwordEncoder.encode(PASSWORD) } returns ENCODED_PASSWORD
 
-        userService = UserService(userRepository, passwordTokenRepository, emailService, passwordEncoder, authService)
+        userService = UserService(userRepository, passwordTokenRepository, emailService, authService)
     }
 
     @Test(expected = UserNotFoundException::class)
@@ -141,18 +139,6 @@ class UserServiceTest {
     @Test(expected = InvalidPasswordTokenException::class)
     fun `Should throw invalid password token exception when token has expired`() {
         userService.processPasswordResetToken(EXPIRED_TOKEN)
-    }
-
-    @Test
-    fun `Should enable password reset for valid token`() {
-        userService.processPasswordResetToken(VALID_TOKEN)
-
-        val processedUserDetails = slot<RecipeUserDetails>()
-
-        verify { authService.authenticateUser(capture(processedUserDetails), Role.CHANGE_PASSWORD) }
-
-        assertEquals(VALID_USERNAME, processedUserDetails.captured.username)
-        assertTrue(processedUserDetails.captured.changePasswordAccess)
     }
 
     @Test

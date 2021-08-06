@@ -20,7 +20,6 @@ class UserService @Autowired constructor(
         private val userRepository: UserRepository,
         private val passwordTokenRepository: PasswordTokenRepository,
         private val emailService: EmailService,
-        private val passwordEncoder: PasswordEncoder,
         private val authService: AuthService
 ) {
     @Throws(UserNotFoundException::class)
@@ -52,11 +51,11 @@ class UserService @Autowired constructor(
         val user = passwordResetToken.get().user
         val recipeUserDetails = RecipeUserDetails(user)
         recipeUserDetails.changePasswordAccess = true
-        authService.authenticateUser(recipeUserDetails, Role.CHANGE_PASSWORD)
+//        authService.authenticateUser(recipeUserDetails, Role.CHANGE_PASSWORD)
     }
 
     fun changePassword(user: User, password: String) {
-        user.password = passwordEncoder.encode(password)
+        user.password = ""
         userRepository.save(user)
         passwordTokenRepository.deleteByUser(user)
         authService.disablePasswordReset()
@@ -85,4 +84,12 @@ class UserService @Autowired constructor(
         }
     }
 
+    fun createUser(username: String, email: String): User {
+        return userRepository.save(User().apply {
+            this.username = username
+            password = ""
+            this.email = email
+            newUser = true
+        })
+    }
 }

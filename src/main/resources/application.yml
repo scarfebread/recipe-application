@@ -19,3 +19,19 @@ spring:
       mail:
         smtp:
           auth: true
+  security:
+    oauth2:
+      client:
+        registration:
+          recipe-auth:
+            client-id: "recipe-application"
+            client-secret: "recipe-application"
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid
+        provider:
+          recipe-auth:
+            authorization-uri: http://localhost:8085/authorize
+            token-uri: http://localhost:8085/token
+            user-name-attribute: sub
+            jwk-set-uri: http://localhost:8085/.well-known/jwks.json

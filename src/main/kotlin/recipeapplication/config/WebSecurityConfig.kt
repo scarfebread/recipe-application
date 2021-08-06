@@ -3,52 +3,86 @@ package recipeapplication.config
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-import recipeapplication.security.Role
-import recipeapplication.service.RecipeUserDetailsService
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
+import org.springframework.security.oauth2.core.oidc.user.OidcUser
+import recipeapplication.exception.UserNotFoundException
+import recipeapplication.security.AuthenticationPrincipal
+import recipeapplication.service.UserService
+
 
 @Configuration
 @EnableWebSecurity
-open class WebSecurityConfig @Autowired constructor(private val userDetailsService: RecipeUserDetailsService) : WebSecurityConfigurerAdapter() {
+/**
+ * TODO
+ * - logout
+ * - exception handling
+ * - redundant code
+ * - change password
+ */
+class WebSecurityConfig @Autowired constructor(private val userService: UserService) : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
+        /**
+         * should be http {...}
+         */
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/api/password-reset", "/api/signup", "/signup", "/reset-password", "/change-password-with-token", "/api/signup", "/css/**", "/images/**", "/js/**", "/react/**")
-                .permitAll()
-                .antMatchers("/", "/recipe", "/shopping-list", "/inventory", "/delete-account", "/change-password").hasAuthority(Role.USER.toString())
-                .antMatchers("/api/change-password").hasAnyAuthority(Role.CHANGE_PASSWORD.toString(), Role.USER.toString())
-                .and()
-            .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-            .exceptionHandling()
-                .accessDeniedPage("/login")
-                .and()
-            .logout().logoutSuccessUrl("/login").deleteCookies("JSESSIONID").invalidateHttpSession(true)
+            .antMatchers(
+                "/api/password-reset",
+                "/api/signup",
+                "/signup",
+                "/reset-password",
+                "/change-password-with-token",
+                "/api/signup",
+                "/css/**",
+                "/images/**",
+                "/js/**",
+                "/react/**",
+            ).permitAll()
+            .antMatchers(
+                "/",
+                "/recipe",
+                "/shopping-list",
+                "/inventory",
+                "/delete-account",
+                "/change-password",
+            ).authenticated()
+            .and()
+            .oauth2Login(withDefaults())
+//            .exceptionHandling()
+//                .accessDeniedPage("/login")
+//                .and()
+//            .logout().logoutSuccessUrl("/login").deleteCookies("JSESSIONID").invalidateHttpSession(true)
     }
 
-    override fun configure(auth: AuthenticationManagerBuilder) {
-        auth.authenticationProvider(authenticationProvider())
-    }
-
-    @Bean
-    open fun authenticationProvider(): DaoAuthenticationProvider {
-        val authProvider = DaoAuthenticationProvider()
-        authProvider.setUserDetailsService(userDetailsService)
-        authProvider.setPasswordEncoder(encoder())
-        return authProvider
-    }
-
-    @Bean
+    @Bean // TODO not required anymore
     open fun encoder(): PasswordEncoder {
         return BCryptPasswordEncoder(11)
     }
 
+    @Bean
+    fun oidcUserService(): OAuth2UserService<OidcUserRequest, OidcUser> {
+        val delegate = OidcUserService()
+
+        return OAuth2UserService { userRequest ->
+            val oidcUser = delegate.loadUser(userRequest)
+            val username = oidcUser.subject
+            val email = oidcUser.getClaim<String>("email")
+
+            val user = try {
+                userService.getUser(username)
+            } catch (e: UserNotFoundException) {
+                userService.createUser(username, email)
+            }
+
+            AuthenticationPrincipal(user, oidcUser)
+        }
+    }
 }
