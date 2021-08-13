@@ -14,14 +14,7 @@
     <div class="container">
         <div class="form">
             <h1>The Cooking Pot</h1>
-            <form th:action="@{/login}" method="post">
-                <label for="username">Username</label><br>
-                <input id="username" name="username" class="input"/><br>
-                <label for="password">Password</label><br>
-                <input id="password" name="password" class="input" type="password"/>
-                <div th:if="${param.error}" class="error">
-                    Invalid username and password!
-                </div>
+            <form th:action="@{/}" method="get">
                 <button class="button">
                     <span>LOGIN</span>
                 </button>
