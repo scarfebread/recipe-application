@@ -13,16 +13,16 @@ spring:
   mail:
     host: "relay.plus.net"
     port: 587
-    username: "scarfebread"
-    password: ",9)+0da#6ome6Fu?"
+    username: "REDACTED"
+    password: "REDACTED"
     properties:
       mail:
         smtp:
           auth: true
 oauth:
   okta:
-    client_id: "0oa7e1anmiOgPajIx5d6"
-    client_secret: "2d2iybNvUus0mU4f3Fip1Vn97mQRVCmsL-MU5tL3"
+    client_id: "REDACTED"
+    client_secret: "REDACTED"
     redirect_uri: "http://localhost:8080/auth/okta-redirect"
     token_endpoint: "https://dev-25996170.okta.com/oauth2/default/v1/token"
     auth_endpoint: "https://dev-25996170.okta.com/oauth2/default/v1/authorize"
