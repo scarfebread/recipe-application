@@ -13,8 +13,8 @@ spring:
   mail:
     host: "relay.plus.net"
     port: 587
-    username: "scarfebread"
-    password: ",9)+0da#6ome6Fu?"
+    username: "REDACTED"
+    password: "REDACTED"
     properties:
       mail:
         smtp:
